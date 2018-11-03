@@ -1,0 +1,26 @@
+{
+  "name": "isotop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "./node_modules/.bin/electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oRiamn/isotop.git"
+  },
+  "author": "Romain Durade",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oRiamn/isotop/issues"
+  },
+  "homepage": "https://github.com/oRiamn/isotop#readme",
+  "devDependencies": {
+    "electron": "1.8.8"
+  },
+  "dependencies": {
+    "electron-reload": "^1.2.5"
+  }
+}
