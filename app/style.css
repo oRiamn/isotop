@@ -1,3 +1,5 @@
+@import "icons/icons.css";
+
 *,*:before,*:after {
   box-sizing: border-box;
 }
@@ -54,4 +56,9 @@ html,body {
 
 .aside-2 {
   background: hotpink;
+}
+
+div.resizable {
+  resize: both;
+  overflow: auto;
 }
