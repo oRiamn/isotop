@@ -5,7 +5,8 @@
   "main": "app/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "./node_modules/.bin/electron ."
+    "start": "./node_modules/.bin/electron .",
+    "watch": "./node_modules/.bin/gulp default"
   },
   "repository": {
     "type": "git",
@@ -18,9 +19,15 @@
   },
   "homepage": "https://github.com/oRiamn/isotop#readme",
   "devDependencies": {
-    "electron": "1.8.8"
+    "electron-reload": "latest",
+    "graceful-fs": "latest",
+    "gulp": "latest",
+    "gulp-autoprefixer": "latest",
+    "gulp-imagemin": "latest",
+    "gulp-sass": "latest",
+    "gulp-sourcemaps": "latest"
   },
   "dependencies": {
-    "electron-reload": "^1.2.5"
+    "electron": "1.8.8"
   }
 }

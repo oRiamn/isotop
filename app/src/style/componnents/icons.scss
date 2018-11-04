@@ -1,0 +1,31 @@
+$iconPath: '../img/icons';
+$dc: #{$iconPath}/design-collection;
+
+i {
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+
+    background-color: red;
+    display: flex;
+    width: 18px;
+    height: 18px;
+    margin: 10px 5px;
+
+    &.edit {
+        mask-image: url(#{$dc}/edit.svg);
+    }
+    
+    &.bucket {
+        mask-image: url(#{$dc}/bucket-1.svg);
+    }
+    
+    
+    &.eyedropper {
+        mask-image: url(#{$dc}/eyedropper.svg);
+    }
+    
+    &.crop {
+        mask-image: url(#{$dc}/crop.svg);
+    }
+}

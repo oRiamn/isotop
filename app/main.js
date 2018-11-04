@@ -1,8 +1,8 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
  
-require('electron-reload')(__dirname, {
-  electron: path.join(__dirname, '../node_modules', '.bin', 'electron')
+require('electron-reload')(`${__dirname}/dist/`, {
+  electron: path.join(`${__dirname}/dist/`, '../node_modules', '.bin', 'electron')
 });
 
   let win
@@ -10,7 +10,7 @@ require('electron-reload')(__dirname, {
   function createWindow () {
     win = new BrowserWindow({ width: 800, height: 600 })
 
-    win.loadURL(`file://${__dirname}/index.html`);
+    win.loadURL(`file://${__dirname}/dist/index.html`);
   
     win.webContents.openDevTools()
     win.on('closed', () => {
