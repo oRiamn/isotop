@@ -1,13 +1,23 @@
 'use strict';
 
-let gulp = require('gulp');
-let sass = require('gulp-sass');
-let autoprefixer = require('gulp-autoprefixer');
-let sourcemaps = require('gulp-sourcemaps');
-let imagemin = require('gulp-imagemin');
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const autoprefixer = require('gulp-autoprefixer');
+const sourcemaps = require('gulp-sourcemaps');
+const imagemin = require('gulp-imagemin');
+const fileinclude = require('gulp-file-include');
 
-let src = './app/src';
-let dest = './app/dist';
+const src = './app/src';
+const dest = './app/dist';
+
+gulp.task('html', function() {
+    return gulp.src(`${src}/**/*.html`)
+      .pipe(fileinclude({
+        prefix: '@@',
+        basepath: '@file'
+      }))
+      .pipe(gulp.dest(`${dest}`));
+});
 
 gulp.task('sass', function () {
     return gulp.src(`${src}/style/*.scss`)
@@ -31,7 +41,8 @@ gulp.task('images', function () {
 
 gulp.task('watch', function () {
     gulp.watch(`${src}/style/**/*.scss`, ['sass']);
+    gulp.watch(`${src}/html/**/*.html`, ['html']);
     gulp.watch(`${src}/img/**/*.+(png|jpg|jpeg|gif|svg)`, ['images']);
 });
 
-gulp.task('default', ['sass','images','watch']);
+gulp.task('default', ['sass','images','html','watch']);

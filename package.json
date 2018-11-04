@@ -23,7 +23,7 @@
     "graceful-fs": "latest",
     "gulp": "latest",
     "gulp-autoprefixer": "latest",
-    "gulp-file-include": "^2.0.1",
+    "gulp-file-include": "latest",
     "gulp-imagemin": "latest",
     "gulp-sass": "latest",
     "gulp-sourcemaps": "latest"
