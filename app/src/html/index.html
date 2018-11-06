@@ -3,25 +3,25 @@
     <head>
         <meta charset="utf-8">
         <title>Isotop</title>
-        <link rel="stylesheet" href="style/main.css">
+        <link rel="stylesheet" href="../style/main.css">
+        <script src="view-source:https://www.cssscript.com/demo/canvas-based-html5-hsv-color-picker-component/html5kellycolorpicker.min.js"></script>
     </head>
     <body>
       <div class="wrapper">
         <header class="header">Header</header>
         <section class="section">
             <aside class="aside aside-1">
-              
+              @@include('toolbar/toolbar.html')
             </aside>
             <article class="main">
               article
             </article>
             <aside class="aside aside-2">
-                <div class="resizable">
-                    Aside 2
-                </div>
+                @@include('color-picker/color-picker.html')
             </aside>
         </section>
         <footer class="footer">Footer</footer>
       </div>
     </body>
+    <script src="../js/all.js"></script>
 </html>

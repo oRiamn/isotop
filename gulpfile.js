@@ -6,9 +6,18 @@ const autoprefixer = require('gulp-autoprefixer');
 const sourcemaps = require('gulp-sourcemaps');
 const imagemin = require('gulp-imagemin');
 const fileinclude = require('gulp-file-include');
+const concat = require('gulp-concat');
 
 const src = './app/src';
 const dest = './app/dist';
+ 
+gulp.task('javascript', function() {
+  return gulp.src(`${src}/js/**/*.js`)
+    .pipe(sourcemaps.init())
+      .pipe(concat('all.js'))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest(`${dest}/js`));
+});
 
 gulp.task('html', function() {
     return gulp.src(`${src}/**/*.html`)
@@ -42,7 +51,8 @@ gulp.task('images', function () {
 gulp.task('watch', function () {
     gulp.watch(`${src}/style/**/*.scss`, ['sass']);
     gulp.watch(`${src}/html/**/*.html`, ['html']);
+    gulp.watch(`${src}/js/**/*.js`, ['javascript']);
     gulp.watch(`${src}/img/**/*.+(png|jpg|jpeg|gif|svg)`, ['images']);
 });
 
-gulp.task('default', ['sass','images','html','watch']);
+gulp.task('default', ['sass','images','html', 'javascript', 'watch']);
