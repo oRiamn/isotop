@@ -13,6 +13,16 @@ module.exports = {
 		filename: 'bundle.js'
 	},
 	devtool: 'source-map',
+	resolve: {
+		alias: {
+			'@src': path.resolve(__dirname, `${src}`),
+			'@html': path.resolve(__dirname, `${src}/html`),
+			'@js': path.resolve(__dirname, `${src}/js`),
+			'@img': path.resolve(__dirname, `${src}/img`),
+			'@icons': path.resolve(__dirname, `${src}/img/icons`),
+			'@sass': path.resolve(__dirname, `${src}/sass`)
+		}
+	},
 	module: {
 		rules: [{
 			test: /\.scss$/,

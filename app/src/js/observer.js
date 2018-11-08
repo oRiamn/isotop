@@ -22,6 +22,7 @@ export class Observer {
 		});
 	}
 	notifyFn(arg) {
+		// eslint-disable-next-line no-console
 		console.log(arg);
 	}
 }
