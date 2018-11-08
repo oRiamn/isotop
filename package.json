@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "./node_modules/.bin/electron .",
-    "watch": "./node_modules/.bin/gulp default"
+    "watch": "./node_modules/.bin/webpack --watch"
   },
   "repository": {
     "type": "git",
@@ -19,15 +19,19 @@
   },
   "homepage": "https://github.com/oRiamn/isotop#readme",
   "devDependencies": {
+    "autoprefixer": "^9.3.1",
+    "css-loader": "^1.0.1",
     "electron-reload": "latest",
-    "graceful-fs": "latest",
-    "gulp": "latest",
-    "gulp-autoprefixer": "latest",
-    "gulp-concat": "^2.6.1",
-    "gulp-file-include": "latest",
-    "gulp-imagemin": "latest",
-    "gulp-sass": "latest",
-    "gulp-sourcemaps": "latest"
+    "eslint": "^5.8.0",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "file-loader": "^2.0.0",
+    "node-sass": "^4.10.0",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^7.1.0",
+    "source-map": "^0.7.3",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2"
   },
   "dependencies": {
     "electron": "1.8.8"
