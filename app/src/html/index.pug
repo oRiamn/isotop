@@ -1,0 +1,19 @@
+doctype html
+html(lang='fr')
+  head
+    meta(charset='utf-8')
+    title Isotop
+    link(rel='stylesheet', type='text/css', href='../main.css')
+  body
+    .wrapper
+      header.header Header
+      section.section
+        aside.aside.aside-1
+          div
+            include ./toolbar/toolbar.pug
+        article.main
+          | article
+        aside.aside.aside-2
+          .color-picker
+      footer.footer Footer
+    script(src='../bundle.js')

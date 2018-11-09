@@ -1,6 +1,8 @@
 /* eslint-disable no-undef */
 const path = require('path');
+const resolve = (...paths) => path.resolve(__dirname, ...paths);
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
 
 const src = './app/src';
 const dist = './app/dist';
@@ -9,7 +11,7 @@ module.exports = {
 	entry: [`${src}/js/main.js`],
 	mode: 'production',
 	output: {
-		path: path.resolve(__dirname, `${dist}`),
+		path: resolve(`${dist}`),
 		filename: 'bundle.js'
 	},
 	devtool: 'source-map',
@@ -56,6 +58,44 @@ module.exports = {
 					}
 				}
 			]
+		},
+		{
+			test: /\.pug$/,
+			use: [
+				{
+					loader: 'file-loader',
+					options: {
+						name: 'html/[name].html'
+					}
+				},
+				{
+					loader: 'extract-loader',
+					options: {
+						publicPath: '.'
+					}
+				},
+				{
+					loader: 'html-loader',
+					options: {
+						basedir: resolve(`${src}`),
+						attrs: [
+							'img:src',
+							'a:href'
+						],
+						root: resolve(`${src}`)
+					}
+				},
+				{
+					loader: 'pug-html-loader',
+					options: {
+						basedir: resolve(`${src}`),
+						pretty: true,
+						data: {
+							title: 'test page'
+						}
+					}
+				}
+			]
 		}
 		]
 	},
@@ -63,5 +103,8 @@ module.exports = {
 		new ExtractTextPlugin({
 			filename: '[name].css'
 		}),
+		new HTMLWebpackPlugin({
+			template: resolve(`${src}/html/index.pug`)
+		})
 	]
 };
