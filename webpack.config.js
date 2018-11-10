@@ -8,7 +8,7 @@ const src = './app/src';
 const dist = './app/dist';
 
 module.exports = {
-	entry: [`${src}/js/main.js`],
+	entry: [`${src}/app-root/app-root.js`],
 	mode: 'production',
 	output: {
 		path: resolve(`${dist}`),
@@ -19,7 +19,7 @@ module.exports = {
 		alias: {
 			'@src': path.resolve(__dirname, `${src}`),
 			'@html': path.resolve(__dirname, `${src}/html`),
-			'@js': path.resolve(__dirname, `${src}/js`),
+			'@lib': path.resolve(__dirname, `${src}/library`),
 			'@img': path.resolve(__dirname, `${src}/img`),
 			'@icons': path.resolve(__dirname, `${src}/img/icons`),
 			'@sass': path.resolve(__dirname, `${src}/sass`)
@@ -60,7 +60,7 @@ module.exports = {
 			]
 		},
 		{
-			test: /\.pug$/,
+			test: /\.html$/,
 			use: [
 				{
 					loader: 'file-loader',
@@ -74,6 +74,22 @@ module.exports = {
 						publicPath: '.'
 					}
 				},
+				{
+					loader: 'html-loader',
+					options: {
+						basedir: resolve(`${src}`),
+						attrs: [
+							'img:src',
+							'a:href'
+						],
+						root: resolve(`${src}`)
+					}
+				}
+			]
+		},
+		{
+			test: /\.pug$/,
+			use: [
 				{
 					loader: 'html-loader',
 					options: {
@@ -104,7 +120,7 @@ module.exports = {
 			filename: '[name].css'
 		}),
 		new HTMLWebpackPlugin({
-			template: resolve(`${src}/html/index.pug`)
+			template: resolve(`${src}/index.html`)
 		})
 	]
 };

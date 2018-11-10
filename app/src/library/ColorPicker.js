@@ -1,5 +1,5 @@
-import { Observable } from '@js/observer';
-import { rgbToHsl } from '@js/color-picker';
+import { Observable } from '@lib/observer';
+import { rgbToHsl } from '@lib/color-picker';
 
 export default class ColorPicker extends Observable {
 	constructor(size, parent) {

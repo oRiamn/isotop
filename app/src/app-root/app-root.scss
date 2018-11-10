@@ -1,0 +1,45 @@
+app-root {
+    .wrapper {
+        display: flex;  
+        flex-flow: column;
+        height: 100%;
+        width: 100%;
+    
+        .header {
+            background: green;
+        }
+    
+        .footer {
+            background: lightgreen;
+        }
+    
+        .header, .section, .footer {
+            flex: 0;
+        }
+    
+        .section {
+            flex: 2;
+            display: flex;  
+            flex-flow: row;
+        }
+    
+        .main {
+            text-align: left;
+            background: deepskyblue;
+            flex: 2;
+        }
+    
+        .aside { 
+            flex: 0;
+        }
+    
+        .aside-1 {
+            background: gold;
+        }
+    
+        .aside-2 {
+            background: hotpink;
+        }
+    
+    }
+}
