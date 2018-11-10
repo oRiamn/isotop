@@ -1,4 +1,4 @@
-import css from './icons.scss';
+import icon from '@src/shared/simple-icon/simple-icon';
 import html from './tool-bar.pug';
 
 export default class ToolBar extends HTMLElement {
