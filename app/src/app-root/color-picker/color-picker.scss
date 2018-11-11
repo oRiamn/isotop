@@ -1,12 +1,12 @@
 
-$background: rgb(87, 76, 76);
+@import '@src/colors.scss';
 
 color-picker {
     .color-picker {
         display: flex;
         width: 150px;
         height: 150px;
-        background: $background;
+        background: $darklight;
         justify-content: center;
         align-items: center;
     

@@ -1,37 +1,39 @@
 $iconPath: './img';
 $dc: #{$iconPath}/design-collection;
 
-a {
+simple-icon {
+    a {
 
-    background: grey;
-    display: flex;
-
-    i {
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: contain;
-
-        background-color: rgb(218, 211, 211);
+        background: grey;
         display: flex;
-        width: 18px;
-        height: 18px;
-        margin: 10px 5px;
-
-        &.edit {
-            mask-image: url(#{$dc}/edit.svg);
-        }
-        
-        &.bucket {
-            mask-image: url(#{$dc}/bucket-1.svg);
-        }
-        
-        
-        &.eyedropper {
-            mask-image: url(#{$dc}/eyedropper.svg);
-        }
-        
-        &.crop {
-            mask-image: url(#{$dc}/crop.svg);
+    
+        i {
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: contain;
+    
+            background-color: rgb(218, 211, 211);
+            display: flex;
+            width: 18px;
+            height: 18px;
+            margin: 10px 5px;
+    
+            &.edit {
+                mask-image: url(#{$dc}/edit.svg);
+            }
+            
+            &.bucket {
+                mask-image: url(#{$dc}/bucket-1.svg);
+            }
+            
+            
+            &.eyedropper {
+                mask-image: url(#{$dc}/eyedropper.svg);
+            }
+            
+            &.crop {
+                mask-image: url(#{$dc}/crop.svg);
+            }
         }
     }
 }

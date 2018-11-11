@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import main from '@src/main.scss';
 
 import css from './app-root.scss';
