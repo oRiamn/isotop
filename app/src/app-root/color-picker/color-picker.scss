@@ -2,18 +2,22 @@
 @import '@src/colors.scss';
 
 color-picker {
-    .color-picker {
-        display: flex;
+    display: flex;
+    width: 150px;
+    height: 150px;
+    background: $darklight;
+    justify-content: center;
+    align-items: center;
+
+    .container{
         width: 150px;
         height: 150px;
-        background: $darklight;
-        justify-content: center;
-        align-items: center;
-    
         canvas {
             position: absolute;
+            width: 150px;
+            height: 150px;
             &:first-child {
-                background-color: $background;
+                background-color: $darklight;
             }			
         }
     }
