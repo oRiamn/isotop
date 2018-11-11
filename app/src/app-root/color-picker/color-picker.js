@@ -3,6 +3,8 @@ import html from './color-picker.pug';
 
 import { rgbToHsl } from '@lib/color-picker';
 
+import { toRadians, inCircle, inTriangle } from '@lib/collision.js';
+
 export default class ColorPicker extends HTMLElement {
 	constructor() {
 		super();
@@ -25,6 +27,7 @@ export default class ColorPicker extends HTMLElement {
 		this.points = 200;
 		this.angle = 360 / this.points;
 		this.arc = Math.PI * 2 / this.points;
+		this.tri=[];
 		// create
 		this.init();
 	}
@@ -40,7 +43,6 @@ export default class ColorPicker extends HTMLElement {
 		this.inner.width=this.width;
 		this.inner.height=this.height;
 		this.ctxB = this.inner.getContext('2d');
-		this.ctxB.globalCompositeOperation = 'hard-light';
 		// dot canvas
 		this.dot = this.querySelector('.dot');
 		this.dot.width=this.width;
@@ -53,7 +55,7 @@ export default class ColorPicker extends HTMLElement {
 		this.setEvents();
 	}
 
-	circle(ctx, x, y, r, style, start, end) {
+	drawCircle(ctx, x, y, r, style, start, end) {
 		ctx.beginPath();
 		ctx.arc(x, y, r, start || 0, end || Math.PI * 2);
 		if (style.fill) {
@@ -68,7 +70,8 @@ export default class ColorPicker extends HTMLElement {
 			ctx.lineWidth = style.lineWidth;
 		}
 	}
-	triangle(ctx, points, fill) {
+
+	drawTriangle(ctx, points, fill) {
 		ctx.beginPath();
 		ctx.moveTo(points[0].x, points[0].y);
 		for (let i = points.length - 2; i >= 0; i--) {
@@ -77,6 +80,7 @@ export default class ColorPicker extends HTMLElement {
 		ctx.fillStyle = fill;
 		ctx.fill();
 	}
+
 	spectrum() {
 		for (let i = 1; i <= this.points; i++) {
 			
@@ -86,10 +90,10 @@ export default class ColorPicker extends HTMLElement {
 			
 			// gradient vector
 			let radius = this.radSmall + (this.radLarge - this.radSmall) / 2;
-			let x1 = Math.cos(this.toRadians(a)) * radius + this.cx;
-			let y1 = Math.sin(this.toRadians(a)) * radius + this.cy;
-			let x2 = Math.cos(this.toRadians(b)) * radius + this.cx;
-			let y2 = Math.sin(this.toRadians(b)) * radius + this.cy;
+			let x1 = Math.cos(toRadians(a)) * radius + this.cx;
+			let y1 = Math.sin(toRadians(a)) * radius + this.cy;
+			let x2 = Math.cos(toRadians(b)) * radius + this.cx;
+			let y2 = Math.sin(toRadians(b)) * radius + this.cy;
 			
 			// gradient
 			let g = this.ctxA.createLinearGradient(x1, y1, x2, y2);
@@ -99,38 +103,23 @@ export default class ColorPicker extends HTMLElement {
 			// draw arc
 			let o = 0.001;
 			this.ctxA.beginPath();
-			this.ctxA.arc(this.cx, this.cy, this.radLarge, this.toRadians(b) - o, this.toRadians(a) + o, false);
-			this.ctxA.arc(this.cx, this.cy, this.radSmall, this.toRadians(a) + o, this.toRadians(b) - o, true);
+			this.ctxA.arc(this.cx, this.cy, this.radLarge, toRadians(b) - o, toRadians(a) + o, false);
+			this.ctxA.arc(this.cx, this.cy, this.radSmall, toRadians(a) + o, toRadians(b) - o, true);
 			this.ctxA.fillStyle = g;
 			this.ctxA.fill();
 		}
 	}
-	toRadians(angle) {
-		// convert angle to radians
-		return angle * (Math.PI / 180);
-	}
-	inCircle(x0, y0, x1, y1, r) {
-		// center of circle (x0,y0), mouse coordinates (x1,y1), radius (r)
-		return Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0)) < r;
-	}
-	inTriangle(p, p0, p1, p2) {
-		// point in circle (p), triangle points (p0, p1, p2)
-		var A = 1 / 2 * (-p1.y * p2.x + p0.y * (-p1.x + p2.x) + p0.x * (p1.y - p2.y) + p1.x * p2.y);
-		var sign = A < 0 ? -1 : 1;
-		var s = (p0.y * p2.x - p0.x * p2.y + (p2.y - p0.y) * p.x + (p0.x - p2.x) * p.y) * sign;
-		var t = (p0.x * p1.y - p0.y * p1.x + (p0.y - p1.y) * p.x + (p1.x - p0.x) * p.y) * sign;
-		return s > 0 && t > 0 && (s + t) < 2 * A * sign;
-	}
+
 	update(e, cw) {
 		// get mouse pos
 		let x = e.clientX - cw.inner.offsetLeft;
 		let y = e.clientY - cw.inner.offsetTop;
 		this.pos = { x: x, y: y };
 		// check mouse is within bounds
-		let outer = cw.inCircle(cw.cx, cw.cy, x, y, cw.radLarge), inner = cw.inCircle(cw.cx, cw.cy, x, y, cw.radSmall), tri;
+		let outer = inCircle(cw.cx, cw.cy, x, y, cw.radLarge), inner = inCircle(cw.cx, cw.cy, x, y, cw.radSmall), tri;
 		// check mouse in triangle
 		if (this.tri) {
-			tri = this.inTriangle(this.pos, this.tri[0], this.tri[1], this.tri[2]);
+			tri = inTriangle(this.pos, this.tri[0], this.tri[1], this.tri[2]);
 		}
 		// draw
 		if (outer && !inner) {
@@ -154,8 +143,8 @@ export default class ColorPicker extends HTMLElement {
 			let pts = this.tri = [];
 			for (let i = 0; i < angs.length; i++) {
 				pts.push({
-					x: Math.cos(this.toRadians(this.ang + angs[i])) * this.radSmall + this.cx,
-					y: Math.sin(this.toRadians(this.ang + angs[i])) * this.radSmall + this.cy
+					x: Math.cos(toRadians(this.ang + angs[i])) * this.radSmall + this.cx,
+					y: Math.sin(toRadians(this.ang + angs[i])) * this.radSmall + this.cy
 				});
 			}
 			// gradient 1 = black => white
@@ -168,8 +157,8 @@ export default class ColorPicker extends HTMLElement {
 			g2.addColorStop(0, this.color);
 			g2.addColorStop(1, 'rgba(' + da[0] + ',' + da[1] + ',' + da[2] + ', 0)');
 			// draw
-			this.triangle(this.ctxB, pts, g2);
-			this.triangle(this.ctxB, pts, g1);
+			this.drawTriangle(this.ctxB, pts, g2);
+			this.drawTriangle(this.ctxB, pts, g1);
 		}
 		// clear dot canvas
 		this.ctxC.clearRect(0, 0, this.dot.width, this.dot.height);
@@ -180,7 +169,7 @@ export default class ColorPicker extends HTMLElement {
 			lineWidth: 2,
 			fill: this.dotCol
 		};
-		this.circle(this.ctxC, x, y, 3, s);
+		this.drawCircle(this.ctxC, x, y, 3, s);
 		// TESTING - update view background
 		this.style.background = this.dotCol;
 	}
