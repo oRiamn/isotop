@@ -2,9 +2,9 @@ import css from './color-picker.scss';
 import html from './color-picker.pug';
 
 import { rgbToHsl } from '@lib/color-picker';
-import { toRadians, inCircle, inTriangle } from '@lib/collision.js';
+import { toRadians } from '@lib/collision.js';
 import { Point } from '@lib/figure/Point';
-import { Ring, Circle } from '@lib/figure/Circle';
+import { Ring } from '@lib/figure/Circle';
 import { EquilateralTriangle } from '@lib/figure/Triangle';
 
 export default class ColorPicker extends HTMLElement {
@@ -26,7 +26,7 @@ export default class ColorPicker extends HTMLElement {
 		// event variables
 		this.active = false;
 		this.color = null;
-		this.pos = new Point(this.center.x,this.center.y);
+		this.pos = new Point(-20000,-20000);
 
 		// segment construction
 		let segmentPoints=200;
@@ -35,9 +35,7 @@ export default class ColorPicker extends HTMLElement {
 			angle: 360 / segmentPoints,
 			arc: Math.PI * 2 / segmentPoints
 		};
-		
-		
-		
+				
 		this.tri=[];
 		// create
 		this.init();
@@ -54,7 +52,7 @@ export default class ColorPicker extends HTMLElement {
 		this.inner.width=this.width;
 		this.inner.height=this.height;
 		this.ctxB = this.inner.getContext('2d');
-		//this.ctxB.globalCompositeOperation = 'hard-light';
+		this.ctxB.globalCompositeOperation = 'hard-light';
 		// dot canvas
 		this.dot = this.querySelector('.dot');
 		this.dot.width=this.width;
@@ -65,22 +63,6 @@ export default class ColorPicker extends HTMLElement {
 		this.spectrum();
 		// add events
 		this.setEvents();
-	}
-
-	drawCircle(ctx, x, y, r, style, start, end) {
-		ctx.beginPath();
-		ctx.arc(x, y, r, start || 0, end || Math.PI * 2);
-		if (style.fill) {
-			ctx.fillStyle = style.fill;
-			ctx.fill();
-		}
-		if (style.stroke) {
-			ctx.strokeStyle = style.stroke;
-			ctx.stroke();
-		}
-		if (style.lineWidth) {
-			ctx.lineWidth = style.lineWidth;
-		}
 	}
 
 	spectrum() {
@@ -112,63 +94,58 @@ export default class ColorPicker extends HTMLElement {
 		}
 	}
 
-	update(e, cw) {
+	update(e) {
 		// get mouse pos
-		let x = e.clientX - cw.inner.offsetLeft;
-		let y = e.clientY - cw.inner.offsetTop;
+		let x = e.clientX - this.inner.offsetLeft;
+		let y = e.clientY - this.inner.offsetTop;
 
 		this.pos.moveTo(x,y);
-		// check mouse is within bounds
-		let outer = inCircle(cw.center.x, cw.center.y, x, y, cw.ring.radLarge), 
-			inner = inCircle(cw.center.x, cw.center.y, x, y, cw.ring.radSmall), tri;
-
-		let collision = this.ring.collision(this.pos);
 		
-		// check mouse in triangle
-		if (this.tri) {
-			tri = inTriangle(this.pos, this.tri[0], this.tri[1], this.tri[2]);
-		}
 		// draw
-		if (outer && !inner) {
-			cw.draw(x, y, false);
+		if (this.ring.collision(this.pos)) {
+			this.draw(false);
 		}
-		else if (tri) {
-			cw.draw(x, y, true);
+		else if (this.tri && this.triangle.collision(this.pos)) {
+			this.draw(true);
 		}
 	}
-	draw(x, y, tri) {
+	drawTriangle(pixelData) {
+		// clear triangle canvas
+		this.ctxB.clearRect(0, 0, this.inner.width, this.inner.height);
+		this.ang = Math.atan2(this.pos.y - this.center.y, this.pos.x - this.center.x) * (180 / Math.PI);
+		this.triangle.rotateTo(this.ang);
+
+		this.color = 'rgb(' + pixelData[0] + ',' + pixelData[1] + ',' + pixelData[2] + ')';
+		let ang = 180;
+		const coor = {
+			x: Math.cos(toRadians(this.ang + ang)) * this.triangle.radius + this.triangle.center.x,
+			y: Math.sin(toRadians(this.ang + ang)) * this.triangle.radius + this.triangle.center.y
+		};
+
+		
+		let pts = this.tri = [...this.triangle.points,coor];
+
+		// gradient 1 = black => white
+		let g1 = this.ctxB.createLinearGradient(pts[1].x, pts[1].y, pts[2].x, pts[2].y);
+		let hsl = rgbToHsl(pixelData[0], pixelData[1], pixelData[2]);
+		g1.addColorStop(0, 'hsl(' + hsl[0] * 360 + ',0%,100%)');
+		g1.addColorStop(1, 'hsl(' + hsl[0] * 360 + ',0%,0%)');
+		// gradient 2 = hue => transparent
+		let g2 = this.ctxB.createLinearGradient(pts[0].x, pts[0].y, pts[3].x, pts[3].y);
+		g2.addColorStop(0, this.color);
+		g2.addColorStop(1, 'rgba(' + pixelData[0] + ',' + pixelData[1] + ',' + pixelData[2] + ', 0)');
+		// draw
+		this.triangle.draw(this.ctxB, g2);
+		this.triangle.draw(this.ctxB, g1);
+	}
+	draw(tri) {
 		// get pixel data
-		let da = this.ctxA.getImageData(x, y, 1, 1).data;
-		let db = this.ctxB.getImageData(x, y, 1, 1).data;
+		let da = this.ctxA.getImageData(this.pos.x, this.pos.y, 1, 1).data;
+		let db = this.ctxB.getImageData(this.pos.x, this.pos.y, 1, 1).data;
+		
 		// draw equilateral triangle
 		if (!tri) {
-			// clear triangle canvas
-			this.ctxB.clearRect(0, 0, this.inner.width, this.inner.height);
-			this.ang = Math.atan2(y - this.center.y, x - this.center.x) * (180 / Math.PI);
-			this.triangle.rotateTo(this.ang);
-
-			this.color = 'rgb(' + da[0] + ',' + da[1] + ',' + da[2] + ')';
-			let ang = 180;
-			const coor = {
-				x: Math.cos(toRadians(this.ang + ang)) * this.triangle.radius + this.triangle.center.x,
-				y: Math.sin(toRadians(this.ang + ang)) * this.triangle.radius + this.triangle.center.y
-			};
-
-			
-			let pts = this.tri = [...this.triangle.points,coor];
-
-			// gradient 1 = black => white
-			let g1 = this.ctxB.createLinearGradient(pts[1].x, pts[1].y, pts[2].x, pts[2].y);
-			let hsl = rgbToHsl(da[0], da[1], da[2]);
-			g1.addColorStop(0, 'hsl(' + hsl[0] * 360 + ',0%,100%)');
-			g1.addColorStop(1, 'hsl(' + hsl[0] * 360 + ',0%,0%)');
-			// gradient 2 = hue => transparent
-			let g2 = this.ctxB.createLinearGradient(pts[0].x, pts[0].y, pts[3].x, pts[3].y);
-			g2.addColorStop(0, this.color);
-			g2.addColorStop(1, 'rgba(' + da[0] + ',' + da[1] + ',' + da[2] + ', 0)');
-			// draw
-			this.triangle.draw(this.ctxB, g2);
-			this.triangle.draw(this.ctxB, g1);
+			this.drawTriangle(da);
 		}
 
 		// clear dot canvas
@@ -180,7 +157,7 @@ export default class ColorPicker extends HTMLElement {
 			lineWidth: 2,
 			fill: this.dotCol
 		};
-		//this.drawCircle(this.ctxC, x, y, 3, s);
+
 		this.cursorDot.moveTo(this.pos);
 		this.cursorDot.draw(this.ctxC, s);
 		// TESTING - update view background
@@ -191,14 +168,14 @@ export default class ColorPicker extends HTMLElement {
 		this.dot.addEventListener('mousedown', e => {
 			self.active = true;
 			if (self.active)
-				self.update(e, self);
+				self.update(e);
 		}, false);
 		this.dot.addEventListener('mouseup', () => {
 			self.active = false;
 		}, false);
 		this.dot.addEventListener('mousemove', e => {
 			if (self.active)
-				self.update(e, self);
+				self.update(e);
 		}, false);
 		this.draw(0, 0, false);
 	}

@@ -64,7 +64,7 @@ export const Ring = class extends Circle {
 	}
 
 	collisionPoint(point){
-		const distance = this.center.calculateDistance(point);			
+		const distance = this.center.calculateDistance(point);	
 		return (distance < this.radLarge)  && (distance > this.radSmall);
 	}
 };

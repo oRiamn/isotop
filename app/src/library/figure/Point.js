@@ -10,6 +10,6 @@ export const Point = class {
 	}
 
 	calculateDistance(point) {
-		return Math.sqrt( Math.pow(point.x - this.x, 2) + Math.pow(point.y - this.y) );
+		return Math.sqrt( Math.pow(point.x - this.x, 2) + Math.pow(point.y - this.y, 2) );
 	}
 };
