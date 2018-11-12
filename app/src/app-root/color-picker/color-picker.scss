@@ -8,14 +8,17 @@ color-picker {
     background: $darklight;
     justify-content: center;
     align-items: center;
+    user-select: none;
 
     .container{
         width: 150px;
         height: 150px;
+        user-select: none;
         canvas {
             position: absolute;
             width: 150px;
             height: 150px;
+            user-select: none;
             &:first-child {
                 background-color: $darklight;
             }			

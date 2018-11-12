@@ -4,7 +4,7 @@ import html from './color-picker.pug';
 import { rgbToHsl } from '@lib/color-picker';
 import { toRadians, inCircle, inTriangle } from '@lib/collision.js';
 import { Point } from '@lib/figure/Point';
-import { Circle } from '@lib/figure/Circle';
+import { Ring } from '@lib/figure/Circle';
 
 export default class ColorPicker extends HTMLElement {
 	constructor() {
@@ -17,7 +17,7 @@ export default class ColorPicker extends HTMLElement {
 		this.height = size;
 
 		this.center = new Point(this.width / 2,this.height / 2);
-		this.circle = new Circle(this.center,(size / 2), 20);
+		this.ring = new Ring(this.center,(size / 2), 20);
 
 		
 		// event variables
@@ -98,7 +98,7 @@ export default class ColorPicker extends HTMLElement {
 			let b = (i - 1) * this.segment.angle;
 			
 			// gradient vector
-			let radius = this.circle.radSmall + (this.circle.radLarge - this.circle.radSmall) / 2;
+			let radius = this.ring.radSmall + (this.ring.radLarge - this.ring.radSmall) / 2;
 			let x1 = Math.cos(toRadians(a)) * radius + this.center.x;
 			let y1 = Math.sin(toRadians(a)) * radius + this.center.y;
 			let x2 = Math.cos(toRadians(b)) * radius + this.center.x;
@@ -112,8 +112,8 @@ export default class ColorPicker extends HTMLElement {
 			// draw arc
 			let o = 0.001;
 			this.ctxA.beginPath();
-			this.ctxA.arc(this.center.x, this.center.y, this.circle.radLarge, toRadians(b) - o, toRadians(a) + o, false);
-			this.ctxA.arc(this.center.x, this.center.y, this.circle.radSmall, toRadians(a) + o, toRadians(b) - o, true);
+			this.ctxA.arc(this.center.x, this.center.y, this.ring.radLarge, toRadians(b) - o, toRadians(a) + o, false);
+			this.ctxA.arc(this.center.x, this.center.y, this.ring.radSmall, toRadians(a) + o, toRadians(b) - o, true);
 			this.ctxA.fillStyle = g;
 			this.ctxA.fill();
 		}
@@ -128,10 +128,10 @@ export default class ColorPicker extends HTMLElement {
 
 		this.pos = { x: x, y: y };
 		// check mouse is within bounds
-		let outer = inCircle(cw.center.x, cw.center.y, x, y, cw.circle.radLarge), 
-			inner = inCircle(cw.center.x, cw.center.y, x, y, cw.circle.radSmall), tri;
+		let outer = inCircle(cw.center.x, cw.center.y, x, y, cw.ring.radLarge), 
+			inner = inCircle(cw.center.x, cw.center.y, x, y, cw.ring.radSmall), tri;
 
-		let collision = this.circle.collision(mousePoint);
+		let collision = this.ring.collision(mousePoint);
 		
 		// check mouse in triangle
 		if (this.tri) {
@@ -159,8 +159,8 @@ export default class ColorPicker extends HTMLElement {
 			let pts = this.tri = [];
 			for (let i = 0; i < angs.length; i++) {
 				pts.push({
-					x: Math.cos(toRadians(this.ang + angs[i])) * this.circle.radSmall + this.center.x,
-					y: Math.sin(toRadians(this.ang + angs[i])) * this.circle.radSmall + this.center.y
+					x: Math.cos(toRadians(this.ang + angs[i])) * this.ring.radSmall + this.center.x,
+					y: Math.sin(toRadians(this.ang + angs[i])) * this.ring.radSmall + this.center.y
 				});
 			}
 			// gradient 1 = black => white
