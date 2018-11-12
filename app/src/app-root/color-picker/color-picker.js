@@ -5,6 +5,7 @@ import { rgbToHsl } from '@lib/color-picker';
 import { toRadians, inCircle, inTriangle } from '@lib/collision.js';
 import { Point } from '@lib/figure/Point';
 import { Ring } from '@lib/figure/Circle';
+import { EquilateralTriangle } from '@lib/figure/Triangle';
 
 export default class ColorPicker extends HTMLElement {
 	constructor() {
@@ -18,6 +19,7 @@ export default class ColorPicker extends HTMLElement {
 
 		this.center = new Point(this.width / 2,this.height / 2);
 		this.ring = new Ring(this.center,(size / 2), 20);
+		this.triangle = new EquilateralTriangle(this.center,this.ring.radSmall, 0);
 
 		
 		// event variables
@@ -124,14 +126,12 @@ export default class ColorPicker extends HTMLElement {
 		let x = e.clientX - cw.inner.offsetLeft;
 		let y = e.clientY - cw.inner.offsetTop;
 
-		const mousePoint = new Point(x,y);
-
-		this.pos = { x: x, y: y };
+		this.pos = new Point(x,y);
 		// check mouse is within bounds
 		let outer = inCircle(cw.center.x, cw.center.y, x, y, cw.ring.radLarge), 
 			inner = inCircle(cw.center.x, cw.center.y, x, y, cw.ring.radSmall), tri;
 
-		let collision = this.ring.collision(mousePoint);
+		let collision = this.ring.collision(this.pos);
 		
 		// check mouse in triangle
 		if (this.tri) {
@@ -154,15 +154,18 @@ export default class ColorPicker extends HTMLElement {
 			// clear triangle canvas
 			this.ctxB.clearRect(0, 0, this.inner.width, this.inner.height);
 			this.ang = Math.atan2(y - this.center.y, x - this.center.x) * (180 / Math.PI);
+			this.triangle.rotateTo(this.ang);
+
 			this.color = 'rgb(' + da[0] + ',' + da[1] + ',' + da[2] + ')';
-			let angs = [0, 120, 240, 180];
-			let pts = this.tri = [];
-			for (let i = 0; i < angs.length; i++) {
-				pts.push({
-					x: Math.cos(toRadians(this.ang + angs[i])) * this.ring.radSmall + this.center.x,
-					y: Math.sin(toRadians(this.ang + angs[i])) * this.ring.radSmall + this.center.y
-				});
-			}
+			let ang = 180;
+			const coor = {
+				x: Math.cos(toRadians(this.ang + ang)) * this.triangle.radius + this.triangle.center.x,
+				y: Math.sin(toRadians(this.ang + ang)) * this.triangle.radius + this.triangle.center.y
+			};
+
+			
+			let pts = this.tri = [...this.triangle.points,coor];
+			
 			// gradient 1 = black => white
 			let g1 = this.ctxB.createLinearGradient(pts[1].x, pts[1].y, pts[2].x, pts[2].y);
 			let hsl = rgbToHsl(da[0], da[1], da[2]);
