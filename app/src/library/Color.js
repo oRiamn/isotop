@@ -101,6 +101,10 @@ export const Color = class {
 		return 'rgba('+Math.round(255*this.r)+','+Math.round(255*this.g)+','+Math.round(255*this.b)+','+Math.round(this.a)+')';
 	}
 
+	cssRGB() {
+		return 'rgb('+Math.round(255*this.r)+','+Math.round(255*this.g)+','+Math.round(255*this.b)+')';
+	}
+
 	fromHSL(hue, saturation, lightness, alpha = 1) {
 		
 		const sanitized=Sanitizer.HSL(hue, saturation, lightness, alpha);

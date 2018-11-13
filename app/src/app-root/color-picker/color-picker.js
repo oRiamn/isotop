@@ -14,6 +14,7 @@ export default class ColorPicker extends HTMLElement {
 	constructor() {
 		super();
 		this.innerHTML = html;
+		
 		let size=150;
 
 		// canvas setup
@@ -23,29 +24,21 @@ export default class ColorPicker extends HTMLElement {
 		this.center = new Point(this.width / 2,this.height / 2);
 		this.ring = new Ring(this.center,(size / 2) - 5, 20);
 		this.triangle = new EquilateralTriangle(this.center,this.ring.radSmall-10, 0);
-		this.cursorDot = new Ring(new Point(0,0),3, 2);
 
 		
 		// event variables
 		this.active = false;
-		this.color = null;
-		this.pos = new Point(-20000,-20000);
-
-		this.choiceColor = new Color();
+		this.color = new Color();
+		this.cursor = new Ring(new Point(-20000,-20000),3, 2);
 
 		// segment construction
-		let segmentPoints=200;
+		let segmentPoints=50;
 		this.segment={
 			points: segmentPoints,
 			angle: 360 / segmentPoints,
 			arc: Math.PI * 2 / segmentPoints
 		};
 
-		// create
-		this.init();
-	}
-
-	init() {
 		// outer canvas
 		this.canvasRing = new Canvas2d(
 			this.querySelector('.outer'), {
@@ -78,7 +71,6 @@ export default class ColorPicker extends HTMLElement {
 	}
 
 	spectrum() {
-
 		const innerBoundary = new Circle(this.ring.center, this.ring.radSmall),
 			outerBoundary = new Circle(this.ring.center, this.ring.radLarge),
 			radius = this.ring.radSmall + (this.ring.radLarge - this.ring.radSmall) / 2,
@@ -122,23 +114,23 @@ export default class ColorPicker extends HTMLElement {
 		const x = e.clientX - this.offsetLeft,
 			y = e.clientY - this.offsetTop;
 
-		this.pos.moveTo(x,y);
+		this.cursor.center.moveTo(x,y);
 		
 		// draw
-		if (this.ring.collision(this.pos)) {
+		if (this.ring.collision(this.cursor.center)) {
 			this.draw(false);
 		}
-		else if (this.triangle.collision(this.pos)) {
+		else if (this.triangle.collision(this.cursor.center)) {
 			this.draw(true);
 		}
 	}
-	drawTriangle(pixelData) {
+
+	drawTriangle() {
 		// clear triangle canvas
 		this.canvasTriangle.clearAll();
-		this.ang = Math.atan2(this.pos.y - this.center.y, this.pos.x - this.center.x) * (180 / Math.PI);
+		this.ang = Math.atan2(this.cursor.center.y - this.center.y, this.cursor.center.x - this.center.x) * (180 / Math.PI);
 		this.triangle.rotateTo(this.ang);
 
-		this.color = 'rgb(' + pixelData[0] + ',' + pixelData[1] + ',' + pixelData[2] + ')';
 		let ang = 180;
 		const coor = {
 			x: Math.cos(toRadians(this.ang + ang)) * this.triangle.radius + this.triangle.center.x,
@@ -150,45 +142,45 @@ export default class ColorPicker extends HTMLElement {
 
 		// gradient 1 = black => white
 		const g1 = this.canvasTriangle.createLinearGradient(pts[1], pts[2]);
-		let hsl = rgbToHsl(pixelData[0], pixelData[1], pixelData[2]);
-		g1.addColorStop(0, 'hsl(' + hsl[0] * 360 + ',0%,100%)');
-		g1.addColorStop(1, 'hsl(' + hsl[0] * 360 + ',0%,0%)');
+		g1.addColorStop(0, 'hsl(' + this.color.h + ',0%,100%)');
+		g1.addColorStop(1, 'hsl(' + this.color.h + ',0%,0%)');
+
 		// gradient 2 = hue => transparent
 		const g2 = this.canvasTriangle.createLinearGradient(pts[0], pts[3]);
-		g2.addColorStop(0, this.color);
-		g2.addColorStop(1, 'rgba(' + pixelData[0] + ',' + pixelData[1] + ',' + pixelData[2] + ', 0)');
+		g2.addColorStop(0, this.color.cssRGB());
+		g2.addColorStop(1, this.color.cssRGBA() );
 		// draw
 		this.triangle.draw(this.canvasTriangle.ctx, g2);
 		this.triangle.draw(this.canvasTriangle.ctx, g1);
 	}
+
 	draw(tri) {
-		// get pixel data
-		let choice;
-		
+
 		// draw equilateral triangle
 		if (!tri) {
-			choice = this.canvasRing.getImageData(this.pos, 1, 1).data;
-			this.drawTriangle(choice);
+			const imgData = this.canvasRing.getImageData(this.cursor.center, 1, 1).data;
+			this.color.fromRGBA(imgData[0],imgData[1],imgData[2],imgData[3]);
+
+			this.drawTriangle();
 		} else {
-			choice = this.canvasTriangle.getImageData(this.pos, 1, 1).data;
+			const imgData = this.canvasTriangle.getImageData(this.cursor.center, 1, 1).data;
+			this.color.fromRGBA(imgData[0],imgData[1],imgData[2],imgData[3]);
 		}
 
 		// clear dot canvas
 		this.canvasDot.clearAll();
-		this.choiceColor.fromRGBA(choice[0],choice[1],choice[2],choice[3]);
+		this.dotCol = this.color.cssRGBA();
 		
-		this.dotCol = this.choiceColor.cssRGBA();
-		
-		this.cursorDot.moveTo(this.pos);
-		this.cursorDot.draw(this.canvasDot.ctx,{
+		this.cursor.moveTo(this.cursor.center);
+		this.cursor.draw(this.canvasDot.ctx,{
 			stroke: '#fff',
 			lineWidth: 2,
 			fill: this.dotCol
 		});
 		// TESTING - update view background
 		this.style.background = this.dotCol;
-		console.log(this.dotCol);
 	}
+
 	setEvents() {
 		let self = this;
 		this.canvasDot.canvas.addEventListener('mousedown', e => {
