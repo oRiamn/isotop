@@ -98,11 +98,20 @@ export const Color = class {
 	}
 
 	cssRGBA() {
-		return 'rgba('+Math.round(255*this.r)+','+Math.round(255*this.g)+','+Math.round(255*this.b)+','+Math.round(this.a)+')';
+		const r = Math.round(255*this.r),
+			g = Math.round(255*this.g),
+			b = Math.round(255*this.b),
+			a = Math.round(255*this.a);
+		
+		return `rgba(${r},${g},${b},${a})`;
 	}
 
 	cssRGB() {
-		return 'rgb('+Math.round(255*this.r)+','+Math.round(255*this.g)+','+Math.round(255*this.b)+')';
+		const r = Math.round(255*this.r),
+			g = Math.round(255*this.g),
+			b = Math.round(255*this.b);
+		
+		return `rgb(${r},${g},${b})`;
 	}
 
 	fromHSL(hue, saturation, lightness, alpha = 1) {

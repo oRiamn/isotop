@@ -10,6 +10,7 @@ import { Circle } from '@lib/figure/Circle';
 import { Color } from '@lib/Color';
 
 export default class ColorPicker extends HTMLElement {
+
 	constructor() {
 		super();
 		this.innerHTML = html;
@@ -23,7 +24,6 @@ export default class ColorPicker extends HTMLElement {
 		this.center = new Point(this.width / 2,this.height / 2);
 		this.ring = new Ring(this.center,(size / 2) - 5, 20);
 		this.triangle = new EquilateralTriangle(this.center,this.ring.radSmall-10, 0);
-
 		
 		// event variables
 		this.active = false;
@@ -38,24 +38,22 @@ export default class ColorPicker extends HTMLElement {
 			arc: Math.PI * 2 / segmentPoints
 		};
 
-		// outer canvas
+		// canvas
 		this.canvasRing = new Canvas2d(
-			this.querySelector('.outer'), {
+			this.querySelector('.ring'), {
 				width: this.width, 
 				height: this.height
 			}
 		);
 
-		// inner canvas
 		this.canvasTriangle = new Canvas2d(
-			this.querySelector('.inner'), {
+			this.querySelector('.triangle'), {
 				width: this.width, 
 				height: this.height
 			}
 		);
 		this.canvasTriangle.ctx.globalCompositeOperation = 'hard-light';
 
-		// dot canvas
 		this.canvasDot = new Canvas2d(
 			this.querySelector('.dot'), {
 				width: this.width, 
@@ -68,6 +66,16 @@ export default class ColorPicker extends HTMLElement {
 
 		// add events
 		this.setEvents();
+	}
+
+	setActive(active){
+		if(active){
+			this.active=true;
+			this.style.cursor = 'none';
+		} else {
+			this.active=false;
+			this.style.cursor = 'auto';
+		}
 	}
 
 	drawRing() {
@@ -129,7 +137,6 @@ export default class ColorPicker extends HTMLElement {
 	}
 
 	drawTriangle() {
-
 		const imgData = this.canvasRing.getImageData(this.cursor.center, 1, 1).data;
 		this.color.fromRGBA(imgData[0],imgData[1],imgData[2],imgData[3]);
 
@@ -143,7 +150,6 @@ export default class ColorPicker extends HTMLElement {
 			x: Math.cos(toRadians(this.ang + ang)) * this.triangle.radius + this.triangle.center.x,
 			y: Math.sin(toRadians(this.ang + ang)) * this.triangle.radius + this.triangle.center.y
 		};
-
 		
 		const pts = [...this.triangle.points,coor];
 
@@ -163,28 +169,24 @@ export default class ColorPicker extends HTMLElement {
 
 	drawCursor() {
 		// clear dot canvas
-		this.canvasDot.clearAll();
-		this.dotCol = this.color.cssRGBA();
-		
+		this.canvasDot.clearAll();		
 		this.cursor.moveTo(this.cursor.center);
 		this.cursor.draw(this.canvasDot.ctx,{
 			stroke: '#fff',
 			lineWidth: 2,
-			fill: this.dotCol
+			fill: this.color.cssRGBA()
 		});
-		// TESTING - update view background
-		this.style.background = this.dotCol;
 	}
 
 	setEvents() {
 		let self = this;
 		this.canvasDot.canvas.addEventListener('mousedown', e => {
-			self.active = true;
+			self.setActive(true);
 			if (self.active)
 				self.update(e);
 		}, false);
 		this.canvasDot.canvas.addEventListener('mouseup', () => {
-			self.active = false;
+			self.setActive(false);
 		}, false);
 		this.canvasDot.canvas.addEventListener('mousemove', e => {
 			if (self.active)
