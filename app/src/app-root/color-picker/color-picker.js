@@ -1,14 +1,13 @@
 import css from './color-picker.scss';
 import html from './color-picker.pug';
 
-import { rgbToHsl } from '@lib/color-picker';
 import { toRadians } from '@lib/collision.js';
 import { Point } from '@lib/figure/Point';
 import { Ring } from '@lib/figure/Circle';
 import { EquilateralTriangle } from '@lib/figure/Triangle';
-import { Canvas2d } from '../../library/Canvas';
-import { Circle } from '../../library/figure/Circle';
-import { Color } from '../../library/Color';
+import { Canvas2d } from '@lib/Canvas';
+import { Circle } from '@lib/figure/Circle';
+import { Color } from '@lib/Color';
 
 export default class ColorPicker extends HTMLElement {
 	constructor() {
@@ -64,13 +63,14 @@ export default class ColorPicker extends HTMLElement {
 			}
 		);
 
-		// add spectrum
-		this.spectrum();
+		this.drawRing();
+		this.drawTriangle();
+
 		// add events
 		this.setEvents();
 	}
 
-	spectrum() {
+	drawRing() {
 		const innerBoundary = new Circle(this.ring.center, this.ring.radSmall),
 			outerBoundary = new Circle(this.ring.center, this.ring.radLarge),
 			radius = this.ring.radSmall + (this.ring.radLarge - this.ring.radSmall) / 2,
@@ -110,22 +110,29 @@ export default class ColorPicker extends HTMLElement {
 	}
 
 	update(e) {
-		// get mouse pos
-		const x = e.clientX - this.offsetLeft,
-			y = e.clientY - this.offsetTop;
+		if(this.active){
+			// get mouse pos
+			const x = e.clientX - this.offsetLeft,
+				y = e.clientY - this.offsetTop;
 
-		this.cursor.center.moveTo(x,y);
-		
-		// draw
-		if (this.ring.collision(this.cursor.center)) {
-			this.draw(false);
-		}
-		else if (this.triangle.collision(this.cursor.center)) {
-			this.draw(true);
+			this.cursor.center.moveTo(x,y);
+	
+			// draw
+			if (this.ring.collision(this.cursor.center)) {
+				this.drawTriangle();
+				this.drawCursor();
+			}
+			else if (this.triangle.collision(this.cursor.center)) {
+				this.drawCursor(true);
+			}
 		}
 	}
 
 	drawTriangle() {
+
+		const imgData = this.canvasRing.getImageData(this.cursor.center, 1, 1).data;
+		this.color.fromRGBA(imgData[0],imgData[1],imgData[2],imgData[3]);
+
 		// clear triangle canvas
 		this.canvasTriangle.clearAll();
 		this.ang = Math.atan2(this.cursor.center.y - this.center.y, this.cursor.center.x - this.center.x) * (180 / Math.PI);
@@ -154,19 +161,7 @@ export default class ColorPicker extends HTMLElement {
 		this.triangle.draw(this.canvasTriangle.ctx, g1);
 	}
 
-	draw(tri) {
-
-		// draw equilateral triangle
-		if (!tri) {
-			const imgData = this.canvasRing.getImageData(this.cursor.center, 1, 1).data;
-			this.color.fromRGBA(imgData[0],imgData[1],imgData[2],imgData[3]);
-
-			this.drawTriangle();
-		} else {
-			const imgData = this.canvasTriangle.getImageData(this.cursor.center, 1, 1).data;
-			this.color.fromRGBA(imgData[0],imgData[1],imgData[2],imgData[3]);
-		}
-
+	drawCursor() {
 		// clear dot canvas
 		this.canvasDot.clearAll();
 		this.dotCol = this.color.cssRGBA();
@@ -195,7 +190,7 @@ export default class ColorPicker extends HTMLElement {
 			if (self.active)
 				self.update(e);
 		}, false);
-		this.draw(0, 0, false);
+		this.drawCursor(0, 0, false);
 	}
 }
 
