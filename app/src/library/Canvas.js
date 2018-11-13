@@ -1,10 +1,16 @@
 export const Canvas2d = class {
     
-	constructor(canvasElement,width, height ) {
+	constructor(canvasElement, options = {}) {
 		this.canvas = canvasElement;
-		canvasElement.width= width;
-		canvasElement.height = height;
 		this.ctx= canvasElement.getContext('2d');
+
+		for (let key in options) {
+			canvasElement[key] = options[key];
+		}
+	}
+
+	clearAll(){
+		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 	}
 
 	createLinearGradient(startPoint, endPoint){
@@ -16,15 +22,19 @@ export const Canvas2d = class {
 	}
 
 	arc(circle, startAngle, endAngle, anticlockwise){
-		this.ctx.arc(circle.center.x, circle.center.y, circle.radius, startAngle, endAngle, anticlockwise);
+		return this.ctx.arc(circle.center.x, circle.center.y, circle.radius, startAngle, endAngle, anticlockwise);
 	}
 
 	setFillStyle(fillStyle){
-		this.ctx.fillStyle = fillStyle;
+		return this.ctx.fillStyle = fillStyle;
+	}
+
+	getImageData(topLeftCornerPoint, width, height ){
+		return this.ctx.getImageData(topLeftCornerPoint.x, topLeftCornerPoint.y, width, height);
 	}
 
 	fill(){
-		this.ctx.fill();
+		return this.ctx.fill();
 	}
 	
 };

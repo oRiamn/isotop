@@ -8,7 +8,7 @@ import { Ring } from '@lib/figure/Circle';
 import { EquilateralTriangle } from '@lib/figure/Triangle';
 import { Canvas2d } from '../../library/Canvas';
 import { Circle } from '../../library/figure/Circle';
-import { Vector } from '../../library/figure/Vector';
+import { Square } from '../../library/figure/Square';
 
 export default class ColorPicker extends HTMLElement {
 	constructor() {
@@ -45,24 +45,34 @@ export default class ColorPicker extends HTMLElement {
 
 	init() {
 		// outer canvas
-		this.outer = this.querySelector('.outer');
-		this.outer.width=this.width;
-		this.outer.height=this.height;
-		this.ctxA = this.outer.getContext('2d');
-
-		this.canvasRing = new Canvas2d(this.outer, this.width, this.height);
+		this.canvasRing = new Canvas2d(
+			this.querySelector('.outer'), {
+				width: this.width, 
+				height: this.height
+			}
+		);
 
 		// inner canvas
-		this.inner = this.querySelector('.inner');
-		this.inner.width=this.width;
-		this.inner.height=this.height;
-		this.ctxB = this.inner.getContext('2d');
-		this.ctxB.globalCompositeOperation = 'hard-light';
+		this.canvasTriangle = new Canvas2d(
+			this.querySelector('.inner'), {
+				width: this.width, 
+				height: this.height
+			}
+		);
+		this.canvasTriangle.ctx.globalCompositeOperation = 'hard-light';
+
 		// dot canvas
 		this.dot = this.querySelector('.dot');
 		this.dot.width=this.width;
 		this.dot.height=this.height;
 		this.ctxC = this.dot.getContext('2d');
+
+		this.canvasDot = new Canvas2d(
+			this.querySelector('.dot'), {
+				width: this.width, 
+				height: this.height
+			}
+		);
 
 		// add spectrum
 		this.spectrum();
@@ -71,7 +81,7 @@ export default class ColorPicker extends HTMLElement {
 	}
 
 	spectrum() {
-		
+
 		const innerBoundary = new Circle(this.ring.center, this.ring.radSmall),
 			outerBoundary = new Circle(this.ring.center, this.ring.radLarge),
 			radius = this.ring.radSmall + (this.ring.radLarge - this.ring.radSmall) / 2,
@@ -127,7 +137,7 @@ export default class ColorPicker extends HTMLElement {
 	}
 	drawTriangle(pixelData) {
 		// clear triangle canvas
-		this.ctxB.clearRect(0, 0, this.inner.width, this.inner.height);
+		this.canvasTriangle.clearAll();
 		this.ang = Math.atan2(this.pos.y - this.center.y, this.pos.x - this.center.x) * (180 / Math.PI);
 		this.triangle.rotateTo(this.ang);
 
@@ -142,22 +152,22 @@ export default class ColorPicker extends HTMLElement {
 		const pts = [...this.triangle.points,coor];
 
 		// gradient 1 = black => white
-		let g1 = this.ctxB.createLinearGradient(pts[1].x, pts[1].y, pts[2].x, pts[2].y);
+		const g1 = this.canvasTriangle.createLinearGradient(pts[1], pts[2]);
 		let hsl = rgbToHsl(pixelData[0], pixelData[1], pixelData[2]);
 		g1.addColorStop(0, 'hsl(' + hsl[0] * 360 + ',0%,100%)');
 		g1.addColorStop(1, 'hsl(' + hsl[0] * 360 + ',0%,0%)');
 		// gradient 2 = hue => transparent
-		let g2 = this.ctxB.createLinearGradient(pts[0].x, pts[0].y, pts[3].x, pts[3].y);
+		const g2 = this.canvasTriangle.createLinearGradient(pts[0], pts[3]);
 		g2.addColorStop(0, this.color);
 		g2.addColorStop(1, 'rgba(' + pixelData[0] + ',' + pixelData[1] + ',' + pixelData[2] + ', 0)');
 		// draw
-		this.triangle.draw(this.ctxB, g2);
-		this.triangle.draw(this.ctxB, g1);
+		this.triangle.draw(this.canvasTriangle.ctx, g2);
+		this.triangle.draw(this.canvasTriangle.ctx, g1);
 	}
 	draw(tri) {
 		// get pixel data
-		let da = this.ctxA.getImageData(this.pos.x, this.pos.y, 1, 1).data;
-		let db = this.ctxB.getImageData(this.pos.x, this.pos.y, 1, 1).data;
+		let da = this.canvasRing.getImageData(this.pos, 1, 1).data;
+		let db = this.canvasTriangle.getImageData(this.pos, 1, 1).data;
 		
 		// draw equilateral triangle
 		if (!tri) {
@@ -165,7 +175,7 @@ export default class ColorPicker extends HTMLElement {
 		}
 
 		// clear dot canvas
-		this.ctxC.clearRect(0, 0, this.dot.width, this.dot.height);
+		this.canvasDot.clearAll();
 		let choice = tri ? db : da;
 		this.dotCol = 'rgba(' + choice[0] + ',' + choice[1] + ',' + choice[2] + ',' + choice[3] + ')';
 		let s = {
@@ -175,7 +185,7 @@ export default class ColorPicker extends HTMLElement {
 		};
 
 		this.cursorDot.moveTo(this.pos);
-		this.cursorDot.draw(this.ctxC, s);
+		this.cursorDot.draw(this.canvasDot.ctx, s);
 		// TESTING - update view background
 		this.style.background = this.dotCol;
 	}
