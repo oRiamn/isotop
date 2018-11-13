@@ -8,7 +8,7 @@ import { Ring } from '@lib/figure/Circle';
 import { EquilateralTriangle } from '@lib/figure/Triangle';
 import { Canvas2d } from '../../library/Canvas';
 import { Circle } from '../../library/figure/Circle';
-import { Square } from '../../library/figure/Square';
+import { Color } from '../../library/Color';
 
 export default class ColorPicker extends HTMLElement {
 	constructor() {
@@ -30,6 +30,8 @@ export default class ColorPicker extends HTMLElement {
 		this.active = false;
 		this.color = null;
 		this.pos = new Point(-20000,-20000);
+
+		this.choiceColor = new Color();
 
 		// segment construction
 		let segmentPoints=200;
@@ -62,11 +64,6 @@ export default class ColorPicker extends HTMLElement {
 		this.canvasTriangle.ctx.globalCompositeOperation = 'hard-light';
 
 		// dot canvas
-		this.dot = this.querySelector('.dot');
-		this.dot.width=this.width;
-		this.dot.height=this.height;
-		this.ctxC = this.dot.getContext('2d');
-
 		this.canvasDot = new Canvas2d(
 			this.querySelector('.dot'), {
 				width: this.width, 
@@ -166,40 +163,43 @@ export default class ColorPicker extends HTMLElement {
 	}
 	draw(tri) {
 		// get pixel data
-		let da = this.canvasRing.getImageData(this.pos, 1, 1).data;
-		let db = this.canvasTriangle.getImageData(this.pos, 1, 1).data;
+		let choice;
 		
 		// draw equilateral triangle
 		if (!tri) {
-			this.drawTriangle(da);
+			choice = this.canvasRing.getImageData(this.pos, 1, 1).data;
+			this.drawTriangle(choice);
+		} else {
+			choice = this.canvasTriangle.getImageData(this.pos, 1, 1).data;
 		}
 
 		// clear dot canvas
 		this.canvasDot.clearAll();
-		let choice = tri ? db : da;
-		this.dotCol = 'rgba(' + choice[0] + ',' + choice[1] + ',' + choice[2] + ',' + choice[3] + ')';
-		let s = {
+		this.choiceColor.fromRGBA(choice[0],choice[1],choice[2],choice[3]);
+		
+		this.dotCol = this.choiceColor.cssRGBA();
+		
+		this.cursorDot.moveTo(this.pos);
+		this.cursorDot.draw(this.canvasDot.ctx,{
 			stroke: '#fff',
 			lineWidth: 2,
 			fill: this.dotCol
-		};
-
-		this.cursorDot.moveTo(this.pos);
-		this.cursorDot.draw(this.canvasDot.ctx, s);
+		});
 		// TESTING - update view background
 		this.style.background = this.dotCol;
+		console.log(this.dotCol);
 	}
 	setEvents() {
 		let self = this;
-		this.dot.addEventListener('mousedown', e => {
+		this.canvasDot.canvas.addEventListener('mousedown', e => {
 			self.active = true;
 			if (self.active)
 				self.update(e);
 		}, false);
-		this.dot.addEventListener('mouseup', () => {
+		this.canvasDot.canvas.addEventListener('mouseup', () => {
 			self.active = false;
 		}, false);
-		this.dot.addEventListener('mousemove', e => {
+		this.canvasDot.canvas.addEventListener('mousemove', e => {
 			if (self.active)
 				self.update(e);
 		}, false);
