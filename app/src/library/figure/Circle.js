@@ -2,7 +2,7 @@ import { Point } from './Point';
 
 export const Circle = class {
     
-	constructor(center, radius, weight) {
+	constructor(center, radius) {
 		this.center = center;
 		this.radius = radius;
 	}

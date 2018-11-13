@@ -6,6 +6,9 @@ import { toRadians } from '@lib/collision.js';
 import { Point } from '@lib/figure/Point';
 import { Ring } from '@lib/figure/Circle';
 import { EquilateralTriangle } from '@lib/figure/Triangle';
+import { Canvas2d } from '../../library/Canvas';
+import { Circle } from '../../library/figure/Circle';
+import { Vector } from '../../library/figure/Vector';
 
 export default class ColorPicker extends HTMLElement {
 	constructor() {
@@ -18,7 +21,7 @@ export default class ColorPicker extends HTMLElement {
 		this.height = size;
 
 		this.center = new Point(this.width / 2,this.height / 2);
-		this.ring = new Ring(this.center,(size / 2), 20);
+		this.ring = new Ring(this.center,(size / 2) - 5, 20);
 		this.triangle = new EquilateralTriangle(this.center,this.ring.radSmall-10, 0);
 		this.cursorDot = new Ring(new Point(0,0),3, 2);
 
@@ -35,8 +38,7 @@ export default class ColorPicker extends HTMLElement {
 			angle: 360 / segmentPoints,
 			arc: Math.PI * 2 / segmentPoints
 		};
-				
-		this.tri=[];
+
 		// create
 		this.init();
 	}
@@ -47,6 +49,9 @@ export default class ColorPicker extends HTMLElement {
 		this.outer.width=this.width;
 		this.outer.height=this.height;
 		this.ctxA = this.outer.getContext('2d');
+
+		this.canvasRing = new Canvas2d(this.outer, this.width, this.height);
+
 		// inner canvas
 		this.inner = this.querySelector('.inner');
 		this.inner.width=this.width;
@@ -66,38 +71,49 @@ export default class ColorPicker extends HTMLElement {
 	}
 
 	spectrum() {
+		
+		const innerBoundary = new Circle(this.ring.center, this.ring.radSmall),
+			outerBoundary = new Circle(this.ring.center, this.ring.radLarge),
+			radius = this.ring.radSmall + (this.ring.radLarge - this.ring.radSmall) / 2,
+			arcStep = 0.001;
+
 		for (let i = 1; i <= this.segment.points; i++) {
 			
 			// arc points
-			let a = i * this.segment.angle;
-			let b = (i - 1) * this.segment.angle;
+			const a = i * this.segment.angle,
+				b = (i - 1) * this.segment.angle;
 			
+			const aRad = toRadians(a),
+				bRad = toRadians(b);
+			
+
 			// gradient vector
-			let radius = this.ring.radSmall + (this.ring.radLarge - this.ring.radSmall) / 2;
-			let x1 = Math.cos(toRadians(a)) * radius + this.ring.center.x;
-			let y1 = Math.sin(toRadians(a)) * radius + this.ring.center.y;
-			let x2 = Math.cos(toRadians(b)) * radius + this.ring.center.x;
-			let y2 = Math.sin(toRadians(b)) * radius + this.ring.center.y;
+			const startPoint = new Point(
+				Math.cos(aRad) * radius + this.ring.center.x,
+				Math.sin(aRad) * radius + this.ring.center.y
+			);
+			const endPoint = new Point(
+				Math.cos(bRad) * radius + this.ring.center.x,
+				Math.sin(bRad) * radius + this.ring.center.y
+			);
 			
 			// gradient
-			let g = this.ctxA.createLinearGradient(x1, y1, x2, y2);
-			g.addColorStop(0, 'hsl( ' + a + ', 100%, 50%)');
-			g.addColorStop(1, 'hsl( ' + b + ', 100%, 50%)');
+			const g = this.canvasRing.createLinearGradient(startPoint,endPoint);
+			g.addColorStop(0, `hsl( ${a}, 100%, 50%)`);
+			g.addColorStop(1, `hsl( ${b}, 100%, 50%)`);
 			
-			// draw arc
-			let o = 0.001;
-			this.ctxA.beginPath();
-			this.ctxA.arc(this.ring.center.x, this.ring.center.y, this.ring.radLarge, toRadians(b) - o, toRadians(a) + o, false);
-			this.ctxA.arc(this.ring.center.x, this.ring.center.y, this.ring.radSmall, toRadians(a) + o, toRadians(b) - o, true);
-			this.ctxA.fillStyle = g;
-			this.ctxA.fill();
+			this.canvasRing.beginPath();
+			this.canvasRing.arc(innerBoundary, bRad - arcStep, aRad + arcStep, false);
+			this.canvasRing.arc(outerBoundary,  aRad + arcStep, bRad - arcStep, true);
+			this.canvasRing.setFillStyle(g);
+			this.canvasRing.fill();
 		}
 	}
 
 	update(e) {
 		// get mouse pos
-		let x = e.clientX - this.inner.offsetLeft;
-		let y = e.clientY - this.inner.offsetTop;
+		const x = e.clientX - this.offsetLeft,
+			y = e.clientY - this.offsetTop;
 
 		this.pos.moveTo(x,y);
 		
@@ -105,7 +121,7 @@ export default class ColorPicker extends HTMLElement {
 		if (this.ring.collision(this.pos)) {
 			this.draw(false);
 		}
-		else if (this.tri && this.triangle.collision(this.pos)) {
+		else if (this.triangle.collision(this.pos)) {
 			this.draw(true);
 		}
 	}
@@ -123,7 +139,7 @@ export default class ColorPicker extends HTMLElement {
 		};
 
 		
-		let pts = this.tri = [...this.triangle.points,coor];
+		const pts = [...this.triangle.points,coor];
 
 		// gradient 1 = black => white
 		let g1 = this.ctxB.createLinearGradient(pts[1].x, pts[1].y, pts[2].x, pts[2].y);
