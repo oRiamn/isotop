@@ -8,7 +8,7 @@ const src = './app/src';
 const dist = './app/dist';
 
 module.exports = {
-	entry: [`${src}/app-root/app-root.js`],
+	entry: [`${src}/components/app-root/app-root.js`],
 	mode: 'production',
 	output: {
 		path: resolve(`${dist}`),
@@ -18,11 +18,8 @@ module.exports = {
 	resolve: {
 		alias: {
 			'@src': path.resolve(__dirname, `${src}`),
-			'@html': path.resolve(__dirname, `${src}/html`),
-			'@lib': path.resolve(__dirname, `${src}/library`),
-			'@img': path.resolve(__dirname, `${src}/img`),
-			'@icons': path.resolve(__dirname, `${src}/img/icons`),
-			'@sass': path.resolve(__dirname, `${src}/sass`)
+			'@components': path.resolve(__dirname, `${src}/components`),
+			'@lib': path.resolve(__dirname, `${src}/library`)
 		}
 	},
 	module: {
