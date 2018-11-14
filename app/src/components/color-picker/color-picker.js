@@ -20,10 +20,6 @@ export default class ColorPicker extends HTMLElement {
 		// canvas setup
 		this.width = size;
 		this.height = size;
-
-		this.center = new Point(this.width / 2,this.height / 2);
-		this.ring = new Ring(this.center,(size / 2) - 5, 20);
-		this.triangle = new EquilateralTriangle(this.center,this.ring.radSmall-10, 0);
 		
 		// event variables
 		this.active = false;
@@ -37,6 +33,13 @@ export default class ColorPicker extends HTMLElement {
 			angle: 360 / segmentPoints,
 			arc: Math.PI * 2 / segmentPoints
 		};
+
+		this.style.width = `${this.width}px`;
+		this.style.height = `${this.width}px`;
+
+		this.center = new Point(this.width / 2,this.height / 2);
+		this.ring = new Ring(this.center,(this.width / 2) - 5, 20);
+		this.triangle = new EquilateralTriangle(this.center,this.ring.radSmall-10, 0);
 
 		// canvas
 		this.canvasRing = new Canvas2d(
@@ -66,6 +69,42 @@ export default class ColorPicker extends HTMLElement {
 
 		// add events
 		this.setEvents();
+	}
+
+	build(){
+		this.style.width = `${this.width}px`;
+		this.style.height = `${this.width}px`;
+
+		this.center.moveTo(this.width / 2,this.height / 2);
+		this.ring.radius = (this.width / 2) - 5;
+
+		this.triangle = new EquilateralTriangle(this.center,this.ring.radSmall-10, 0);
+
+		// canvas
+		this.canvasRing = new Canvas2d(
+			this.querySelector('.ring'), {
+				width: this.width, 
+				height: this.height
+			}
+		);
+
+		this.canvasTriangle = new Canvas2d(
+			this.querySelector('.triangle'), {
+				width: this.width, 
+				height: this.height
+			}
+		);
+		this.canvasTriangle.ctx.globalCompositeOperation = 'hard-light';
+
+		this.canvasDot = new Canvas2d(
+			this.querySelector('.dot'), {
+				width: this.width, 
+				height: this.height
+			}
+		);
+
+		this.drawRing();
+		this.drawTriangle();
 	}
 
 	setActive(active){
@@ -192,7 +231,6 @@ export default class ColorPicker extends HTMLElement {
 			if (self.active)
 				self.update(e);
 		}, false);
-		this.drawCursor(0, 0, false);
 	}
 }
 
