@@ -1,12 +1,12 @@
-import css from './canvas-manager.scss';
-import html from './canvas-manager.pug';
+import css from './draw-zone.scss';
+import html from './draw-zone.pug';
 
 import { Point } from '@lib/figure/Point';
 import { Ring } from '@lib/figure/Circle';
 import { Canvas2d } from '@lib/Canvas';
 import { Color } from '@lib/Color';
 
-export default class CanvasManager extends HTMLElement {
+export default class DrawZone extends HTMLElement {
 	constructor() {
 		super();
 		this.innerHTML = html;
@@ -22,4 +22,4 @@ export default class CanvasManager extends HTMLElement {
 	}
 }
 
-window.customElements.define('canvas-manager', CanvasManager);
+window.customElements.define('draw-zone', DrawZone);
