@@ -166,25 +166,34 @@ export default class ColorPicker extends HTMLElement {
 	
 			// draw
 			if (this.ring.collision(this.cursor.center)) {
-				this.drawTriangle();
+
+				const imgData = this.canvasRing.getImageData(this.cursor.center, 1, 1).data;
+				this.color.fromRGBA(imgData[0],imgData[1],imgData[2],imgData[3]);
+
 				this.drawCursor();
+				this.drawTriangle();
 			}
 			else if (this.triangle.collision(this.cursor.center)) {
-				this.drawCursor(true);
+				const imgData = this.canvasTriangle.getImageData(this.cursor.center, 1, 1).data;
+				this.color.fromRGBA(imgData[0],imgData[1],imgData[2],imgData[3]);
+				
+				this.drawCursor();
 			}
 		}
 	}
 
-	drawTriangle() {
+	updateColor(){
 		const imgData = this.canvasRing.getImageData(this.cursor.center, 1, 1).data;
 		this.color.fromRGBA(imgData[0],imgData[1],imgData[2],imgData[3]);
+	}
 
+	drawTriangle() {
 		// clear triangle canvas
 		this.canvasTriangle.clearAll();
 		this.ang = Math.atan2(this.cursor.center.y - this.center.y, this.cursor.center.x - this.center.x) * (180 / Math.PI);
 		this.triangle.rotateTo(this.ang);
 
-		let ang = 180;
+		const ang = 180;
 		const coor = {
 			x: Math.cos(toRadians(this.ang + ang)) * this.triangle.radius + this.triangle.center.x,
 			y: Math.sin(toRadians(this.ang + ang)) * this.triangle.radius + this.triangle.center.y
@@ -201,6 +210,7 @@ export default class ColorPicker extends HTMLElement {
 		const g2 = this.canvasTriangle.createLinearGradient(pts[0], pts[3]);
 		g2.addColorStop(0, this.color.cssRGB());
 		g2.addColorStop(1, this.color.cssRGBA() );
+		
 		// draw
 		this.triangle.draw(this.canvasTriangle.ctx, g2);
 		this.triangle.draw(this.canvasTriangle.ctx, g1);
