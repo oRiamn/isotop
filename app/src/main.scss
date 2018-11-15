@@ -1,6 +1,11 @@
+
+@import '@src/colors.scss';
+
 *,*:before,*:after {
 box-sizing: border-box;
 }
+
+@import '@src/scrollbar.scss';
 
 html,body {
     position: fixed;

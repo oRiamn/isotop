@@ -1,0 +1,21 @@
+@import '@src/colors.scss';
+
+::-webkit-scrollbar-corner,
+::-webkit-scrollbar,
+::-webkit-scrollbar-track {
+	background: $greylight;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: $grey;
+	border-radius:10px;
+	
+	&:hover {
+		background: $darklight;
+	}
+}
