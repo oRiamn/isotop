@@ -1,5 +1,7 @@
 @import '@src/colors.scss';
 
+$scrollbarsize: .8em;
+
 ::-webkit-scrollbar-corner,
 ::-webkit-scrollbar,
 ::-webkit-scrollbar-track {
@@ -7,13 +9,13 @@
 }
 
 ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: $scrollbarsize;
+    height: $scrollbarsize;
 }
 
 ::-webkit-scrollbar-thumb {
 	background: $grey;
-	border-radius:10px;
+	border-radius: $scrollbarsize;
 	
 	&:hover {
 		background: $darklight;

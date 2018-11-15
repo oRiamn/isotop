@@ -5,6 +5,7 @@ import html from './app-root.pug';
 
 import ColorPicker from '@components/color-picker/color-picker';
 import ToolBar from '@components/tool-bar/tool-bar';
+import CanvasManager from '@components/canvas-manager/canvas-manager';
 
 export default class AppRoot extends HTMLElement {
 	constructor() {
