@@ -181,12 +181,7 @@ export default class ColorPicker extends HTMLElement {
 			}
 		}
 	}
-
-	updateColor(){
-		const imgData = this.canvasRing.getImageData(this.cursor.center, 1, 1).data;
-		this.color.fromRGBA(imgData[0],imgData[1],imgData[2],imgData[3]);
-	}
-
+	
 	drawTriangle() {
 		// clear triangle canvas
 		this.canvasTriangle.clearAll();

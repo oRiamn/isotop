@@ -8,6 +8,10 @@ color-picker {
     align-items: center;
     user-select: none;
 
+    * {
+        user-select: none;
+    }
+
     .container {
         user-select: none;
         width: 100%;
