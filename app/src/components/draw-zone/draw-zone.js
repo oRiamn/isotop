@@ -11,14 +11,24 @@ export default class DrawZone extends HTMLElement {
 		super();
 		this.innerHTML = html;
 
-		const size=200;
+		const size=4000;
 
 		this.color = new Color();
 		this.cursor = new Ring(new Point(-20000,-20000),3, 2);
 
-		this.canvas = this.querySelector('.canvas');
-		this.canvas.style.width = `${size}px`;
-		this.canvas.style.height = `${size}px`;
+		const c = this.querySelector('.canvas');
+		c.style.width=`${size}px`;
+		c.style.height=`${size}px`;
+
+		this.canvas = [];
+		this.querySelectorAll('canvas').forEach((element) => {
+			this.canvas.push(new Canvas2d(
+				element, {
+					width: size, 
+					height: size
+				}
+			));
+		});		
 	}
 }
 

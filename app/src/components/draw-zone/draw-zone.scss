@@ -2,15 +2,12 @@
 
 draw-zone {
     display: flex;
-    background: $greylight;
-    user-select: none;
-    overflow: hidden;
-
-    justify-content: center;
-    align-items: center;
-
     width: 100%;
     height: 100%;
+    background: $greylight;
+    user-select: none;
+   
+    overflow: hidden;
 
     * {
         user-select: none;
@@ -21,12 +18,17 @@ draw-zone {
         height: 100%;
         overflow: auto;
         position: relative;
+
         .canvas {
+            background: url(img/transparent.png) 50%;
+            background-size: 15px;
+            border: 1px solid $dark;
             position: absolute;
-            border: solid 1px $darklight;
-            background: linear-gradient(217deg, rgba(255,0,0,.8), rgba(255,0,0,0) 70.71%),
-                        linear-gradient(127deg, rgba(0,255,0,.8), rgba(0,255,0,0) 70.71%),
-                        linear-gradient(336deg, rgba(0,0,255,.8), rgba(0,0,255,0) 70.71%);
-        }
+
+            canvas {
+                position: absolute;
+                border: 1px solid red;
+            }
+        }              
     }
 }
