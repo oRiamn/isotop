@@ -24,10 +24,16 @@ draw-zone {
             background-size: 15px;
             border: 1px solid $dark;
             position: absolute;
+            box-sizing: content-box;
 
             canvas {
                 position: absolute;
                 border: 1px solid red;
+                box-sizing: content-box;
+                
+                &.dot{
+                    cursor: none;
+                }
             }
         }              
     }
