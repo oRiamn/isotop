@@ -6,22 +6,25 @@ import { Ring } from '@lib/figure/Circle';
 import { Canvas2d } from '@lib/Canvas';
 import { Color } from '@lib/Color';
 import { Circle } from '../../library/figure/Circle';
+import { Brush } from '@lib/brushs';
 
 export default class DrawZone extends HTMLElement {
 	constructor() {
 		super();
 		this.innerHTML = html;
 
-		const size=400;
+		const size=1200;
 
 		this.color = new Color();
 		this.cursor = new Ring(new Point(-20000,-20000),10, 1);
-		this.brush = new Ring(this.cursor.center, 10, 2);
+		this.brush = new Brush(new Point(-20000,-20000));
 		this.active = false;
 
 		this.canvasContainer = this.querySelector('.canvas');
 		this.canvasContainer.style.width=`${size}px`;
 		this.canvasContainer.style.height=`${size}px`;
+
+		this.container = this.querySelector('.container');
 
 		this.canvasDot = new Canvas2d(
 			this.querySelector('.dot'), {
@@ -64,15 +67,15 @@ export default class DrawZone extends HTMLElement {
 
 	update(e) {
 		// get mouse pos
-		const x = e.clientX - this.offsetLeft,
-			y = e.clientY - this.offsetTop;
+		const x = e.clientX - this.offsetLeft + this.container.scrollLeft,
+			y = e.clientY - this.offsetTop + this.container.scrollTop;
+
 		this.cursor.center.moveTo(x,y);
+		this.brush.moveTo(x,y);
 		this.drawCursor();
 
 		if(this.active){
-			this.brush.draw(this.selectedLayer.ctx,{
-				stroke: '#000'
-			});
+			this.brush.draw(this.selectedLayer.ctx);
 		}
 	}
 
