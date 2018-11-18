@@ -5,6 +5,7 @@ import { Point } from '@lib/figure/Point';
 import { Ring } from '@lib/figure/Circle';
 import { Canvas2d } from '@lib/Canvas';
 import { Color } from '@lib/Color';
+import { Circle } from '../../library/figure/Circle';
 
 export default class DrawZone extends HTMLElement {
 	constructor() {
@@ -15,6 +16,8 @@ export default class DrawZone extends HTMLElement {
 
 		this.color = new Color();
 		this.cursor = new Ring(new Point(-20000,-20000),10, 1);
+		this.brush = new Ring(this.cursor.center, 10, 2);
+		this.active = false;
 
 		this.canvasContainer = this.querySelector('.canvas');
 		this.canvasContainer.style.width=`${size}px`;
@@ -42,6 +45,15 @@ export default class DrawZone extends HTMLElement {
 		this.setEvents();
 	}
 
+
+	setActive(active){
+		if(active){
+			this.active=true;
+		} else {
+			this.active=false;
+		}
+	}
+
 	drawCursor() {
 		// clear dot canvas
 		this.canvasDot.clearAll();
@@ -56,6 +68,12 @@ export default class DrawZone extends HTMLElement {
 			y = e.clientY - this.offsetTop;
 		this.cursor.center.moveTo(x,y);
 		this.drawCursor();
+
+		if(this.active){
+			this.brush.draw(this.selectedLayer.ctx,{
+				stroke: '#000'
+			});
+		}
 	}
 
 	setEvents() {
@@ -63,8 +81,15 @@ export default class DrawZone extends HTMLElement {
 		this.canvasDot.canvas.addEventListener('mousemove', e => {
 			self.update(e);
 		}, false);
-	}
 
+		this.canvasDot.canvas.addEventListener('mousedown', e => {
+			this.setActive(true);
+		}, false);
+		
+		this.canvasDot.canvas.addEventListener('mouseup', () => {
+			this.setActive(false);
+		}, false);
+	}
 
 }
 
