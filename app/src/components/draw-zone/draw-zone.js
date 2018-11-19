@@ -16,8 +16,8 @@ export default class DrawZone extends HTMLElement {
 		const size=400;
 
 		this.color = new Color();
-		this.cursor = new Ring(new Point(-20000,-20000),10, 1);
-		this.brush = new Brush(new Point(-20000,-20000), this.color, this.cursor.radius);
+		this.brush = new Brush(new Point(-20000,-20000), this.color, 10);
+		this.cursor = new Ring(new Point(-20000,-20000),this.brush.width/2, 1);
 		this.active = false;
 
 		this.color.fromHEX('000');
