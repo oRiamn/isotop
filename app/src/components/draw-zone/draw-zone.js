@@ -17,8 +17,10 @@ export default class DrawZone extends HTMLElement {
 
 		this.color = new Color();
 		this.cursor = new Ring(new Point(-20000,-20000),10, 1);
-		this.brush = new Brush(new Point(-20000,-20000));
+		this.brush = new Brush(new Point(-20000,-20000), this.color, this.cursor.radius);
 		this.active = false;
+
+		this.color.fromHEX('000');
 
 		this.canvasContainer = this.querySelector('.canvas');
 		this.canvasContainer.style.width=`${size}px`;
