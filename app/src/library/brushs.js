@@ -13,10 +13,12 @@ export const Brush = class {
 	}
 
 	draw(ctx) {
-		
 		ctx.beginPath();
-		ctx.arc(this.center.x, this.center.y, 10, 0, 2 * Math.PI, true);
-		ctx.fill();
+		ctx.moveTo(this.prev.x, this.prev.y);
+		ctx.lineTo(this.center.x, this.center.y);
+		ctx.lineWidth = 20;
+		ctx.lineCap = 'round';
+		ctx.strokeStyle = '#000';
 		ctx.stroke();
 	}
 };

@@ -13,7 +13,7 @@ export default class DrawZone extends HTMLElement {
 		super();
 		this.innerHTML = html;
 
-		const size=1200;
+		const size=400;
 
 		this.color = new Color();
 		this.cursor = new Ring(new Point(-20000,-20000),10, 1);
