@@ -4,7 +4,7 @@
   "description": "",
   "main": "app/main.js",
   "scripts": {
-    "test": "mocha app/src/**/*.spec.js --compilers js:babel/register",
+    "test": "mocha app/src/**/*.spec.js --require babel/register",
     "start": "./node_modules/.bin/electron .",
     "watch": "./node_modules/.bin/webpack --watch"
   },
