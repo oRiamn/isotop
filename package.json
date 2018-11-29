@@ -4,7 +4,7 @@
   "description": "",
   "main": "app/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha app/src/**/*.spec.js --compilers js:babel/register",
     "start": "./node_modules/.bin/electron .",
     "watch": "./node_modules/.bin/webpack --watch"
   },
@@ -19,8 +19,14 @@
   },
   "homepage": "https://github.com/oRiamn/isotop#readme",
   "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
+    "apply-loader": "^2.0.0",
     "autoprefixer": "^9.3.1",
+    "babel": "^5.8.38",
+    "babel-core": "^6.26.3",
     "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.4",
     "css-loader": "^1.0.1",
     "electron-reload": "latest",
     "eslint": "^5.8.0",
@@ -29,6 +35,8 @@
     "file-loader": "^2.0.0",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
+    "mocha": "^5.2.0",
+    "mocha-loader": "^0.7.1",
     "node-sass": "^4.10.0",
     "postcss-loader": "^3.0.0",
     "pug": "^2.0.3",
@@ -37,9 +45,8 @@
     "sass-loader": "^7.1.0",
     "source-map": "^0.7.3",
     "style-loader": "^0.23.1",
-    "webpack": "^4.25.1",
-    "webpack-cli": "^3.1.2",
-    "apply-loader": "^2.0.0"
+    "webpack": "^4.26.1",
+    "webpack-cli": "^3.1.2"
   },
   "dependencies": {
     "electron": "1.8.8"
