@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
+const webPackConfig =  require('../webpack.config');
  
 require('electron-reload')(`${__dirname}/dist/`, {
 	electron: path.join(`${__dirname}/dist/`, '../node_modules', '.bin', 'electron')
@@ -11,7 +12,7 @@ let win;
 function createWindow () {
 	win = new BrowserWindow({ width: 800, height: 600 });
 
-	win.loadURL(`file://${__dirname}/dist/html/index.html`);
+	win.loadURL(`file://${webPackConfig.output.path}/html/index.html`);
   
 	win.webContents.openDevTools();
 	win.on('closed', () => {

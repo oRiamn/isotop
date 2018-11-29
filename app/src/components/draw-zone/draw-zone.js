@@ -4,7 +4,7 @@ import html from './draw-zone.pug';
 import { Point } from '@lib/figure/Point';
 import { Ring } from '@lib/figure/Circle';
 import { Canvas2d } from '@lib/Canvas';
-import { Color } from '@lib/Color';
+import { Color } from '@src/library/color/color';
 import { Circle } from '../../library/figure/Circle';
 import { Brush } from '@lib/brushs';
 

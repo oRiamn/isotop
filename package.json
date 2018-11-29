@@ -4,8 +4,8 @@
   "description": "",
   "main": "app/main.js",
   "scripts": {
-    "test": "mocha app/src/**/*.spec.js --require babel/register",
-    "start": "./node_modules/.bin/electron .",
+    "test": "mocha -w app/src/**/*.spec.js --require babel/register --reporter min",
+    "start": "./node_modules/.bin/webpack && ./node_modules/.bin/electron .",
     "watch": "./node_modules/.bin/webpack --watch"
   },
   "repository": {
@@ -49,6 +49,7 @@
     "webpack-cli": "^3.1.2"
   },
   "dependencies": {
+    "chai": "^4.2.0",
     "electron": "1.8.8"
   }
 }

@@ -127,6 +127,11 @@ export const Color = class {
 	}
 	
 	fromHEX(hexString) {
+
+		if(hexString.length !== 3 && hexString.length !== 6) {
+			throw new Error('Bad format');
+		}
+
 		if(hexString.length === 3) {
 			let color = '';
 			for (let i = 0; i < hexString.length; i++) {

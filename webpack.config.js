@@ -1,11 +1,10 @@
-/* eslint-disable no-undef */
 const path = require('path');
 const resolve = (...paths) => path.resolve(__dirname, ...paths);
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 
 const src = './app/src';
-const dist = './app/dist';
+const dist = '/tmp/isotop';
 
 module.exports = {
 	entry: [`${src}/components/app-root/app-root.js`],
@@ -17,9 +16,9 @@ module.exports = {
 	devtool: 'source-map',
 	resolve: {
 		alias: {
-			'@src': path.resolve(__dirname, `${src}`),
-			'@components': path.resolve(__dirname, `${src}/components`),
-			'@lib': path.resolve(__dirname, `${src}/library`)
+			'@src': resolve(`${src}`),
+			'@components': resolve(`${src}/components`),
+			'@lib': resolve(`${src}/library`)
 		}
 	},
 	module: {
@@ -29,15 +28,16 @@ module.exports = {
 				{
 					use: [
 						{ loader: 'css-loader', options: { sourceMap: true } },
-						{ loader: 'postcss-loader', 
-							options: { 
+						{
+							loader: 'postcss-loader',
+							options: {
 								sourceMap: true,
 								ident: 'postcss',
 								plugins: [
 									require('autoprefixer')({
 										browsers: ['last 1 Electron version']
 									})
-								] 
+								]
 							}
 						},
 						{ loader: 'sass-loader', options: { sourceMap: true } }

@@ -7,7 +7,7 @@ import { Ring } from '@lib/figure/Circle';
 import { EquilateralTriangle } from '@lib/figure/Triangle';
 import { Canvas2d } from '@lib/Canvas';
 import { Circle } from '@lib/figure/Circle';
-import { Color } from '@lib/Color';
+import { Color } from '@src/library/color/color';
 
 export default class ColorPicker extends HTMLElement {
 
