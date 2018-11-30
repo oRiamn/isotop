@@ -7,7 +7,7 @@ import ColorPicker from '@components/color-picker/color-picker';
 import ToolBar from '@components/tool-bar/tool-bar';
 import DrawZone from '@components/draw-zone/draw-zone';
 
-import { Color } from '@src/library/color/color';
+import { Color } from '@src/library/color/Color';
 
 export default class AppRoot extends HTMLElement {
 	constructor() {

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { Color } from './color';
+import { Color } from './Color';
 
 
 describe('Color', () => {

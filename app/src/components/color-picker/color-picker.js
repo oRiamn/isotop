@@ -3,11 +3,11 @@ import html from './color-picker.pug';
 
 import { toRadians } from '@lib/collision.js';
 import { Point } from '@lib/figure/Point';
-import { Ring } from '@lib/figure/Circle';
-import { EquilateralTriangle } from '@lib/figure/Triangle';
+import { Ring } from '@lib/figure/Ring';
+import { EquilateralTriangle } from '@lib/figure/EquilateralTriangle';
 import { Canvas2d } from '@lib/Canvas';
 import { Circle } from '@lib/figure/Circle';
-import { Color } from '@src/library/color/color';
+import { Color } from '@src/library/color/Color';
 
 export default class ColorPicker extends HTMLElement {
 

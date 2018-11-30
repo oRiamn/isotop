@@ -2,9 +2,9 @@ import css from './draw-zone.scss';
 import html from './draw-zone.pug';
 
 import { Point } from '@lib/figure/Point';
-import { Ring } from '@lib/figure/Circle';
+import { Ring } from '@lib/figure/Ring';
 import { Canvas2d } from '@lib/Canvas';
-import { Color } from '@src/library/color/color';
+import { Color } from '@src/library/color/Color';
 import { Circle } from '../../library/figure/Circle';
 import { Brush } from '@lib/brushs';
 
