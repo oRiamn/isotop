@@ -4,6 +4,6 @@ export const Discus = class extends Circle {
 		super(center, radius);
 	}
 	collisionPoint(point) {
-		return this.center.calculateDistance(point) < this.radius;
+		return this.center.calculateDistance(point) <= this.radius;
 	}
 };

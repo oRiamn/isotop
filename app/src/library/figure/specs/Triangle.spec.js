@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { print } from './mocks/print';
+import { printThroughCollision } from './mocks/print';
 
 import { Triangle } from '../Triangle';
 import { Point } from '../Point';
@@ -38,8 +38,8 @@ describe('Triangle', () => {
 			);
 		});
 
-		it('should print triangle', () => {
-			const cloudPoints =  print(triangle, 60, 60);
+		it('should print triangle through collision', () => {
+			const cloudPoints =  printThroughCollision(triangle, 60, 60);
 			expect(cloudPoints.join()).to.equal(collisionMock.normal.join());
 		});
 	});

@@ -1,6 +1,6 @@
 import { Point } from '../../Point';
 
-export function print(figure, width, height) {
+export function printThroughCollision(figure, width, height) {
 	const cloudPoints = [], point = new Point(0,0);
 	for (let x = 0; x < width; x++) {
 		cloudPoints[x] = [];
