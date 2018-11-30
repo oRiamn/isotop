@@ -1,50 +1,46 @@
 import { expect } from 'chai';
+import { print } from './mocks/print';
 
 import { Triangle } from '../Triangle';
 import { Point } from '../Point';
 
 const collisionMock = require('./mocks/triangle.json');
 
-describe('Point', () => {
+describe('Triangle', () => {
 	let triangle;
 
-	beforeEach(() => {
-		triangle = new Triangle(
-			new Point(1,1),
-			new Point(5,2),
-			new Point(2,4),
-			0
-		);
-	});
-	
-	describe('#collisionPoint: detect colision between triangle and point', () => {
 
-		let point;
+	describe('#collisionPoint: detect collision between triangle and point', () => {
 
 		beforeEach(() => {
 			triangle = new Triangle(
-				new Point(0,0),
-				new Point(15,40),
-				new Point(60,60),
+				new Point(28,34),
+				new Point(17,17),
+				new Point(41,17),
 				0
 			);
-			point = new Point(0,0);
 		});
 
-		it('should move to a new position with x and y coordinates', () => {
-			let cloudPoints=[];
-			for (let x = 0; x < 60; x++) {
-				cloudPoints[x]=[];
-				for (let y = 0; y < 60; y++) {
-					point.moveTo(x,y);
-					cloudPoints[x][y] = triangle.collision(point) ? '*' : ' ';
-				}
-				
-				cloudPoints[x]=cloudPoints[x].join('');
-			}
+		it.skip('should calculate center on constructor', () => {
+			expect(triangle.center.x).to.equal(28.666666666666668);
+			expect(triangle.center.y).to.equal(22.666666666666668 );
+		});
+	});
+	
+	describe('#collisionPoint: detect collision between triangle and point', () => {
 
-			expect(cloudPoints.join()).to.equal(collisionMock.join());
+		beforeEach(() => {
+			triangle = new Triangle(
+				new Point(28,34),
+				new Point(17,17),
+				new Point(41,17),
+				0
+			);
 		});
 
+		it('should print triangle', () => {
+			const cloudPoints =  print(triangle, 60, 60);
+			expect(cloudPoints.join()).to.equal(collisionMock.normal.join());
+		});
 	});
 });
