@@ -1,13 +1,7 @@
-import { Point } from './figure/Point';
+import { Point } from '../figure/Point';
+import { Brush } from './Brush';
 
-export const Brush = class {
-    
-	constructor(center, color, width) {
-		this.prev = new Point(center.x, center.y);
-		this.center = center;
-		this.width=width*2;
-		this.color=color;
-	}
+export const SimpleDotBrush = class extends Brush {
 
 	moveTo(x, y) {
 		this.prev.moveTo(this.center.x, this.center.y);
