@@ -10,7 +10,7 @@ describe('Triangle', () => {
 	let triangle;
 
 
-	describe('#collisionPoint: detect collision between triangle and point', () => {
+	describe('#constructor: setup triangle', () => {
 
 		beforeEach(() => {
 			triangle = new Triangle(
