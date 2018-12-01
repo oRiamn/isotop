@@ -38,7 +38,7 @@ describe('Point', () => {
 			expect(p1.calculateDistance(p2)).to.equal(p2.calculateDistance(p1));
 		});
 
-		it.skip('should return right distance between 2 points', () => {
+		it('should return right distance between 2 points', () => {
 			expect(p1.calculateDistance(p2)).to.equal(11.180339887498949);
 		});
 

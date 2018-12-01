@@ -21,7 +21,7 @@ describe('Triangle', () => {
 			);
 		});
 
-		it.skip('should calculate center on constructor', () => {
+		it('should calculate center on constructor', () => {
 			expect(triangle.center.x).to.equal(28.666666666666668);
 			expect(triangle.center.y).to.equal(22.666666666666668 );
 		});
