@@ -1,7 +1,7 @@
 import css from './color-picker.scss';
 import html from './color-picker.pug';
 
-import { toRadians } from '@lib/collision.js';
+import { degreeToRadians } from '@lib/collision.js';
 import { Point } from '@lib/figure/Point';
 import { Ring } from '@lib/figure/Ring';
 import { EquilateralTriangle } from '@lib/figure/EquilateralTriangle';
@@ -129,8 +129,8 @@ export default class ColorPicker extends HTMLElement {
 			const a = i * this.segment.angle,
 				b = (i - 1) * this.segment.angle;
 			
-			const aRad = toRadians(a),
-				bRad = toRadians(b);
+			const aRad = degreeToRadians(a),
+				bRad = degreeToRadians(b);
 			
 
 			// gradient vector
@@ -190,8 +190,8 @@ export default class ColorPicker extends HTMLElement {
 
 		const ang = 180;
 		const coor = {
-			x: Math.cos(toRadians(this.ang + ang)) * this.triangle.radius + this.triangle.center.x,
-			y: Math.sin(toRadians(this.ang + ang)) * this.triangle.radius + this.triangle.center.y
+			x: Math.cos(degreeToRadians(this.ang + ang)) * this.triangle.radius + this.triangle.center.x,
+			y: Math.sin(degreeToRadians(this.ang + ang)) * this.triangle.radius + this.triangle.center.y
 		};
 		
 		const pts = [...this.triangle.points,coor];

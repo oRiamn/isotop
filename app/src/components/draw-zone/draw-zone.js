@@ -6,7 +6,7 @@ import { Ring } from '@lib/figure/Ring';
 import { Canvas2d } from '@lib/Canvas';
 import { Color } from '@src/library/color/Color';
 import { Circle } from '../../library/figure/Circle';
-import { Brush } from '@lib/brushs';
+import { SimpleDotBrush } from '@lib/brush/SimpleDotBrush';
 
 export default class DrawZone extends HTMLElement {
 	constructor() {
@@ -16,7 +16,7 @@ export default class DrawZone extends HTMLElement {
 		const size=400;
 
 		this.color = new Color();
-		this.brush = new Brush(new Point(-20000,-20000), this.color, 10);
+		this.brush = new SimpleDotBrush(new Point(-20000,-20000), this.color, 10);
 		this.cursor = new Ring(new Point(-20000,-20000),this.brush.width/2, 1);
 		this.active = false;
 
