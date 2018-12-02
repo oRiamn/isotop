@@ -39,7 +39,7 @@ describe('EquilateralTriangle', () => {
 		});
 	});
 
-	describe('#rotateTo: make a rotation', () => {
+	describe.skip('#rotateTo: make a rotation', () => {
 
 		beforeEach(() => {
 			triangle = new EquilateralTriangle(
@@ -54,7 +54,7 @@ describe('EquilateralTriangle', () => {
 			g = triangle.center;
 		});
 
-		it.skip('able to rotate with 10 radian value', () => {
+		it('able to rotate with 10 radian value', () => {
 			
 			triangle.rotateTo(10);
 			
