@@ -1,7 +1,7 @@
 import css from './color-picker.scss';
 import html from './color-picker.pug';
 
-import { degreeToRadians } from '@lib/collision.js';
+import { degreeToRadians, radianToDegrees } from '@lib/collision.js';
 import { Point } from '@lib/figure/Point';
 import { Ring } from '@lib/figure/Ring';
 import { EquilateralTriangle } from '@lib/figure/EquilateralTriangle';
@@ -39,6 +39,7 @@ export default class ColorPicker extends HTMLElement {
 
 		this.center = new Point(this.width / 2,this.height / 2);
 		this.ring = new Ring(this.center,(this.width / 2) - 5, 20);
+
 		this.triangle = new EquilateralTriangle(this.center,this.ring.radSmall-10, 0);
 
 		// canvas
@@ -183,18 +184,19 @@ export default class ColorPicker extends HTMLElement {
 	}
 	
 	drawTriangle() {
-		// clear triangle canvas
-		this.canvasTriangle.clearAll();
-		this.ang = Math.atan2(this.cursor.center.y - this.center.y, this.cursor.center.x - this.center.x) * (180 / Math.PI);
-		this.triangle.rotateTo(this.ang);
+		
+		const ang = this.triangle.center.calculateAngle(this.cursor.center);
+		this.triangle.rotateTo(ang);
 
-		const ang = 180;
 		const coor = {
-			x: Math.cos(degreeToRadians(this.ang + ang)) * this.triangle.radius + this.triangle.center.x,
-			y: Math.sin(degreeToRadians(this.ang + ang)) * this.triangle.radius + this.triangle.center.y
+			x: Math.cos((ang + Math.PI)) * this.triangle.radius + this.triangle.center.x,
+			y: Math.sin((ang + Math.PI)) * this.triangle.radius + this.triangle.center.y
 		};
 		
 		const pts = [...this.triangle.points,coor];
+
+		// clear triangle canvas
+		this.canvasTriangle.clearAll();
 
 		// gradient 1 = black => white
 		const g1 = this.canvasTriangle.createLinearGradient(pts[1], pts[2]);

@@ -1,4 +1,5 @@
 import { Point }  from './Point';
+import { degreeToRadians, mod } from '@lib/collision.js';
 
 function calculateCenter(triangle) {
 	let xSum=0;
@@ -57,4 +58,21 @@ export const Triangle = class {
 		
 		return collision;
 	}
+
+	rotateTo(newAngle) {
+		newAngle = mod(newAngle, Math.PI*2);
+		const deltaAngle = newAngle -this.angle;
+		this.angle=newAngle;
+		const sin =  Math.sin(deltaAngle),
+			cos = Math.cos(deltaAngle);		
+		for (let i = 0; i < this.points.length; i++) {			
+			const deltaX = this.points[i].x - this.center.x,
+				deltaY = this.points[i].y - this.center.y;
+	
+			this.points[i].moveTo(
+				(deltaX * cos) - (deltaY * sin) + this.center.x ,
+				(deltaX * sin) + (deltaY * cos) + this.center.y
+			);
+		}
+	}	
 };

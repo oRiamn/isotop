@@ -1,28 +1,25 @@
 import { Point } from './Point';
-import { degreeToRadians } from '@lib/collision.js';
 import { Triangle } from './Triangle';
+
+import { degreeToRadians } from '@lib/collision.js';
+
+function buildPosition(triangle) {
+	const angs = [0,120,240];
+	for (let i = 0; i < angs.length; i++) {
+		const angle = triangle.angle + degreeToRadians(angs[i]);
+		triangle.points[i].moveTo(
+			Math.cos(angle) * triangle.radius + triangle.center.x,
+			Math.sin(angle) * triangle.radius + triangle.center.y
+		);
+	}
+}
+
 export const EquilateralTriangle = class extends Triangle {
 	constructor(center, radius, angle) {
 		super(new Point(0, 0), new Point(0, 0), new Point(0, 0), angle);
 		this.radius = radius;
 		this.center = center;
-		this.calculatePositions();
-	}
-	
-	rotateTo(angle) {
-		this.angle = angle;
-		this.calculatePositions();
-	}
-	calculatePositions() {
-		const angs = [
-			0,
-			120,
-			240
-		];
 
-		for (let i = 0; i < angs.length; i++) {
-			this.points[i].x = Math.cos(degreeToRadians(this.angle + angs[i])) * this.radius + this.center.x;
-			this.points[i].y = Math.sin(degreeToRadians(this.angle + angs[i])) * this.radius + this.center.y;
-		}
+		buildPosition(this);
 	}
 };

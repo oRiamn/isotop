@@ -3,8 +3,8 @@ const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const webPackConfig =  require('../webpack.config');
  
-require('electron-reload')(`${__dirname}/dist/`, {
-	electron: path.join(`${__dirname}/dist/`, '../node_modules', '.bin', 'electron')
+require('electron-reload')(`${webPackConfig.output.path}`, {
+	electron: path.join(`${webPackConfig.output.path}`, '../node_modules', '.bin', 'electron')
 });
 
 let win;
