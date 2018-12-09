@@ -4,7 +4,7 @@ import html from './draw-zone.pug';
 import { Point } from '@lib/figure/Point';
 import { Ring } from '@lib/figure/Ring';
 import { Canvas2d } from '@lib/Canvas';
-import { Color } from '@src/library/color/Color';
+import { CssColor } from '@src/library/color/CssColor';
 import { Circle } from '../../library/figure/Circle';
 import { SimpleDotBrush } from '@lib/brush/SimpleDotBrush';
 
@@ -15,7 +15,7 @@ export default class DrawZone extends HTMLElement {
 
 		const size=400;
 
-		this.color = new Color();
+		this.color = new CssColor();
 		this.brush = new SimpleDotBrush(new Point(-20000,-20000), this.color, 10);
 		this.cursor = new Ring(new Point(-20000,-20000),this.brush.width/2, 1);
 		this.active = false;

@@ -1,13 +1,13 @@
 import css from './color-picker.scss';
 import html from './color-picker.pug';
 
-import { degreeToRadians, radianToDegrees } from '@lib/collision.js';
+import { degreeToRadians } from '@lib/collision.js';
 import { Point } from '@lib/figure/Point';
 import { Ring } from '@lib/figure/Ring';
 import { EquilateralTriangle } from '@lib/figure/EquilateralTriangle';
 import { Canvas2d } from '@lib/Canvas';
 import { Circle } from '@lib/figure/Circle';
-import { Color } from '@src/library/color/Color';
+import { CssColor } from '@src/library/color/CssColor';
 
 export default class ColorPicker extends HTMLElement {
 
@@ -23,11 +23,11 @@ export default class ColorPicker extends HTMLElement {
 		
 		// event variables
 		this.active = false;
-		this.color = new Color();
+		this.color = new CssColor();
 		this.cursor = new Ring(new Point(-20000,-20000),3, 2);
 
 		// segment construction
-		let segmentPoints=50;
+		let segmentPoints=600;
 		this.segment={
 			points: segmentPoints,
 			angle: 360 / segmentPoints,
@@ -185,7 +185,7 @@ export default class ColorPicker extends HTMLElement {
 	
 	drawTriangle() {
 		
-		const ang = this.triangle.center.calculateAngle(this.cursor.center);
+		const ang = this.triangle.center.calculateAngle(this.cursor.center) + Math.PI;
 		this.triangle.rotateTo(ang);
 
 		const coor = {
@@ -205,8 +205,8 @@ export default class ColorPicker extends HTMLElement {
 
 		// gradient 2 = hue => transparent
 		const g2 = this.canvasTriangle.createLinearGradient(pts[0], pts[3]);
-		g2.addColorStop(0, this.color.cssRGB());
-		g2.addColorStop(1, this.color.cssRGBA() );
+		g2.addColorStop(0, this.color.toRGB());
+		g2.addColorStop(1, this.color.toRGBA() );
 		
 		// draw
 		this.triangle.draw(this.canvasTriangle.ctx, g2);
@@ -220,7 +220,7 @@ export default class ColorPicker extends HTMLElement {
 		this.cursor.draw(this.canvasDot.ctx,{
 			stroke: '#fff',
 			lineWidth: 2,
-			fill: this.color.cssRGBA()
+			fill: this.color.toRGBA()
 		});
 	}
 

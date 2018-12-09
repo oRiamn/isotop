@@ -7,14 +7,14 @@ import ColorPicker from '@components/color-picker/color-picker';
 import ToolBar from '@components/tool-bar/tool-bar';
 import DrawZone from '@components/draw-zone/draw-zone';
 
-import { Color } from '@src/library/color/Color';
+import { CssColor } from '@src/library/color/CssColor';
 
 export default class AppRoot extends HTMLElement {
 	constructor() {
 		super();
 		this.innerHTML = html;
 
-		const color = new Color();
+		const color = new CssColor();
 		color.fromHEX('000');
 
 		this.colorpicker = this.querySelector('color-picker');

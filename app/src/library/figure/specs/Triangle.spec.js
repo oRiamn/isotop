@@ -3,7 +3,6 @@ import { printThroughCollision } from './mocks/print';
 
 import { Triangle } from '../Triangle';
 import { Point } from '../Point';
-import { mod } from '@src/library/collision';
 
 const collisionMock = require('./mocks/triangle.json');
 

@@ -97,23 +97,6 @@ export const Color = class {
 		this.a = 1;
 	}
 
-	cssRGBA() {
-		const r = Math.round(255*this.r),
-			g = Math.round(255*this.g),
-			b = Math.round(255*this.b),
-			a = Math.round(255*this.a);
-		
-		return `rgba(${r},${g},${b},${a})`;
-	}
-
-	cssRGB() {
-		const r = Math.round(255*this.r),
-			g = Math.round(255*this.g),
-			b = Math.round(255*this.b);
-		
-		return `rgb(${r},${g},${b})`;
-	}
-
 	fromHSL(hue, saturation, lightness, alpha = 1) {
 		
 		const sanitized=Sanitizer.HSL(hue, saturation, lightness, alpha);
