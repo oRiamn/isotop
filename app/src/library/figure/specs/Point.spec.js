@@ -44,4 +44,44 @@ describe('Point', () => {
 
 	});
 
+	describe('#calculateAngle : get angle between 2 points', () => {
+
+		let p1, p2;
+
+		beforeEach(() => {
+			p1 = new Point(0,0);
+			p2 = new Point(0,0);
+		});
+
+		it('should return angle 45°', () => {
+			p2.moveTo(10,10);
+			expect(p1.calculateAngle(p2)).to.equal(Math.PI/4);
+		});
+
+		it('should return angle 90°', () => {
+			p2.moveTo(0,10);
+			expect(p1.calculateAngle(p2)).to.equal(Math.PI/2);
+		});
+
+		it('should return angle 135°', () => {
+			p2.moveTo(-10,10);
+			expect(p1.calculateAngle(p2)).to.equal(Math.PI - Math.PI/4);
+		});
+
+		it('should return angle 180°', () => {
+			p2.moveTo(10,0);
+			expect(p1.calculateAngle(p2)).to.equal(Math.PI);
+		});
+
+		it('should return angle 225°', () => {
+			p2.moveTo(10,-10);
+			expect(p1.calculateAngle(p2)).to.equal(Math.PI + Math.PI/4);
+		});
+
+		it('should return angle 315°', () => {
+			p2.moveTo(-10,-10);
+			expect(p1.calculateAngle(p2)).to.equal(2*Math.PI - Math.PI/4);
+		});
+	});
+
 });

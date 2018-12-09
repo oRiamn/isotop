@@ -10,7 +10,7 @@ export const Point = class {
 	}
 
 	calculateAngle(point) {
-		return Math.atan2(this.y - point.y, this.x - point.x);
+		return Math.atan2(this.y - point.y, this.x - point.x) + Math.PI;
 	}
 
 	calculateDistance(point) {

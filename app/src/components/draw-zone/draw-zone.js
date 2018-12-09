@@ -5,7 +5,6 @@ import { Point } from '@lib/figure/Point';
 import { Ring } from '@lib/figure/Ring';
 import { Canvas2d } from '@lib/Canvas';
 import { CssColor } from '@src/library/color/CssColor';
-import { Circle } from '../../library/figure/Circle';
 import { SimpleDotBrush } from '@lib/brush/SimpleDotBrush';
 
 export default class DrawZone extends HTMLElement {

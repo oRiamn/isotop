@@ -185,7 +185,7 @@ export default class ColorPicker extends HTMLElement {
 	
 	drawTriangle() {
 		
-		const ang = this.triangle.center.calculateAngle(this.cursor.center) + Math.PI;
+		const ang = this.triangle.center.calculateAngle(this.cursor.center) + 2*Math.PI;
 		this.triangle.rotateTo(ang);
 
 		const coor = {

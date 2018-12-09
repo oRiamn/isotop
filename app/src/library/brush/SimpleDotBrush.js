@@ -14,7 +14,7 @@ export const SimpleDotBrush = class extends Brush {
 		ctx.lineTo(this.center.x, this.center.y);
 		ctx.lineWidth = this.width;
 		ctx.lineCap = 'round';
-		ctx.strokeStyle = this.color.cssRGBA();
+		ctx.strokeStyle = this.color.toRGBA();
 		ctx.stroke();
 	}
 };
