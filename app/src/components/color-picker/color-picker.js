@@ -215,8 +215,7 @@ export default class ColorPicker extends HTMLElement {
 
 	drawCursor() {
 		// clear dot canvas
-		this.canvasDot.clearAll();		
-		this.cursor.moveTo(this.cursor.center);
+		this.canvasDot.clearAll();
 		this.cursor.draw(this.canvasDot.ctx,{
 			stroke: '#fff',
 			lineWidth: 2,

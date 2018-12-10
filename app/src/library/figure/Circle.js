@@ -1,5 +1,11 @@
 import { Point } from './Point';
 
+const collisions = {
+	withPoint: (circle, point) => {		
+		return circle.center.calculateDistance(point) === circle.radius;
+	}
+};
+
 export const Circle = class {
     
 	constructor(center, radius) {
@@ -7,16 +13,11 @@ export const Circle = class {
 		this.radius = radius;
 	}
 
-	moveTo(point){
-		this.center.x = point.x;
-		this.center.y = point.y;
-	}
-
 	collision(figure){
 		let collision = false;
 
 		if(figure instanceof Point) {
-			collision = this.collisionPoint(figure);
+			collision = collisions.withPoint(this,figure);
 		}
 		
 		return collision;
@@ -29,10 +30,5 @@ export const Circle = class {
 			ctx.fillStyle = style.fill;
 			ctx.fill();
 		}
-	}
-
-
-	collisionPoint(point){		
-		return this.center.calculateDistance(point) === this.radius;
 	}
 };

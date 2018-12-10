@@ -24,9 +24,9 @@ describe('Ring', () => {
 		});
 	});
 
-	describe('#collisionPoint: detect collision between triangle and point', () => {
+	describe('#collisionPoint: detect collision between ring and point', () => {
 
-		it('should print triangle through collision', () => {
+		it('should print ring through collision', () => {
 			const cloudPoints =  printThroughCollision(ring, 60, 60);
 			expect(cloudPoints.join()).to.equal(collisionMock.normal.join());
 		});
