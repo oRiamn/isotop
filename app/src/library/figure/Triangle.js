@@ -37,8 +37,6 @@ export const Triangle = class {
 		];
 		this.angle = angle || 0;
 		this.center = calculateCenter(this);
-
-		this.center.subscribe(this);
 	}
 
 	draw(ctx, fill) {
