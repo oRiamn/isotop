@@ -1,17 +1,3 @@
-export class Observable {
-	constructor() {
-		this.observers = [];  
-	}
-	subscribe(obj) {
-		return this.observers.push(obj);
-	}
-	notify(...args) {
-		for (const observer of this.observers) {
-			observer.notify(this, ...args);
-		}
-	}
-}
-  
 export class Observer {
 	constructor(observable) {
 		observable.add(this);
@@ -26,4 +12,3 @@ export class Observer {
 		console.log(arg);
 	}
 }
-

@@ -1,5 +1,5 @@
 import { Point }  from './Point';
-import { degreeToRadians, mod } from '@lib/collision.js';
+import { mod } from '@lib/collision.js';
 
 function calculateCenter(triangle) {
 	let xSum=0;
@@ -37,6 +37,8 @@ export const Triangle = class {
 		];
 		this.angle = angle || 0;
 		this.center = calculateCenter(this);
+
+		this.center.subscribe(this);
 	}
 
 	draw(ctx, fill) {

@@ -1,9 +1,7 @@
-import { Observable } from '@lib/observer';
 import { rgbToHsl } from '@lib/color-picker';
 
-export default class ColorPicker extends Observable {
+export default class ColorPicker {
 	constructor(size, parent) {
-		super();
 		// canvas setup
 		this.width = size;
 		this.height = size;
