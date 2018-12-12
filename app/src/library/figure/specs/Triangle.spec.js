@@ -9,7 +9,6 @@ const collisionMock = require('./mocks/triangle.json');
 describe('Triangle', () => {
 	let triangle, a, b, c, g;
 
-
 	describe('#constructor: setup triangle', () => {
 
 		beforeEach(() => {
@@ -44,7 +43,6 @@ describe('Triangle', () => {
 		});
 	});
 
-
 	describe('#rotateTo: make a rotation', () => {
 
 		beforeEach(() => {
@@ -61,18 +59,20 @@ describe('Triangle', () => {
 			g = triangle.center;
 		});
 
-		it.skip('able to rotate with 10 radian value', () => {
+		it('able to rotate 2005° and normalize angle to 45°', () => {
 			
-			triangle.rotateTo(10);
-			
-			expect(a.x.toFixed(13)).equal((-41.9907205843792423).toFixed(13));
-			expect(a.y.toFixed(13)).equal((-13.2958408836970286).toFixed(13));
+			triangle.rotateTo(12*Math.PI + Math.PI/4);
 
-			expect(b.x.toFixed(13)).equal((-23.5125748794189785).toFixed(13));
-			expect(b.y.toFixed(13)).equal((-5.01585710918040486).toFixed(13));
+			expect(a.x.toFixed(14)).equal((20.181385292428118).toFixed(14));
+			expect(a.y.toFixed(14)).equal((30.209138999323194).toFixed(14));
 
-			expect(c.x.toFixed(13)).equal((-43.6502915772538374).toFixed(13));
-			expect(c.y.toFixed(13)).equal((8.04064955216447066).toFixed(13));
+			expect(b.x.toFixed(14)).equal((24.42402597954735).toFixed(14));
+			expect(b.y.toFixed(14)).equal((10.410149126099855).toFixed(14));
+
+			expect(c.x.toFixed(14)).equal((41.39458872802454).toFixed(14));
+			expect(c.y.toFixed(14)).equal((27.380711874576946).toFixed(14));
+
+			expect(triangle.angle.toFixed(14)).equal((Math.PI/4).toFixed(14));
 			
 		});
 
