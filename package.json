@@ -4,8 +4,9 @@
   "description": "",
   "main": "app/main.js",
   "scripts": {
-    "test": "mocha app/src/**/*.spec.js --require @babel/register --reporter min",
-    "test:watch": "./node_modules/.bin/nodemon --exec npm test",
+    "test": "mocha app/src/**/*.spec.js --require @babel/register --reporter spec",
+    "test:min": "mocha app/src/**/*.spec.js --require @babel/register --reporter min",
+    "test:watch": "./node_modules/.bin/nodemon --exec npm run test:min",
     "start": "./node_modules/.bin/webpack && ./node_modules/.bin/electron .",
     "watch": "./node_modules/.bin/webpack --watch"
   },
