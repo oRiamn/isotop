@@ -1,7 +1,7 @@
 import css from './color-picker.scss';
 import html from './color-picker.pug';
 
-import { degreeToRadians } from '@lib/collision.js';
+import { degreeToRadians, mod, radianToDegrees, PIx2 } from '@lib/collision.js';
 import { Point } from '@lib/figure/Point';
 import { Ring } from '@lib/figure/Ring';
 import { EquilateralTriangle } from '@lib/figure/EquilateralTriangle';
@@ -27,18 +27,18 @@ export default class ColorPicker extends HTMLElement {
 		this.cursor = new Ring(new Point(-20000,-20000),3, 2);
 
 		// segment construction
-		let segmentPoints=600;
+		let segmentPoints=100;
 		this.segment={
 			points: segmentPoints,
 			angle: 360 / segmentPoints,
-			arc: Math.PI * 2 / segmentPoints
+			arc: PIx2 / segmentPoints
 		};
 
 		this.style.width = `${this.width}px`;
 		this.style.height = `${this.width}px`;
 
 		this.center = new Point(this.width / 2,this.height / 2);
-		this.ring = new Ring(this.center,(this.width / 2) - 5, 20);
+		this.ring = new Ring(this.center,(this.width / 2) - 5, 10);
 
 		this.triangle = new EquilateralTriangle(this.center,this.ring.radSmall-10, 0);
 
@@ -70,6 +70,24 @@ export default class ColorPicker extends HTMLElement {
 
 		// add events
 		this.setEvents();
+	}
+
+	getTriangleAngle(color) {
+
+		const circ = PIx2*this.ring.radius,
+			d = circ - color.hsl.h*circ,
+			teta = d/this.ring.radius;
+
+		return PIx2-teta;
+	}
+
+	setCursorColor(color) {
+		const circ = PIx2*this.ring.radius,
+			d = circ - color.hsl.h*circ,
+			teta = d/this.ring.radius;
+
+		this.triangle.rotateTo(PIx2-teta);
+		this.drawTriangle();
 	}
 
 	build(){
@@ -171,8 +189,13 @@ export default class ColorPicker extends HTMLElement {
 				const imgData = this.canvasRing.getImageData(this.cursor.center, 1, 1).data;
 				this.color.fromRGBA(imgData[0],imgData[1],imgData[2],imgData[3]);
 
-				this.drawCursor();
+				const angle = this.triangle.center.calculateAngle(this.cursor.center);
+				this.triangle.rotateTo(angle);
 				this.drawTriangle();
+
+				console.log(this.getTriangleAngle(this.color), angle);
+
+				this.drawCursor();			
 			}
 			else if (this.triangle.collision(this.cursor.center)) {
 				const imgData = this.canvasTriangle.getImageData(this.cursor.center, 1, 1).data;
@@ -184,29 +207,26 @@ export default class ColorPicker extends HTMLElement {
 	}
 	
 	drawTriangle() {
-		
-		const ang = this.triangle.center.calculateAngle(this.cursor.center);
-		this.triangle.rotateTo(ang);
-
-		const coor = {
-			x: Math.cos((ang + Math.PI)) * this.triangle.radius + this.triangle.center.x,
-			y: Math.sin((ang + Math.PI)) * this.triangle.radius + this.triangle.center.y
-		};
-		
-		const pts = [...this.triangle.points,coor];
 
 		// clear triangle canvas
 		this.canvasTriangle.clearAll();
 
+		const coor = {
+			x: Math.cos((this.triangle.angle + Math.PI)) * this.triangle.radius + this.triangle.center.x,
+			y: Math.sin((this.triangle.angle + Math.PI)) * this.triangle.radius + this.triangle.center.y
+		};
+		
+		const pts = [...this.triangle.points,coor];
+
 		// gradient 1 = black => white
 		const g1 = this.canvasTriangle.createLinearGradient(pts[1], pts[2]);
-		g1.addColorStop(0, 'hsl(' + this.color.h + ',0%,100%)');
-		g1.addColorStop(1, 'hsl(' + this.color.h + ',0%,0%)');
+		g1.addColorStop(0, 'hsl(' + this.color.hsl.h + ',0%,100%)');
+		g1.addColorStop(1, 'hsl(' + this.color.hsl.h + ',0%,0%)');
 
 		// gradient 2 = hue => transparent
 		const g2 = this.canvasTriangle.createLinearGradient(pts[0], pts[3]);
 		g2.addColorStop(0, this.color.toRGB());
-		g2.addColorStop(1, this.color.toRGBA() );
+		g2.addColorStop(1, this.color.toRGBA());
 		
 		// draw
 		this.triangle.draw(this.canvasTriangle.ctx, g2);

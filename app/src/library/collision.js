@@ -10,3 +10,5 @@ export function mod(dividende,diviseur) {
 	let r = (( dividende % diviseur) + diviseur) % diviseur;
 	return r < 0 ? r + Math.abs(diviseur) : r;
 }
+
+export const PIx2 = Math.PI*2;

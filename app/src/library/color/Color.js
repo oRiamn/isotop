@@ -7,6 +7,34 @@ function hue2rgb(p, q, t) {
 	return p;
 }
 
+function applyHSV(color) {
+	const r = color.r,
+		g = color.g,
+		b = color.b,
+		max = Math.max(r, g, b), 
+		min = Math.min(r, g, b);
+
+	let h, s, v = max;  
+	let d = max - min;
+	s = max == 0 ? 0 : d / max;  
+	if (max == min) {
+		h = 0; // achromatic
+	} else {
+		switch (max) {
+		case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+		case g: h = (b - r) / d + 2; break;
+		case b: h = (r - g) / d + 4; break;
+		}
+		h /= 6;
+	}
+  
+	color.hsv = {
+		h: h,
+		s: s,
+		v: v
+	};
+}
+
 function applyHSL(color) {
 
 	const r = color.r,
@@ -15,18 +43,18 @@ function applyHSL(color) {
 		max = Math.max(r, g, b), 
 		min = Math.min(r, g, b);
 
-	color.l = (max + min) / 2;    
+	color.hsl.l = (max + min) / 2;    
 	if(max == min){
-		color.h = color.s = 0; // achromatic
+		color.hsl.h = color.hsl.s = 0; // achromatic
 	} else {
 		const d = max - min;
-		color.s = color.l > 0.5 ? d / (2 - max - min) : d / (max + min);
+		color.hsl.s = color.hsl.l > 0.5 ? d / (2 - max - min) : d / (max + min);
 		switch(max){
-		case r: color.h = (g - b) / d + (g < b ? 6 : 0); break;
-		case g: color.h = (b - r) / d + 2; break;
-		case b: color.h = (r - g) / d + 4; break;
+		case r: color.hsl.h = (g - b) / d + (g < b ? 6 : 0); break;
+		case g: color.hsl.h = (b - r) / d + 2; break;
+		case b: color.hsl.h = (r - g) / d + 4; break;
 		}
-		color.h /= 6;
+		color.hsl.h /= 6;
 	}
 }
 
@@ -93,7 +121,18 @@ const Sanitizer = {
 export const Color = class {
 	constructor() {
 		this.r = this.g = this.b = 0;
-		this.h = this.s = this.l = 0;
+		this.hsl = {
+			h: 0,
+			s: 0,
+			l:0
+		};
+
+		this.hsv = {
+			h: 0,
+			s: 0,
+			v: 0
+		};
+
 		this.a = 1;
 	}
 
@@ -101,16 +140,19 @@ export const Color = class {
 		
 		const sanitized=Sanitizer.HSL(hue, saturation, lightness, alpha);
 
-		this.h=sanitized[0];
-		this.s=sanitized[1];
-		this.l=sanitized[2];
+		this.hsl.h=sanitized[0];
+		this.hsl.s=sanitized[1];
+		this.hsl.l=sanitized[2];
 		this.a=sanitized[3];
 
 		applyRGB(this);
+		applyHSV(this);
 	}
 	
 	fromHEX(hexString) {
-
+		if(hexString.startsWith('#')){
+			hexString = hexString.split('#')[1];
+		}
 		if(hexString.length !== 3 && hexString.length !== 6) {
 			throw new Error('Bad format');
 		}
@@ -141,5 +183,8 @@ export const Color = class {
 		this.a=sanitized[3];
 
 		applyHSL(this);
+		applyHSV(this);
 	}
+
+
 };
