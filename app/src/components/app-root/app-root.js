@@ -29,6 +29,10 @@ export default class AppRoot extends HTMLElement {
 			newColor.fromHEX(this.inputColor.value);
 			this.colorpicker.setCursorColor(newColor);
 		};
+
+		this.colorpicker.onchange = () => {
+			this.inputColor.value = this.colorpicker.color.toHEX();
+		};
 		
 		this.colorpicker.color = color;
 		this.drawzone.brush.color = color;

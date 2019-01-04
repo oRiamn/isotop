@@ -71,16 +71,7 @@ export default class ColorPicker extends HTMLElement {
 		// add events
 		this.setEvents();
 	}
-
-	getTriangleAngle(color) {
-
-		const circ = PIx2*this.ring.radius,
-			d = circ - color.hsl.h*circ,
-			teta = d/this.ring.radius;
-
-		return PIx2-teta;
-	}
-
+	
 	setCursorColor(color) {
 		const circ = PIx2*this.ring.radius,
 			d = circ - color.hsl.h*circ,
@@ -88,6 +79,10 @@ export default class ColorPicker extends HTMLElement {
 
 		this.triangle.rotateTo(PIx2-teta);
 		this.drawTriangle();
+	}
+
+	onchange() {
+
 	}
 
 	build(){
@@ -192,16 +187,15 @@ export default class ColorPicker extends HTMLElement {
 				const angle = this.triangle.center.calculateAngle(this.cursor.center);
 				this.triangle.rotateTo(angle);
 				this.drawTriangle();
-
-				console.log(this.getTriangleAngle(this.color), angle);
-
-				this.drawCursor();			
+				this.drawCursor();
+				this.onchange();	
 			}
 			else if (this.triangle.collision(this.cursor.center)) {
 				const imgData = this.canvasTriangle.getImageData(this.cursor.center, 1, 1).data;
 				this.color.fromRGBA(imgData[0],imgData[1],imgData[2],imgData[3]);
 				
 				this.drawCursor();
+				this.onchange();	
 			}
 		}
 	}
