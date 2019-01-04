@@ -7,10 +7,18 @@ function hue2rgb(p, q, t) {
 	return p;
 }
 
+function applyHEX(color) {
+	const r = Math.round(color.rgb.r*255),
+		g = Math.round(color.rgb.g*255),
+		b = Math.round(color.rgb.b*255);
+
+	color.hex = (r << 16) + (g << 8) + b;
+}
+
 function applyHSV(color) {
-	const r = color.r,
-		g = color.g,
-		b = color.b,
+	const r = color.rgb.r,
+		g = color.rgb.g,
+		b = color.rgb.b,
 		max = Math.max(r, g, b), 
 		min = Math.min(r, g, b);
 
@@ -37,9 +45,9 @@ function applyHSV(color) {
 
 function applyHSL(color) {
 
-	const r = color.r,
-		g = color.g,
-		b = color.b,
+	const r = color.rgb.r,
+		g = color.rgb.g,
+		b = color.rgb.b,
 		max = Math.max(r, g, b), 
 		min = Math.min(r, g, b);
 
@@ -60,15 +68,16 @@ function applyHSL(color) {
 
 function applyRGB(color) {
 	if(color.s == 0) {
-		color.r = color.g = color.b = color.l; // achromatic
+		color.rgb.r = color.rgb.g = color.rgb.b = color.l; // achromatic
 	} else {
 		const q = color.l < 0.5 ? color.l * (1 + color.s) : color.l + color.s - color.l * color.s;
 		const p = 2 * color.l - q;
-		color.r = hue2rgb(p, q, color.h + 1/3);
-		color.g = hue2rgb(p, q, color.h);
-		color.b = hue2rgb(p, q, color.h - 1/3);
+		color.rgb.r = hue2rgb(p, q, color.h + 1/3);
+		color.rgb.g = hue2rgb(p, q, color.h);
+		color.rgb.b = hue2rgb(p, q, color.h - 1/3);
 	}
 }
+
 
 const Sanitizer = {
 	RGB: function() {
@@ -120,7 +129,15 @@ const Sanitizer = {
 
 export const Color = class {
 	constructor() {
-		this.r = this.g = this.b = 0;
+
+		this.hex = 0x000000;
+
+		this.rgb = {
+			r: 0,
+			g: 0,
+			b: 0
+		};
+
 		this.hsl = {
 			h: 0,
 			s: 0,
@@ -149,7 +166,7 @@ export const Color = class {
 		applyHSV(this);
 	}
 	
-	fromHEX(hexString) {
+	fromHEX(hexString, alpha = 1) {
 		if(hexString.startsWith('#')){
 			hexString = hexString.split('#')[1];
 		}
@@ -169,22 +186,20 @@ export const Color = class {
 			g = parseInt(hexString.substr(2, 2), 16),
 			b = parseInt(hexString.substr(4, 2), 16);
 
-		this.fromRGBA(r,g,b,1);
-
+		this.fromRGBA(r,g,b,alpha);
 	}
 
 	fromRGBA(red, green, blue, alpha = 1) {
 		
 		const sanitized=Sanitizer.RGB(red,green,blue,alpha);
 
-		this.r=sanitized[0];
-		this.g=sanitized[1];
-		this.b=sanitized[2];
+		this.rgb.r=sanitized[0];
+		this.rgb.g=sanitized[1];
+		this.rgb.b=sanitized[2];
 		this.a=sanitized[3];
 
 		applyHSL(this);
 		applyHSV(this);
+		applyHEX(this);
 	}
-
-
 };
