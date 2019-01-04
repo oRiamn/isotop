@@ -14,7 +14,14 @@ export const CssColor = class extends Color {
 	}
 
 	toHEX() {
-		return '#' + ( ( this.hex === 0x0 ) ? '000000' : this.hex.toString(16) );
+		const hexString = '' +
+		((this.hex >> 24) & 0xFF).toString(16) +
+		((this.hex >> 16) & 0xFF).toString(16) +
+		((this.hex >> 8) & 0xFF).toString(16) +
+		(this.hex & 0xFF).toString(16) +
+			'000000'; // padding 
+
+		return '#' + hexString.slice(1).substring(0, 6);
 	}
 
 	toRGB() {
