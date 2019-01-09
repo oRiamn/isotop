@@ -41,7 +41,6 @@ export default class ColorPicker extends HTMLElement {
 		this.ring = new Ring(this.center,(this.width / 2) - 5, 10);
 
 		this.triangle = new EquilateralTriangle(this.center,this.ring.radSmall-10, 0);
-		this.triangle.rotateTo(3*Math.PI/2);
 
 		// canvas
 		this.canvasRing = new Canvas2d(
@@ -74,7 +73,7 @@ export default class ColorPicker extends HTMLElement {
 	}
 	
 	setCursorColor(color) {
-		const circ = PIx2*this.triangle.radius,
+		const circ = PIx2*this.ring.radius,
 			d = circ - color.hsl.h*circ,
 			teta = d/this.ring.radius;
 
@@ -83,15 +82,16 @@ export default class ColorPicker extends HTMLElement {
 			v = color.hsv.v,
 			s = color.hsv.s;
 
-		const x = c.x + r*(2*v - s*v - 1 )*SQRT3/2,
+		const x = c.x + r*(2*v - s*v - 1)*SQRT3/2,
 			y = c.y + r*(1 - 3*s*v)/ 2;
 
 		this.cursor.center.moveTo(x,y);
 
 		this.color.fromHEX(color.toHEX());
 
+		this.cursor.center.rotateTo(PIx2-(teta-Math.PI/2), this.triangle.center);
+		this.triangle.rotateTo(PIx2-teta);
 
-		//this.triangle.rotateTo(PIx2-teta);
 		this.drawTriangle();
 		this.drawCursor();
 		this.onchange();
@@ -201,7 +201,7 @@ export default class ColorPicker extends HTMLElement {
 				this.color.fromRGBA(imgData[0],imgData[1],imgData[2],imgData[3]);
 
 				const angle = this.triangle.center.calculateAngle(this.cursor.center);
-				//this.triangle.rotateTo(angle);
+				this.triangle.rotateTo(angle);
 				this.drawTriangle();
 				this.drawCursor();
 				this.onchange();	
