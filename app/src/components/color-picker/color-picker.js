@@ -74,7 +74,7 @@ export default class ColorPicker extends HTMLElement {
 	
 	setCursorColor(color) {
 		const circ = PIx2*this.ring.radius,
-			d = circ - color.hsl.h*circ,
+			d = circ - color.hsv.h*circ,
 			teta = d/this.ring.radius;
 
 		const c = this.triangle.center,
@@ -86,11 +86,10 @@ export default class ColorPicker extends HTMLElement {
 			y = c.y + r*(1 - 3*s*v)/ 2;
 
 		this.cursor.center.moveTo(x,y);
-
-		this.color.fromHEX(color.toHEX());
-
 		this.cursor.center.rotateTo(PIx2-(teta-Math.PI/2), this.triangle.center);
 		this.triangle.rotateTo(PIx2-teta);
+
+		this.color.fromHEX(color.toHEX());
 
 		this.drawTriangle();
 		this.drawCursor();
