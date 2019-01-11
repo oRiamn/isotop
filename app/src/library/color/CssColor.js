@@ -13,6 +13,14 @@ export const CssColor = class extends Color {
 		return `rgba(${r},${g},${b},${this.a})`;
 	}
 
+	toHSL() {
+		const h = Math.round(360*this.hsl.h),
+			s = Math.round(100*this.hsl.s),
+			l = Math.round(100*this.hsl.l);
+		
+		return `hsl(${h},${s}%,${l}%)`;
+	}
+
 	toHEX() {
 
 		const r = Math.round(255*this.rgb.r),
