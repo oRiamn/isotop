@@ -80,6 +80,23 @@ function applyRGB(color) {
 
 
 const Sanitizer = {
+	ALPHA: function(alpha) {
+		let ret = null;
+		if('string' == typeof alpha && alpha.indexOf('%') > -1) {
+			if((alpha = parseInt(alpha)) == 'NaN')
+				throw new Error(`Bad format ${alpha}`);
+			if(alpha < 0 || alpha > 100)
+				throw new Error(`Bad format ${alpha}`);
+			ret = alpha/100;
+		} else if('number' == typeof alpha && alpha >= 0 && alpha <= 1) {
+			ret = alpha;	
+		}
+		
+		if(ret === null)
+			throw new Error(`Bad format ${alpha}`);
+
+		return ret;
+	},
 	RGB: function() {
 		var o = [];
 		if(arguments.length == 0) return;
@@ -94,8 +111,7 @@ const Sanitizer = {
 			} else {
 				if('string' == typeof c && (c = parseInt(c)) == 'NaN') throw new Error('Bad format');
 				if(c < 0) throw new Error('Bad format');
-				else if(c >= 0 && c <= 1) o[i] = c;
-				else if(c > 1 && c < 256) o[i] = c/255;
+				else if(c >= 0 && c < 256) o[i] = c/255;
 				else throw new Error('Bad format');
 			}
 		}
@@ -153,20 +169,30 @@ export const Color = class {
 		this.a = 1;
 	}
 
-	fromHSL(hue, saturation, lightness, alpha = 1) {
+	setAlpha(alpha){
+		if(alpha === undefined) {
+			this.a = 1;
+		} else {
+			this.a=Sanitizer.ALPHA(alpha);
+		}
+	}
+
+	fromHSL(hue, saturation, lightness, alpha) {
 		
-		const sanitized=Sanitizer.HSL(hue, saturation, lightness, alpha);
+		const sanitized=Sanitizer.HSL(hue, saturation, lightness);
 
 		this.hsl.h=sanitized[0];
 		this.hsl.s=sanitized[1];
 		this.hsl.l=sanitized[2];
-		this.a=sanitized[3];
 
 		applyRGB(this);
 		applyHSV(this);
+
+	
+		this.setAlpha(alpha);
 	}
 	
-	fromHEX(hexString, alpha = 1) {
+	fromHEX(hexString, alpha) {
 		if(hexString.startsWith('#')){
 			hexString = hexString.split('#')[1];
 		}
@@ -186,20 +212,22 @@ export const Color = class {
 			g = parseInt(hexString.substr(2, 2), 16),
 			b = parseInt(hexString.substr(4, 2), 16);
 
-		this.fromRGBA(r,g,b,alpha);
+		this.fromRGBA(r,g,b);
+		this.setAlpha(alpha);
 	}
 
-	fromRGBA(red, green, blue, alpha = 1) {
+	fromRGBA(red, green, blue, alpha) {
 		
-		const sanitized=Sanitizer.RGB(red,green,blue,alpha);
+		const sanitized=Sanitizer.RGB(red,green,blue);
 
 		this.rgb.r=sanitized[0];
 		this.rgb.g=sanitized[1];
 		this.rgb.b=sanitized[2];
-		this.a=sanitized[3];
 
 		applyHSL(this);
 		applyHSV(this);
 		applyHEX(this);
+
+		this.setAlpha(alpha);
 	}
 };

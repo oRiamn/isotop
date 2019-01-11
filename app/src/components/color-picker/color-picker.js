@@ -197,7 +197,7 @@ export default class ColorPicker extends HTMLElement {
 			if (this.ring.collision(this.cursor.center)) {
 
 				const imgData = this.canvasRing.getImageData(this.cursor.center, 1, 1).data;
-				this.color.fromRGBA(imgData[0],imgData[1],imgData[2],imgData[3]);
+				this.color.fromRGBA(imgData[0],imgData[1],imgData[2]);
 
 				const angle = this.triangle.center.calculateAngle(this.cursor.center);
 				this.triangle.rotateTo(angle);
@@ -207,7 +207,7 @@ export default class ColorPicker extends HTMLElement {
 			}
 			else if (this.triangle.collision(this.cursor.center)) {
 				const imgData = this.canvasTriangle.getImageData(this.cursor.center, 1, 1).data;
-				this.color.fromRGBA(imgData[0],imgData[1],imgData[2],imgData[3]);
+				this.color.fromRGBA(imgData[0],imgData[1],imgData[2]);
 				
 				this.drawCursor();
 				this.onchange();	

@@ -234,15 +234,15 @@ describe('Color', () => {
 			color.fromRGBA(1,1,1);
 
 			expect(color.rgb).to.deep.equal({
-				r: 255/255,
-				g: 255/255,
-				b: 255/255
+				r: 1/255,
+				g: 1/255,
+				b: 1/255
 			});
 			
 			color.fromRGBA(1,0,0);
 
 			expect(color.rgb).to.deep.equal({
-				r: 255/255,
+				r: 1/255,
 				g: 0/255,
 				b: 0/255
 			});
@@ -251,7 +251,7 @@ describe('Color', () => {
 
 			expect(color.rgb).to.deep.equal({
 				r: 0/255,
-				g: 255/255,
+				g: 1/255,
 				b: 0/255
 			});
 
@@ -260,7 +260,7 @@ describe('Color', () => {
 			expect(color.rgb).to.deep.equal({
 				r: 0/255,
 				g: 0/255,
-				b: 255/255
+				b: 1/255
 			});
 		});
 	
