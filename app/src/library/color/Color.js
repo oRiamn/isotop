@@ -169,6 +169,14 @@ export const Color = class {
 		this.a = 1;
 	}
 
+	fromColor(color){
+		const r = color.rgb.r*255,
+			g = color.rgb.g*255,
+			b = color.rgb.b*255;
+
+		this.fromRGBA(r,g,b, color.a);
+	}
+
 	setAlpha(alpha){
 		if(alpha === undefined) {
 			this.a = 1;
