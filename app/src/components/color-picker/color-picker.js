@@ -27,7 +27,7 @@ export default class ColorPicker extends HTMLElement {
 		this.cursor = new Ring(new Point(-20000,-20000),3, 2);
 
 		// segment construction
-		let segmentPoints=100;
+		let segmentPoints=20;
 		this.segment={
 			points: segmentPoints,
 			angle: 360 / segmentPoints,
@@ -38,9 +38,10 @@ export default class ColorPicker extends HTMLElement {
 		this.style.height = `${this.width}px`;
 
 		this.center = new Point(this.width / 2,this.height / 2);
-		this.ring = new Ring(this.center,(this.width / 2) - 5, 10);
+		this.ring = new Ring(this.center,(this.width / 2) - 5, 5);
 
-		this.triangle = new EquilateralTriangle(this.center,this.ring.radSmall-10, 0);
+		this.triangle = new EquilateralTriangle(this.center,this.ring.radSmall-5, 0);
+		this.triangle.rotateTo(-Math.PI/2);
 
 		// canvas
 		this.canvasRing = new Canvas2d(
@@ -85,11 +86,12 @@ export default class ColorPicker extends HTMLElement {
 		const x = c.x + r*(2*v - s*v - 1)*SQRT3/2,
 			y = c.y + r*(1 - 3*s*v)/ 2;
 
-		this.cursor.center.moveTo(x,y);
-		this.cursor.center.rotateTo(PIx2-(teta-Math.PI/2), this.triangle.center);
-		this.triangle.rotateTo(PIx2-teta);
+		this.cursor.center.moveTo(x,y);		
 
-		this.color.fromHEX(color.toHEX());
+		// this.cursor.center.rotateTo(PIx2-(teta-Math.PI/2), this.triangle.center);
+		// this.triangle.rotateTo(PIx2-teta);
+		
+		this.color.fromColor(color);
 
 		this.drawTriangle();
 		this.drawCursor();
@@ -200,7 +202,7 @@ export default class ColorPicker extends HTMLElement {
 				this.color.fromRGBA(imgData[0],imgData[1],imgData[2]);
 
 				const angle = this.triangle.center.calculateAngle(this.cursor.center);
-				this.triangle.rotateTo(angle);
+				// this.triangle.rotateTo(angle);
 				this.drawTriangle();
 				this.drawCursor();
 				this.onchange();	
@@ -221,23 +223,21 @@ export default class ColorPicker extends HTMLElement {
 		this.canvasTriangle.clearAll();
 
 		const coor = {
-			x: Math.round(Math.cos((this.triangle.angle + Math.PI)) * this.triangle.radius + this.triangle.center.x),
-			y: Math.round(Math.sin((this.triangle.angle + Math.PI)) * this.triangle.radius + this.triangle.center.y)
-		};
-
-		
-		
-		const pts = [...this.triangle.points,coor];
+				x: Math.round(Math.cos((this.triangle.angle + Math.PI)) * this.triangle.radius + this.triangle.center.x),
+				y: Math.round(Math.sin((this.triangle.angle + Math.PI)) * this.triangle.radius + this.triangle.center.y)
+			},
+			pts = [...this.triangle.points,coor],
+			h = Math.round(360*this.color.hsl.h);
 
 		// gradient 1 = black => white
 		const g1 = this.canvasTriangle.createLinearGradient(pts[1], pts[2]);
-		g1.addColorStop(0, 'hsl(' + this.color.hsl.h + ',0%,100%)');
-		g1.addColorStop(1, 'hsl(' + this.color.hsl.h + ',0%,0%)');
+		g1.addColorStop(0, `hsl(${h},0%,100%)`);
+		g1.addColorStop(1, `hsl(${h},0%,0%)`);
 
 		// gradient 2 = hue => transparent
 		const g2 = this.canvasTriangle.createLinearGradient(pts[0], pts[3]);
-		g2.addColorStop(0, this.color.toRGB());
-		g2.addColorStop(1, this.color.toRGBA());
+		g2.addColorStop(0, `hsl(${h},100%,50%)`);
+		g2.addColorStop(1, `hsl(${h},100%,50%)`);
 		
 		// draw
 		this.triangle.draw(this.canvasTriangle.ctx, g2);
