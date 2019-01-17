@@ -90,8 +90,11 @@ export default class ColorPicker extends HTMLElement {
 
 		// this.cursor.center.rotateTo(PIx2-(teta-Math.PI/2), this.triangle.center);
 		// this.triangle.rotateTo(PIx2-teta);
+
+		const imgData = this.canvasTriangle.getImageData(this.cursor.center, 1, 1).data;
+		this.color.fromRGBA(imgData[0],imgData[1],imgData[2]);
 		
-		this.color.fromColor(color);
+		//this.color.fromColor(color);
 
 		this.triangle.draw(this.color);
 		this.drawCursor();
