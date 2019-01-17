@@ -20,23 +20,26 @@ export default class AppRoot extends HTMLElement {
 		this.drawzone = this.querySelector('draw-zone');
 		this.inputColor = this.querySelector('input#color');
 
-		const rgb = this.querySelector('input#rgb'),
-			hex = this.querySelector('input#hex'),
-			hsl = this.querySelector('input#hsl');
+		const rgb = this.querySelector('#rgb'),
+			hex = this.querySelector('#hex'),
+			hsl = this.querySelector('#hsl');
 
+		const colorInput = new CssColor();
 		this.inputColor.oninput = () => {
-			const newColor = new CssColor();
-			newColor.fromHEX(this.inputColor.value);
-			this.colorpicker.setCursorColor(newColor);
+			colorInput.fromHEX(this.inputColor.value);
+			this.colorpicker.setCursorColor(colorInput);
 		};
 
+		
+
 		this.colorpicker.onchange = () => {
-			this.inputColor.value = this.colorpicker.color.toHEX();
-			rgb.value = this.colorpicker.color.toRGB();
-			hsl.value = this.colorpicker.color.toHSL();
-			hex.value = this.colorpicker.color.toHEX();
+			//this.inputColor.value = this.colorpicker.color.toHEX();
+			rgb.textContent = this.colorpicker.color.toRGB() + '\n' + colorInput.toRGB();
+			hsl.textContent = this.colorpicker.color.toHSL() + '\n' + colorInput.toHSL();
+			hex.textContent = this.colorpicker.color.toHEX() + '\n' + colorInput.toHEX();
 		};	
 
+		this.colorpicker.color = color;
 		this.colorpicker.setCursorColor(color);
 		this.drawzone.brush.color = color;
 	}
