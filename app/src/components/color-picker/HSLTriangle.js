@@ -1,4 +1,5 @@
 import { EquilateralTriangle } from '@src/library/figure/EquilateralTriangle';
+import { Point } from '@src/library/figure/Point';
 
 export const HSLTriangle = class extends EquilateralTriangle {
 
@@ -11,50 +12,51 @@ export const HSLTriangle = class extends EquilateralTriangle {
 		this.vPoint = this.points[1];
 		this.sPoint = this.points[2];
 
-		this.canvas.ctx.globalCompositeOperation = 'lighter';
+		this.svPoint = new Point(0,0);
+		this.hsPoint = new Point(0,0);
+
+		this.ctx = canvas.ctx;
+		this.ctx.globalCompositeOperation = 'lighter';
 	}
 
 	draw(color) {
 
 		const h = Math.round(360 * color.hsl.h);
 
-		const hx = this.hPoint.x,
-			hy = this.hPoint.y,
-			sx = this.sPoint.x,
-			sy = this.sPoint.y,
-			vx = this.vPoint.x,
-			vy = this.vPoint.y,
-			size = this.canvas.canvas.width,
-			ctx = this.canvas.ctx;
+		const size = this.canvas.canvas.width,
+			ctx = this.ctx;
 
 		// clear
 		ctx.clearRect(0, 0, size, size);
-
 		ctx.save();
+		this.drawPath();
 
-		// make a triangle
-		ctx.beginPath();
-		ctx.moveTo(hx, hy);
-		ctx.lineTo(sx, sy);
-		ctx.lineTo(vx, vy);
-		ctx.closePath();
-		ctx.clip();
 
 		ctx.fillStyle = '#000';
 		ctx.fillRect(0, 0, size, size);
 		// => black triangle
 
-		// create gradient from hsl(hue, 1, 1) to transparent
-		var grad0 = ctx.createLinearGradient(hx, hy, (sx + vx) / 2, (sy + vy) / 2);
+		this.svPoint.moveTo(
+			Math.round((this.sPoint.x + this.vPoint.x) / 2),
+			Math.round((this.sPoint.y + this.vPoint.y) / 2)
+		);
 
+		// create gradient from hsl(hue, 1, 1) to transparent
+		var grad0 = this.canvas.createLinearGradient(this.hPoint, this.svPoint);
 		grad0.addColorStop(0, `hsla(${h}, 100%, 50%, 1)`);
 		grad0.addColorStop(1, `hsla(${h}, 100%, 50%, 0)`);
 		ctx.fillStyle = grad0;
 		ctx.fillRect(0,0, size, size);
+
 		// => gradient: one side of the triangle is black, the opponent angle is $color
 
+		this.hsPoint.moveTo(
+			Math.round((this.hPoint.x + this.sPoint.x) / 2),
+			Math.round((this.hPoint.y + this.sPoint.y) / 2)
+		);
+
 		// create color gradient from white to transparent
-		var grad1 = ctx.createLinearGradient(vx, vy, (hx + sx) / 2, (hy + sy) / 2);
+		var grad1 = this.canvas.createLinearGradient(this.vPoint, this.hsPoint);
 		grad1.addColorStop(0, '#fff');
 		grad1.addColorStop(1, 'rgba(255, 255, 255, 0)');
 		ctx.fillStyle = grad1;
@@ -64,14 +66,14 @@ export const HSLTriangle = class extends EquilateralTriangle {
 		ctx.restore();
 	}
 
-	drawPath(ctx, fill) {
-		ctx.beginPath();
-		ctx.moveTo(this.points[0].x, this.points[0].y);
-		for (let i = 0; i < this.points.length; i++) {
-			ctx.lineTo(this.points[i].x, this.points[i].y);
+	drawPath() {
+		this.ctx.beginPath();
+		this.ctx.moveTo(this.points[0].x, this.points[0].y);
+		for (let i = 1; i < this.points.length; i++) {
+			this.ctx.lineTo(this.points[i].x, this.points[i].y);
 		}
-		ctx.fillStyle = fill;
-		ctx.fill();
+		this.ctx.closePath();
+		this.ctx.clip();
 	}
 
 

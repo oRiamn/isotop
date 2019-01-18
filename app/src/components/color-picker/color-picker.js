@@ -56,8 +56,6 @@ export default class ColorPicker extends HTMLElement {
 		);
 
 		this.triangle = new HSLTriangle(this.center,this.ring.radSmall-5, 0, this.canvasTriangle);
-		this.triangle.rotateTo(-Math.PI/2);
-
 
 		this.canvasDot = new Canvas2d(
 			this.querySelector('.dot'), {
@@ -88,8 +86,8 @@ export default class ColorPicker extends HTMLElement {
 
 		this.cursor.center.moveTo(x,y);		
 
-		// this.cursor.center.rotateTo(PIx2-(teta-Math.PI/2), this.triangle.center);
-		// this.triangle.rotateTo(PIx2-teta);
+		this.cursor.center.rotateTo(PIx2-(teta-Math.PI/2), this.triangle.center);
+		this.triangle.rotateTo(PIx2-teta);
 
 		this.triangle.draw(color);
 
@@ -168,7 +166,7 @@ export default class ColorPicker extends HTMLElement {
 				this.color.fromRGBA(imgData[0],imgData[1],imgData[2]);
 
 				const angle = this.triangle.center.calculateAngle(this.cursor.center);
-				// this.triangle.rotateTo(angle);
+				this.triangle.rotateTo(angle);
 				this.triangle.draw(this.color);
 				this.drawCursor();
 				this.onchange();	
