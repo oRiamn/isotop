@@ -13,6 +13,10 @@ export const Canvas2d = class {
 		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 	}
 
+	fillAll(){
+		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+	}
+
 	createLinearGradient(startPoint, endPoint){
 		return this.ctx.createLinearGradient(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
 	}
