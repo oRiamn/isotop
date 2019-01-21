@@ -15,7 +15,8 @@ export default class AppRoot extends HTMLElement {
 		this.innerHTML = html;
 
 		const color = new CssColor();
-		color.fromHEX('408080');
+		color.fromRGBA(180,90,90);
+
 		this.colorpicker = this.querySelector('color-picker');
 		this.drawzone = this.querySelector('draw-zone');
 		this.inputColor = this.querySelector('input#color');
