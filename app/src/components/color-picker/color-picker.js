@@ -9,7 +9,7 @@ import { Circle } from '@lib/figure/Circle';
 import { CssColor } from '@src/library/color/CssColor';
 import { HSLTriangle } from './HSLTriangle';
 
-export default class ColorPicker extends HTMLElement {
+class ColorPicker extends HTMLElement {
 
 	constructor() {
 		super();

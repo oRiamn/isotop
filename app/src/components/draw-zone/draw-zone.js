@@ -4,10 +4,10 @@ import html from './draw-zone.pug';
 import { Point } from '@lib/figure/Point';
 import { Ring } from '@lib/figure/Ring';
 import { Canvas2d } from '@lib/Canvas';
-import { CssColor } from '@src/library/color/CssColor';
+import  { CssColor } from '@src/library/color/CssColor';
 import { SimpleDotBrush } from '@lib/brush/SimpleDotBrush';
 
-export default class DrawZone extends HTMLElement {
+class DrawZone extends HTMLElement {
 	constructor() {
 		super();
 		this.innerHTML = html;

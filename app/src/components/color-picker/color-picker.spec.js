@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { expect } from 'chai';
 import puppeteer from 'puppeteer';
 
@@ -30,6 +31,23 @@ describe('color-picker componnent', () => {
 
 			expect(width).to.equal(250);
 			expect(height).to.equal(250);
+		});
+
+	});
+
+	describe('Should setup color', () => {
+
+		it('default size', async () => {
+			await page.evaluate(() => {
+				var colorpicker = document.querySelector('color-picker'),
+					color = new isotop.CssColor();
+				color.fromHEX('#2240b8');
+				colorpicker.setCursorColor(color);
+			});
+
+			const color = await page.evaluate(() => document.querySelector('color-picker').color.toHEX());
+			
+			expect(color).to.equal('#2240b8');
 		});
 
 	});

@@ -7,9 +7,15 @@ import ColorPicker from '@components/color-picker/color-picker';
 import ToolBar from '@components/tool-bar/tool-bar';
 import DrawZone from '@components/draw-zone/draw-zone';
 
-import { CssColor } from '@src/library/color/CssColor';
+import  { CssColor } from '@src/library/color/CssColor';
+import  { Color } from '@src/library/color/Color';
 
-export default class AppRoot extends HTMLElement {
+export default {
+	Color: Color,
+	CssColor: CssColor
+};
+  
+window.customElements.define('app-root',  class extends HTMLElement {
 	constructor() {
 		super();
 		this.innerHTML = html;
@@ -25,6 +31,4 @@ export default class AppRoot extends HTMLElement {
 		this.colorpicker.setCursorColor(color);
 		this.drawzone.brush.color = color;
 	}
-}
-
-window.customElements.define('app-root', AppRoot);
+});
