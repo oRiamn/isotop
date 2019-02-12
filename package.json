@@ -51,17 +51,12 @@
     "pug-loader": "^2.4.0",
     "puppeteer": "^1.12.1",
     "sass-loader": "^7.1.0",
-    "showroom": "^0.9.3",
     "source-map": "^0.7.3",
     "style-loader": "^0.23.1",
     "webpack": "^4.26.1",
     "webpack-cli": "^3.1.2"
   },
   "dependencies": {
-    "connect": "^3.6.6",
-    "electron": "^3.0.10",
-    "fs": "0.0.1-security",
-    "jsdom": "^13.2.0",
-    "serve-static": "^1.13.2"
+    "electron": "^3.0.10"
   }
 }
