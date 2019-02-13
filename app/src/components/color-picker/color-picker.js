@@ -7,9 +7,9 @@ import Ring from '@lib/figure/Ring';
 import Canvas2d from '@src/library/Canvas2d';
 import Circle from '@lib/figure/Circle';
 import CssColor from '@src/library/color/CssColor';
-import { HSLTriangle } from './HSLTriangle';
+import HSLTriangle from './HSLTriangle';
 
-class ColorPicker extends HTMLElement {
+window.customElements.define('color-picker', class extends HTMLElement {
 
 	constructor() {
 		super();
@@ -206,6 +206,4 @@ class ColorPicker extends HTMLElement {
 				self.update(e);
 		}, false);
 	}
-}
-
-window.customElements.define('color-picker', ColorPicker);
+});
