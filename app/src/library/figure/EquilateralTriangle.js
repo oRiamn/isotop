@@ -1,5 +1,5 @@
-import { Point } from './Point';
-import { Triangle } from './Triangle';
+import Point from './Point';
+import Triangle from './Triangle';
 
 import { degreeToRadians } from '@lib/collision.js';
 
@@ -14,7 +14,7 @@ function buildPosition(triangle) {
 	}
 }
 
-export const EquilateralTriangle = class extends Triangle {
+export default class EquilateralTriangle extends Triangle {
 	constructor(center, radius, angle) {
 		super(new Point(0, 0), new Point(0, 0), new Point(0, 0), angle);
 		this.radius = radius;
@@ -22,4 +22,4 @@ export const EquilateralTriangle = class extends Triangle {
 
 		buildPosition(this);
 	}
-};
+}

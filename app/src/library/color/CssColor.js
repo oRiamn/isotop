@@ -1,6 +1,6 @@
-import { Color } from './Color';
+import  Color from './Color';
 
-export const CssColor = class extends Color {
+export default class CssColor extends Color {
 	constructor(){
 		super();
 	}
@@ -41,4 +41,4 @@ export const CssColor = class extends Color {
 		return `rgb(${r},${g},${b})`;
 	}
 
-};
+}

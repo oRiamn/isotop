@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { printThroughCollision } from './mocks/print';
 
-import { Triangle } from '../Triangle';
-import { Point } from '../Point';
+import Triangle from '../Triangle';
+import Point from '../Point';
 
 const collisionMock = require('./mocks/triangle.json');
 

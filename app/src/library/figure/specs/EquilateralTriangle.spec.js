@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
-import { Point } from '../Point';
-import { EquilateralTriangle } from '../EquilateralTriangle';
+import Point from '../Point';
+import EquilateralTriangle from '../EquilateralTriangle';
 
 describe('EquilateralTriangle', () => {
 	let triangle, a, b, c, g;

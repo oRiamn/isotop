@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { CssColor } from '../CssColor';
+import CssColor from '../CssColor';
 
 
 describe('CssColor', () => {

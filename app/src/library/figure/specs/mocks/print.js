@@ -1,4 +1,4 @@
-import { Point } from '../../Point';
+import Point from '../../Point';
 
 export function printThroughCollision(figure, width, height) {
 	const cloudPoints = [], point = new Point(0,0);

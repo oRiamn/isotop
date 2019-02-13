@@ -1,6 +1,6 @@
-import { Point } from '../figure/Point';
+import Point from '../figure/Point';
 
-export const Brush = class {
+export default class Brush {
     
 	constructor(center, color, width) {
 		this.prev = new Point(center.x, center.y);
@@ -8,4 +8,4 @@ export const Brush = class {
 		this.width=width*2;
 		this.color=color;
 	}
-};
+}

@@ -1,4 +1,4 @@
-import { Point }  from './Point';
+import Point  from './Point';
 import { mod } from '@lib/collision.js';
 
 function calculateCenter(triangle) {
@@ -27,7 +27,7 @@ const collisions = {
 	}
 };
 
-export const Triangle = class {
+export default class Triangle {
     
 	constructor(p1,p2,p3, angle) {
 		this.points=[
@@ -65,4 +65,4 @@ export const Triangle = class {
 			);
 		}
 	}	
-};
+}

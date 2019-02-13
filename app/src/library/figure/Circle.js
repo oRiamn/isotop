@@ -1,4 +1,4 @@
-import { Point } from './Point';
+import Point from './Point';
 
 const collisions = {
 	withPoint: (circle, point) => {		
@@ -6,7 +6,7 @@ const collisions = {
 	}
 };
 
-export const Circle = class {
+export default class Circle {
     
 	constructor(center, radius) {
 		this.center = center;
@@ -31,4 +31,4 @@ export const Circle = class {
 			ctx.fill();
 		}
 	}
-};
+}

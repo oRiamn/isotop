@@ -7,7 +7,7 @@ import ColorPicker from '@components/color-picker/color-picker';
 import ToolBar from '@components/tool-bar/tool-bar';
 import DrawZone from '@components/draw-zone/draw-zone';
 
-import  { CssColor } from '@src/library/color/CssColor';
+import  CssColor from '@src/library/color/CssColor';
 
 window.customElements.define('app-root',  class extends HTMLElement {
 	constructor() {

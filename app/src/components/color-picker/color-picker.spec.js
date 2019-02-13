@@ -40,7 +40,7 @@ describe('color-picker componnent', () => {
 		it('default size', async () => {
 			await page.evaluate(() => {
 				var colorpicker = document.querySelector('color-picker'),
-					color = new isotop.CssColor();
+					color = new isotop.color.CssColor();
 				color.fromHEX('#2240b8');
 				colorpicker.setCursorColor(color);
 			});

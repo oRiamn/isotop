@@ -1,7 +1,7 @@
-import { Point } from '../figure/Point';
-import { Brush } from './Brush';
+import Point from '../figure/Point';
+import Brush from './Brush';
 
-export const SimpleDotBrush = class extends Brush {
+export default class SimpleDotBrush extends Brush {
 
 	moveTo(x, y) {
 		this.prev.moveTo(this.center.x, this.center.y);
@@ -17,4 +17,4 @@ export const SimpleDotBrush = class extends Brush {
 		ctx.strokeStyle = this.color.toRGBA();
 		ctx.stroke();
 	}
-};
+}
