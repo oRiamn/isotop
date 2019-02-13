@@ -1,4 +1,4 @@
-import css from './color-picker.scss';
+require('./color-picker.scss');
 import html from './color-picker.pug';
 
 import { degreeToRadians, PIx2, SQRT3 } from '@lib/collision.js';

@@ -63,17 +63,16 @@ describe('Triangle', () => {
 			
 			triangle.rotateTo(12*Math.PI + Math.PI/4);
 
-			expect(a.x.toFixed(14)).equal((20.181385292428118).toFixed(14));
-			expect(a.y.toFixed(14)).equal((30.209138999323194).toFixed(14));
-
-			expect(b.x.toFixed(14)).equal((24.42402597954735).toFixed(14));
-			expect(b.y.toFixed(14)).equal((10.410149126099855).toFixed(14));
-
-			expect(c.x.toFixed(14)).equal((41.39458872802454).toFixed(14));
-			expect(c.y.toFixed(14)).equal((27.380711874576946).toFixed(14));
-
-			expect(triangle.angle.toFixed(14)).equal((Math.PI/4).toFixed(14));
+			expect(a.x).to.be.closeTo(20.181385292428118, 1e-14);
+			expect(a.y).to.be.closeTo(30.209138999323194, 1e-14);
 			
+			expect(b.x).to.be.closeTo(24.42402597954735, 1e-14);
+			expect(b.y).to.be.closeTo(10.410149126099855, 1e-14);
+
+			expect(c.x).to.be.closeTo(41.39458872802454, 1e-14);
+			expect(c.y).to.be.closeTo(27.380711874576946, 1e-14);
+
+			expect(triangle.angle).to.be.closeTo(Math.PI/4, 1e-14);			
 		});
 
 		it('rotate 360° give same position', () => {
@@ -84,14 +83,14 @@ describe('Triangle', () => {
 
 			triangle.rotateTo(2*Math.PI);
 			
-			expect(a.x.toFixed(14)).equal(oldA.x.toFixed(14));
-			expect(a.y.toFixed(14)).equal(oldA.y.toFixed(14));
+			expect(a.x).to.be.closeTo(oldA.x, 1e-14);	
+			expect(a.y).to.be.closeTo(oldA.y, 1e-14);	
 
-			expect(b.x.toFixed(14)).equal(oldB.x.toFixed(14));
-			expect(b.y.toFixed(14)).equal(oldB.y.toFixed(14));
+			expect(b.x).to.be.closeTo(oldB.x, 1e-14);	
+			expect(b.y).to.be.closeTo(oldB.y, 1e-14);	
 
-			expect(c.x.toFixed(14)).equal(oldC.x.toFixed(14));
-			expect(c.y.toFixed(14)).equal(oldC.y.toFixed(14));
+			expect(c.x).to.be.closeTo(oldC.x, 1e-14);	
+			expect(c.y).to.be.closeTo(oldC.y, 1e-14);	
 			
 		});
 	});

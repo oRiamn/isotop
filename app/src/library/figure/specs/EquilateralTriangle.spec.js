@@ -23,19 +23,20 @@ describe('EquilateralTriangle', () => {
 
 		it('all side are egal', () => {
 			// fix the number of digits to appear after the decimal point to 12
-			const ab = a.calculateDistance(b).toFixed(12),
-				bc = b.calculateDistance(c).toFixed(12),
-				ca = c.calculateDistance(a).toFixed(12);
+			const ab = a.calculateDistance(b),
+				bc = b.calculateDistance(c),
+				ca = c.calculateDistance(a);
 
-			expect(ab).to.equal(bc);
-			expect(ca).to.equal(bc);
+			expect(ab).to.be.closeTo(bc, 1e-14);
+			expect(ca).to.be.closeTo(bc, 1e-14);
 		});
 
 		it('all point are same distance of center', () => {
 			expect(triangle.radius).not.equal(0);
-			expect(Math.round(g.calculateDistance(a))).to.equal(triangle.radius);
-			expect(Math.round(g.calculateDistance(b))).to.equal(triangle.radius);
-			expect(Math.round(g.calculateDistance(c))).to.equal(triangle.radius);
+
+			expect(g.calculateDistance(a)).to.be.closeTo(triangle.radius, 1e-14);
+			expect(g.calculateDistance(b)).to.be.closeTo(triangle.radius, 1e-14);
+			expect(g.calculateDistance(c)).to.be.closeTo(triangle.radius, 1e-14);
 		});
 	});
 
