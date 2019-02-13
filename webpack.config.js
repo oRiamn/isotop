@@ -14,6 +14,7 @@ module.exports = {
 		filename: 'bundle.js',
 		libraryTarget: 'umd',
 		umdNamedDefine: true,
+		library: 'isotop',
 		libraryExport: 'default'
 	},
 	devtool: 'source-map',
