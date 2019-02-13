@@ -1,4 +1,4 @@
-export const Canvas2d = class {
+export default class Canvas2d {
     
 	constructor(canvasElement, options = {}) {
 		this.canvas = canvasElement;
@@ -41,4 +41,4 @@ export const Canvas2d = class {
 		return this.ctx.fill();
 	}
 	
-};
+}

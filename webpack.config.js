@@ -7,13 +7,12 @@ const src = './app/src';
 const dist = '/tmp/isotop';
 
 module.exports = {
-	entry: [`${src}/components/app-root/app-root.js`],
-	mode: 'development',
+	entry: [`${src}/webpack-bundle.js`],
+	mode: 'production',
 	output: {
 		path: resolve(`${dist}`),
 		filename: 'bundle.js',
 		libraryTarget: 'umd',
-		library: 'isotop',
 		umdNamedDefine: true,
 		libraryExport: 'default'
 	},
@@ -28,14 +27,13 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.js$/,
+				test: /\*?\.js$/,
 				exclude: /node_modules/,
 				loader: 'babel-loader',
 				query: {
 					presets: ['@babel/preset-env']
 				}
 			},
-
 			{
 				test: /\.scss$/,
 				use: ExtractTextPlugin.extract(

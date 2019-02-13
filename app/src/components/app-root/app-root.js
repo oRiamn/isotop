@@ -8,13 +8,7 @@ import ToolBar from '@components/tool-bar/tool-bar';
 import DrawZone from '@components/draw-zone/draw-zone';
 
 import  { CssColor } from '@src/library/color/CssColor';
-import  { Color } from '@src/library/color/Color';
 
-export default {
-	Color: Color,
-	CssColor: CssColor
-};
-  
 window.customElements.define('app-root',  class extends HTMLElement {
 	constructor() {
 		super();

@@ -3,7 +3,7 @@ import html from './draw-zone.pug';
 
 import { Point } from '@lib/figure/Point';
 import { Ring } from '@lib/figure/Ring';
-import { Canvas2d } from '@lib/Canvas';
+import Canvas2d from '@src/library/Canvas2d';
 import  { CssColor } from '@src/library/color/CssColor';
 import { SimpleDotBrush } from '@lib/brush/SimpleDotBrush';
 

@@ -26,6 +26,7 @@ module.exports = {
 				'@components': resolve(`${src}/components`),
 				'@lib': resolve(`${src}/library`)
 			}
-		}]
+		}],
+		'wildcard'
 	]
 };

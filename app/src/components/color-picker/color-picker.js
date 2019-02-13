@@ -4,7 +4,7 @@ import html from './color-picker.pug';
 import { degreeToRadians, PIx2, SQRT3 } from '@lib/collision.js';
 import { Point } from '@lib/figure/Point';
 import { Ring } from '@lib/figure/Ring';
-import { Canvas2d } from '@lib/Canvas';
+import Canvas2d from '@src/library/Canvas2d';
 import { Circle } from '@lib/figure/Circle';
 import { CssColor } from '@src/library/color/CssColor';
 import { HSLTriangle } from './HSLTriangle';
