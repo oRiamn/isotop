@@ -7,8 +7,12 @@ describe('color-picker componnent', () => {
 	let browser, page;
 
 	before(async () => {
-		browser = await puppeteer.launch({headless: true});
-		page = await browser.newPage();
+		browser = await puppeteer.launch({
+			headless: true,
+			args: ['--no-sandbox', '--disable-setuid-sandbox', '--auto-open-devtools-for-tabs' ] 
+		});
+
+		page = (await browser.pages())[0];
 		await page.setViewport({
 			'width': 400,
 			'height': 400
@@ -23,12 +27,11 @@ describe('color-picker componnent', () => {
 	beforeEach(async () => {
 		page.goto('file:///tmp/isotop/html/test.html');
 		await page.waitForNavigation();
-		await page.evaluate(() => document.body.innerHTML = '<color-picker></color-picker>');
 		await page.evaluate(() => {
-			window.element = document.querySelector('color-picker');
+			window.element = document.createElement('color-picker');
+			document.body.appendChild(window.element);
 		});
 	});
-
 
 	describe('Should setup default value', () => {
 
@@ -79,5 +82,41 @@ describe('color-picker componnent', () => {
 		});
 	});
 
+	describe('#onmousedown: set color when user click on circle or on HSL triangle', () => {
+
+		it('Should setup #1d0aff when user select hue', async () => {
+
+			// click in circle for define hue
+			await page.mouse.click(75, 20, {
+				button: 'left',
+				clickCount: 1,
+				delay: 50
+			});
+
+			const circleSelectionColor = await page.evaluate(() => element.color.toHEX());
+			expect(circleSelectionColor).to.equal('#1d0aff');	
+		});
+
+		it('Should setup #5b53ad when user select lightness/saturation', async () => {
+
+			// click in circle for define hue
+			await page.mouse.click(75, 20, {
+				button: 'left',
+				clickCount: 1,
+				delay: 50
+			});
+			
+			// click in triangle for define saturation and lightness
+			await page.mouse.click(123, 122, {
+				button: 'left',
+				clickCount: 1,
+				delay: 50
+			});
+
+			const triangleSelectionColor = await page.evaluate(() => element.color.toHEX());
+			expect(triangleSelectionColor).to.equal('#5b53ad');			
+		});
+
+	});
 
 });
