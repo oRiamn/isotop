@@ -1,7 +1,7 @@
-import { EquilateralTriangle } from '@src/library/figure/EquilateralTriangle';
-import { Point } from '@src/library/figure/Point';
+import EquilateralTriangle from '@src/library/figure/EquilateralTriangle';
+import Point from '@src/library/figure/Point';
 
-export const HSLTriangle = class extends EquilateralTriangle {
+export default class HSLTriangle extends EquilateralTriangle {
 
 	constructor(center, radius, angle, canvas) {
 		super(center, radius, angle);
@@ -79,4 +79,4 @@ export const HSLTriangle = class extends EquilateralTriangle {
 	}
 
 
-};
+}

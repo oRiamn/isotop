@@ -1,7 +1,7 @@
 import css from './simple-icon.scss';
 import html from './simple-icon.pug';
 
-export default class SimpleIcon extends HTMLElement {
+class SimpleIcon extends HTMLElement {
 	constructor() {
 		super();
 		this.innerHTML = html;

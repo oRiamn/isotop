@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { Circle } from '../Circle';
-import { Point } from '../Point';
+import Circle from '../Circle';
+import Point from '../Point';
 import { printThroughCollision } from './mocks/print';
 
 const collisionMock = require('./mocks/circle.json');

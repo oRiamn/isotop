@@ -10,7 +10,8 @@ module.exports = {
 			'@babel/preset-env',
 			{
 				'targets': {
-					'esmodules': true
+					'esmodules': true,
+					'chrome': '58'
 				}
 			}
 		]
@@ -25,6 +26,7 @@ module.exports = {
 				'@components': resolve(`${src}/components`),
 				'@lib': resolve(`${src}/library`)
 			}
-		}]
+		}],
+		'wildcard'
 	]
 };

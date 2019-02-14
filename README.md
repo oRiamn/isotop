@@ -1,5 +1,11 @@
 # Isotop
 
+## Debian test fail
+
+`sudo sysctl -w kernel.unprivileged_userns_clone=1`
+
+see : https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md
+
 ## Iconpacks
 
 designed by [Smashicons](https://www.flaticon.com/authors/smashicons) from [Flaticon](https://www.flaticon.com/packs/design-collection/1)

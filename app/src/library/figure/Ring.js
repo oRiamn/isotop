@@ -1,5 +1,5 @@
-import { Circle } from './Circle';
-import { Point } from './Point';
+import Circle from './Circle';
+import Point from './Point';
 
 
 
@@ -15,7 +15,7 @@ const collisions = {
 	}
 };
 
-export const Ring = class extends Circle {
+export default class Ring extends Circle {
 	
 	constructor(center, radius, weight) {
 		super(center, radius);
@@ -45,4 +45,4 @@ export const Ring = class extends Circle {
 		
 		return collision;
 	}
-};
+}

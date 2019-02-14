@@ -143,7 +143,7 @@ const Sanitizer = {
 	},
 };
 
-export const Color = class {
+export default class Color {
 	constructor() {
 
 		this.hex = 0x000000;
@@ -238,4 +238,4 @@ export const Color = class {
 
 		this.setAlpha(alpha);
 	}
-};
+}

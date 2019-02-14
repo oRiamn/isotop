@@ -1,7 +1,7 @@
 
 import { mod } from '@lib/collision.js';
 
-export const Point = class {
+export default class Point {
 	constructor(x, y) {
 		this.x=x;
 		this.y=y;
@@ -33,4 +33,4 @@ export const Point = class {
 	calculateDistance(point) {
 		return Math.sqrt( Math.pow(point.x - this.x, 2) + Math.pow(point.y - this.y, 2) );
 	}
-};
+}
