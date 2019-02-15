@@ -33,7 +33,7 @@ describe('color-picker componnent', () => {
 		});
 	});
 
-	describe('Should setup default value', () => {
+	describe('#connectedCallback: setup color-picker when element append to DOM', () => {
 
 		it('default size', async () => {
 
@@ -80,38 +80,40 @@ describe('color-picker componnent', () => {
 			expect(angle).to.be.closeTo(0, 1e-15);
 			expect(cursorPosition).to.deep.equal({x: 70.00000000000009, y: 29.737205583711713});
 		});
+
 	});
 
 	describe('#onmousedown: set color when user click on circle or on HSL triangle', () => {
 
-		it('Should setup #1d0aff when user select hue', async () => {
+		it('Should able to select all hue value', async () => {
+			
+			const ring = await page.evaluate(() => element.ring),
+				radius = ring.radSmall + ring.weight/2,
+				step = 2 * Math.PI / 360;
 
-			// click in circle for define hue
-			await page.mouse.click(75, 20, {
-				button: 'left',
-				clickCount: 1,
-				delay: 50
-			});
+			let angle,h,x,y;
 
-			const circleSelectionColor = await page.evaluate(() => element.color.toHEX());
-			expect(circleSelectionColor).to.equal('#1d0aff');	
+			for (let i = 0; i < 360; i++) {
+				angle = i*step;
+				
+				x = Math.round(radius * Math.cos(angle) + ring.center.x);
+				y = Math.round(radius * Math.sin(angle) + ring.center.y);
+				
+				await page.mouse.click(x, y);
+
+				h = await page.evaluate(() => Math.round(element.color.hsl.h*360));
+				
+				expect(h).to.be.closeTo(i,1);
+			}
 		});
 
 		it('Should setup #5b53ad when user select lightness/saturation', async () => {
 
 			// click in circle for define hue
-			await page.mouse.click(75, 20, {
-				button: 'left',
-				clickCount: 1,
-				delay: 50
-			});
+			await page.mouse.click(75, 20);
 			
 			// click in triangle for define saturation and lightness
-			await page.mouse.click(123, 122, {
-				button: 'left',
-				clickCount: 1,
-				delay: 50
-			});
+			await page.mouse.click(123, 122);
 
 			const triangleSelectionColor = await page.evaluate(() => element.color.toHEX());
 			expect(triangleSelectionColor).to.equal('#5b53ad');			
