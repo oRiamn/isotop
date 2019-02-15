@@ -7,12 +7,15 @@ import Canvas2d from '@src/library/Canvas2d';
 import  CssColor from '@src/library/color/CssColor';
 import SimpleDotBrush from '@lib/brush/SimpleDotBrush';
 
-class DrawZone extends HTMLElement {
+window.customElements.define('draw-zone',  class extends HTMLElement {
+
 	constructor() {
 		super();
-		this.innerHTML = html;
 
 		const size=400;
+
+		this.width = size;
+		this.height = size;
 
 		this.color = new CssColor();
 		this.brush = new SimpleDotBrush(new Point(-20000,-20000), this.color, 10);
@@ -20,17 +23,28 @@ class DrawZone extends HTMLElement {
 		this.active = false;
 
 		this.color.fromHEX('000');
+	}
+
+	static get observedAttributes() {
+		return [];
+	}
+
+	attributeChangedCallback() {
+	}
+
+	connectedCallback() {
+		this.innerHTML = html;
 
 		this.canvasContainer = this.querySelector('.canvas');
-		this.canvasContainer.style.width=`${size}px`;
-		this.canvasContainer.style.height=`${size}px`;
+		this.canvasContainer.style.width=`${this.width}px`;
+		this.canvasContainer.style.height=`${this.height}px`;
 
 		this.container = this.querySelector('.container');
 
 		this.canvasDot = new Canvas2d(
 			this.querySelector('.dot'), {
-				width: size, 
-				height: size
+				width: this.width, 
+				height: this.height
 			}
 		);
 
@@ -38,8 +52,8 @@ class DrawZone extends HTMLElement {
 		this.querySelectorAll('.layers canvas').forEach((element) => {
 			this.layers.push(new Canvas2d(
 				element, {
-					width: size, 
-					height: size
+					width: this.width, 
+					height: this.height
 				}
 			));
 		});
@@ -48,7 +62,6 @@ class DrawZone extends HTMLElement {
 
 		this.setEvents();
 	}
-
 
 	setActive(active){
 		if(active){
@@ -95,6 +108,4 @@ class DrawZone extends HTMLElement {
 		}, false);
 	}
 
-}
-
-window.customElements.define('draw-zone', DrawZone);
+});

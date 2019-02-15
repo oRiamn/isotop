@@ -36,13 +36,6 @@ window.customElements.define('color-picker', class extends HTMLElement {
 		this.ring = new Ring(this.center, (this.width / 2) - 5, 5);
 	}
 
-	static get observedAttributes() {
-		return [];
-	}
-
-	attributeChangedCallback() {
-	}
-
 	connectedCallback() {
 		this.innerHTML = html;
 
@@ -78,6 +71,14 @@ window.customElements.define('color-picker', class extends HTMLElement {
 
 		// add events
 		this.setEvents();
+	}
+
+
+	static get observedAttributes() {
+		return [];
+	}
+
+	attributeChangedCallback() {
 	}
 
 	setCursorColor(color) {
