@@ -1,6 +1,7 @@
 require('@components/color-picker/color-picker');
 require('@components/tool-bar/tool-bar');
 require('@components/draw-zone/draw-zone');
+require('@components/layer-manager/layer-manager');
 
 require('./app-root.scss');
 import html from './app-root.pug';
