@@ -1,5 +1,143 @@
-@import '@src/colors.scss';
-
 layer-manager {
-    
+
+  display: flex;
+  overflow: hidden;
+
+  .container {
+    display: flex;
+    width: 100%;
+
+    overflow: auto;
+
+    ul.menu {
+      display: table;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      box-shadow: 0 0 25px #00000070;
+      clear: both;
+
+      .list {
+        font-size: 14px;
+        border-bottom: 1px solid #324252;
+        position: relative;
+        width: 100%;
+        box-sizing: border-box;
+        height: 50px;
+        vertical-align: sub;
+        background: #3e5165;
+        clear: both;
+
+        &:after,
+        &:before {
+          content: "";
+          width: 16px;
+          height: 16px;
+
+          top: 17px;
+          color: #fff;
+          position: absolute;
+          display: block;
+
+          background: url("./img/cd-icons.svg") no-repeat 0 0;
+        }
+
+        &:after {
+          // arrow icon
+          right: 17px;
+          background-position: 0 0;
+        }
+
+        &:before {
+          // folder icon
+          left: 17px;
+          background-position: -16px 0;
+        }
+
+        a {
+          text-decoration: none;
+          color: #fff;
+          padding: 17px 0 17px 45px;
+          display: block;
+          height: 100%;
+          box-sizing: border-box;
+
+          &:hover {
+            background-color: #324252;
+            transition: 300ms all;
+          }
+        }
+
+        .items {
+          height: 0;
+          overflow: hidden;
+
+          a {
+            padding: 17px;
+
+            &:hover {
+              background-color: #3f5d79;
+              color: #fff;
+              transition: 300ms all;
+
+            }
+          }
+        }
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+
+      .active {
+        &.list:after {
+          transform: rotate(180deg);
+        }
+
+        &.list:before {
+          background-position: -32px 0;
+        }
+
+        > .items {
+          display: block;
+          background: #23313f;
+          padding: 0;
+          height: auto;
+          color: #fff;
+          transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+          transition: all 200ms;
+          clear: both;
+          float: left;
+          width: 100%;
+
+          li {
+            padding: 0;
+            border-bottom: 1px solid #324252;
+            list-style: none;
+          }
+
+          li:last-child {
+            border-color: transparent;
+            padding-bottom: 0;
+          }
+
+          .active {
+            > .items {
+              background-color: #2f4b67;
+            }
+          }
+        }
+
+        .list {
+          background: #697d92;
+
+          a {
+            padding: 17px 0 17px 45px;
+
+          }
+        }
+      }
+    }
+  }
 }

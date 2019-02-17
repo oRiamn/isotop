@@ -43,6 +43,18 @@ app-root {
         
             &.right {
                 background: hotpink;
+
+                #right-panel {
+                    display: flex;
+                    flex-direction: column;
+
+                    color-picker {
+                        flex: none;
+                    }
+                    layer-manager {
+                        flex: auto;
+                    }
+                }
             }
         }    
     }
