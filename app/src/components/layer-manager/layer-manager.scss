@@ -1,3 +1,13 @@
+@import '@src/colors.scss';
+
+$hover: #3f5d79;
+$gry: #697d92;
+$border: #324252;
+$bg_list: #3e5165;
+
+$active_item: #23313f;
+$active_item_bis: #2f4b67;
+
 layer-manager {
 
   display: flex;
@@ -15,18 +25,17 @@ layer-manager {
       padding: 0;
       margin: 0;
       list-style: none;
-      box-shadow: 0 0 25px #00000070;
       clear: both;
 
       .list {
         font-size: 14px;
-        border-bottom: 1px solid #324252;
+        border-bottom: 1px solid $border;
         position: relative;
         width: 100%;
         box-sizing: border-box;
         height: 50px;
         vertical-align: sub;
-        background: #3e5165;
+        background: $bg_list;
         clear: both;
 
         &:after,
@@ -36,7 +45,7 @@ layer-manager {
           height: 16px;
 
           top: 17px;
-          color: #fff;
+          color: $white;
           position: absolute;
           display: block;
 
@@ -55,16 +64,24 @@ layer-manager {
           background-position: -16px 0;
         }
 
+        &.active:after {
+          transform: rotate(180deg);
+        }
+
+        &.active:before {
+          background-position: -32px 0;
+        }
+
         a {
           text-decoration: none;
-          color: #fff;
+          color: $white;
           padding: 17px 0 17px 45px;
           display: block;
           height: 100%;
           box-sizing: border-box;
 
           &:hover {
-            background-color: #324252;
+            background-color: $hover;
             transition: 300ms all;
           }
         }
@@ -77,8 +94,8 @@ layer-manager {
             padding: 17px;
 
             &:hover {
-              background-color: #3f5d79;
-              color: #fff;
+              background-color: $hover;
+              color: $white;
               transition: 300ms all;
 
             }
@@ -91,20 +108,13 @@ layer-manager {
       }
 
       .active {
-        &.list:after {
-          transform: rotate(180deg);
-        }
-
-        &.list:before {
-          background-position: -32px 0;
-        }
 
         > .items {
           display: block;
-          background: #23313f;
+          background: $active_item;
           padding: 0;
           height: auto;
-          color: #fff;
+          color: $white;
           transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
           transition: all 200ms;
           clear: both;
@@ -113,7 +123,6 @@ layer-manager {
 
           li {
             padding: 0;
-            border-bottom: 1px solid #324252;
             list-style: none;
           }
 
@@ -124,17 +133,16 @@ layer-manager {
 
           .active {
             > .items {
-              background-color: #2f4b67;
+              background-color: $active_item_bis;
             }
           }
         }
 
         .list {
-          background: #697d92;
+          background: $gry;
 
-          a {
+          > a {
             padding: 17px 0 17px 45px;
-
           }
         }
       }

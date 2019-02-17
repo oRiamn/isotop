@@ -9,11 +9,14 @@ window.customElements.define('layer-manager', class extends HTMLElement {
 	connectedCallback() {
 		this.innerHTML = html;
 
-		const list = document.querySelectorAll('.list');
+		const list = this.querySelectorAll('.list');
 
 		for (let i = 0; i < list.length; i++) {
 			list[i].addEventListener('click', (e) => {
+				
 				e.stopPropagation();
+				e.preventDefault();
+				
 				if (list[i].classList.contains('active')) {
 					list[i].classList.remove('active');
 				}
