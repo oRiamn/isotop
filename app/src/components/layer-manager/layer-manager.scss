@@ -62,8 +62,9 @@ layer-manager {
           // folder icon
           left: 17px;
           background-position: -16px 0;
+          
         }
-
+        
         &.active:after {
           transform: rotate(180deg);
         }

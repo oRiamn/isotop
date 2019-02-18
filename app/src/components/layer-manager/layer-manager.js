@@ -9,26 +9,28 @@ window.customElements.define('layer-manager', class extends HTMLElement {
 	connectedCallback() {
 		this.innerHTML = html;
 
-		const list = this.querySelectorAll('.list');
+		const list = this.querySelectorAll('.list > a');
 
 		for (let i = 0; i < list.length; i++) {
 			list[i].addEventListener('click', (e) => {
 				
 				e.stopPropagation();
 				e.preventDefault();
-				
-				if (list[i].classList.contains('active')) {
-					list[i].classList.remove('active');
+
+				const target = e.target.parentElement;
+				if (target.classList.contains('active')) {
+					target.classList.remove('active');
 				}
-				else if (list[i].parentElement.parentElement.classList.contains('active')) {
-					list[i].classList.add('active');
+				else if (target.parentElement.parentElement.classList.contains('active')) {
+					target.classList.add('active');
 				}
 				else {
 					for (let y = 0; y < list.length; y++) {
 						list[y].classList.remove('active');
 					}
-					list[i].classList.add('active');
+					target.classList.add('active');
 				}
+				
 			});
 		}
 	}
