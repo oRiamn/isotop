@@ -26,12 +26,24 @@ window.customElements.define('layer-manager', class extends HTMLElement {
 		}
 	}
 
+	layerClick(e) {
+		e.stopPropagation();
+		e.preventDefault();
+		const target = e.target;
+		console.log(target.innerText);
+	}
+
 	connectedCallback() {
 		this.innerHTML = html;
 
-		const list = this.querySelectorAll('.list > a');
-		list.forEach( (listA) => {
-			listA.addEventListener('click', (e) => this.toggleList(e));
+		const listHandles = this.querySelectorAll('.list > a');
+		listHandles.forEach( (handle) => {
+			handle.addEventListener('click', (e) => this.toggleList(e));
+		});
+
+		const itemHandles = this.querySelectorAll(':not(.list) > a');
+		itemHandles.forEach( (handle) => {
+			handle.addEventListener('click', (e) => this.layerClick(e));
 		});
 	}
 

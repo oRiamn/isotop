@@ -16,6 +16,7 @@ layer-manager {
   .container {
     display: flex;
     width: 100%;
+    flex-direction: column;
 
     overflow: auto;
 
@@ -30,47 +31,41 @@ layer-manager {
       .list {
         font-size: 14px;
         border-bottom: 1px solid $border;
-        position: relative;
         width: 100%;
         box-sizing: border-box;
-        height: 50px;
         vertical-align: sub;
         background: $bg_list;
         clear: both;
-
-        &:after,
-        &:before {
-          content: "";
-          width: 16px;
-          height: 16px;
-
-          top: 17px;
-          color: $white;
-          position: absolute;
-          display: block;
-
-          background: url("./img/cd-icons.svg") no-repeat 0 0;
-        }
-
-        &:after {
-          // arrow icon
-          right: 17px;
-          background-position: 0 0;
-        }
-
-        &:before {
-          // folder icon
-          left: 17px;
-          background-position: -16px 0;
-          
-        }
         
-        &.active:after {
-          transform: rotate(180deg);
-        }
-
-        &.active:before {
-          background-position: -32px 0;
+        > a {
+          position: relative;
+          display: flex;
+          &:after,
+          &:before {
+            content: "";
+            width: 16px;
+            height: 16px;
+  
+            top: 17px;
+            color: $white;
+            position: absolute;
+            display: block;
+  
+            background: url("./img/cd-icons.svg") no-repeat 0 0;
+          }
+  
+          &:after {
+            // arrow icon
+            right: 17px;
+            background-position: 0 0;
+          }
+  
+          &:before {
+            // folder icon
+            left: 17px;
+            background-position: -16px 0;
+            
+          }
         }
 
         a {
@@ -92,7 +87,7 @@ layer-manager {
           overflow: hidden;
 
           a {
-            padding: 17px;
+            padding: 10px;
 
             &:hover {
               background-color: $hover;
@@ -109,6 +104,14 @@ layer-manager {
       }
 
       .active {
+
+        &.list > a:after {
+          transform: rotate(180deg);
+        }
+
+        &.list > a:before {
+          background-position: -32px 0;
+        }
 
         > .items {
           display: block;

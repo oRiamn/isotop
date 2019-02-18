@@ -48,12 +48,22 @@ app-root {
                     display: flex;
                     flex-direction: column;
 
-                    color-picker {
+                    align-items: stretch;
+
+                    > * {
+                        display: flex;
+                    }
+
+                    .bar {
+                        background: red;
+                    }
+                    color-picker, .bar {
                         flex: none;
                     }
                     layer-manager {
                         flex: auto;
                     }
+                    
                 }
             }
         }    
