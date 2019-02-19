@@ -2,151 +2,175 @@
 
 $hover: #3f5d79;
 $gry: #697d92;
-$border: #324252;
 $bg_list: #3e5165;
 
 $active_item: #23313f;
 $active_item_bis: #2f4b67;
 
+$icon_size: 16px;
+
 layer-manager {
 
   display: flex;
-  overflow: hidden;
+  flex-direction: column;
+  align-items: stretch;
+  width: 250px;
+
+  > * {
+    display: flex;
+  }
+  
+
 
   .container {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
+    overflow: hidden;
+    width: inherit;
 
-    overflow: auto;
+    .scrollcontainer {
+      display: flex;
+      flex: 1;
+      width: inherit;
+      flex-direction: column;
+      overflow: auto;
 
-    ul.menu {
-      display: table;
-      width: 100%;
-      padding: 0;
-      margin: 0;
-      list-style: none;
-      clear: both;
-
-      .list {
-        font-size: 14px;
-        border-bottom: 1px solid $border;
-        width: 100%;
-        box-sizing: border-box;
-        vertical-align: sub;
-        background: $bg_list;
+      ul.menu {
+        display: table;
+        width: inherit;
+        padding: 0;
+        margin: 0;
+        list-style: none;
         clear: both;
-        
-        > a {
-          position: relative;
-          display: flex;
-          &:after,
-          &:before {
-            content: "";
-            width: 16px;
-            height: 16px;
-  
-            top: 17px;
-            color: $white;
-            position: absolute;
-            display: block;
-  
-            background: url("./img/cd-icons.svg") no-repeat 0 0;
-          }
-  
-          &:after {
-            // arrow icon
-            right: 17px;
-            background-position: 0 0;
-          }
-  
-          &:before {
-            // folder icon
-            left: 17px;
-            background-position: -16px 0;
-            
-          }
-        }
 
-        a {
-          text-decoration: none;
-          color: $white;
-          padding: 17px 0 17px 45px;
-          display: block;
-          height: 100%;
-          box-sizing: border-box;
+        font-size: 14px;
 
-          &:hover {
-            background-color: $hover;
-            transition: 300ms all;
-          }
-        }
-
-        .items {
-          height: 0;
-          overflow: hidden;
-
-          a {
-            padding: 10px;
-
-            &:hover {
-              background-color: $hover;
-              color: $white;
-              transition: 300ms all;
-
-            }
-          }
-        }
-
-        &:last-child {
-          border-bottom: none;
-        }
-      }
-
-      .active {
-
-        &.list > a:after {
-          transform: rotate(180deg);
-        }
-
-        &.list > a:before {
-          background-position: -32px 0;
-        }
-
-        > .items {
-          display: block;
-          background: $active_item;
-          padding: 0;
-          height: auto;
-          color: $white;
-          transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
-          transition: all 200ms;
-          clear: both;
-          float: left;
-          width: 100%;
-
-          li {
-            padding: 0;
-            list-style: none;
-          }
-
-          li:last-child {
-            border-color: transparent;
-            padding-bottom: 0;
-          }
-
-          .active {
-            > .items {
-              background-color: $active_item_bis;
-            }
-          }
+        li,ul,a {
+          width: inherit;
         }
 
         .list {
-          background: $gry;
+          margin-bottom: 1px;
+          vertical-align: sub;
+          background: $bg_list;
+          clear: both;
+
+          a {
+            display: flex;
+            text-decoration: none;
+            color: $white;
+            padding: $icon_size 3*$icon_size $icon_size 10px;
+            
+            height: 100%;
+            width: inherit;
+
+
+            span {
+              width: inherit;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+            }
+
+            &:hover {
+              background-color: $hover;
+              transition: 300ms all;
+            }
+          }
 
           > a {
-            padding: 17px 0 17px 45px;
+            position: relative;
+            display: flex;
+
+            padding-left: 3*$icon_size;
+
+
+            &:after,
+            &:before {
+              content: "";
+              width: $icon_size;
+              height: $icon_size;
+
+              top: $icon_size;
+              color: $white;
+              position: absolute;
+              display: block;
+
+              background: url("./img/cd-icons.svg") no-repeat 0 0;
+            }
+
+            &:after {
+              // arrow icon
+              right: $icon_size;
+              background-position: 0 0;
+            }
+
+            &:before {
+              // folder icon
+              left: $icon_size;
+              background-position: -$icon_size 0;
+
+            }
+          }
+
+          .items {
+            height: 0;
+            overflow: hidden;
+
+            a {
+              &:hover {
+                background-color: $hover;
+                color: $white;
+                transition: 300ms all;
+              }
+            }
+          }
+
+          &:last-child {
+            margin-bottom: none;
+          }
+        }
+        .active {
+          &.list > a:after {
+            transform: rotate(180deg);
+          }
+
+          &.list > a:before {
+            background-position: -2*$icon_size 0;
+          }
+
+          > .items {
+            display: block;
+            background: $active_item;
+            padding: 0;
+            height: auto;
+            color: $white;
+            transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+            transition: all 200ms;
+            clear: both;
+            float: left;
+
+            li {
+              padding: 0;
+              list-style: none;
+            }
+
+            li:last-child {
+              border-color: transparent;
+              padding-bottom: 0;
+            }
+
+            .active {
+              > .items {
+                background-color: $active_item_bis;
+              }
+            }
+          }
+
+          .list {
+            background: $gry;
+
+            > a {
+              padding: $icon_size 0 $icon_size 45px;
+            }
           }
         }
       }

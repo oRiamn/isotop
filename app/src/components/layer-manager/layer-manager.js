@@ -1,6 +1,5 @@
 require('./layer-manager.scss');
 import html from './layer-manager.pug';
-import { TSImportEqualsDeclaration } from 'babel-types';
 
 window.customElements.define('layer-manager', class extends HTMLElement {
 	constructor() {
