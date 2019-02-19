@@ -19,8 +19,6 @@ layer-manager {
   > * {
     display: flex;
   }
-  
-
 
   .container {
     overflow: hidden;
@@ -57,7 +55,7 @@ layer-manager {
             display: flex;
             text-decoration: none;
             color: $white;
-            padding: $icon_size 3*$icon_size $icon_size 10px;
+            padding: $icon_size 20px $icon_size 10px;
             
             height: 100%;
             width: inherit;
@@ -80,7 +78,7 @@ layer-manager {
             position: relative;
             display: flex;
 
-            padding-left: 3*$icon_size;
+            padding: $icon_size 3*$icon_size $icon_size 3*$icon_size;
 
 
             &:after,
@@ -167,10 +165,6 @@ layer-manager {
 
           .list {
             background: $gry;
-
-            > a {
-              padding: $icon_size 0 $icon_size 45px;
-            }
           }
         }
       }

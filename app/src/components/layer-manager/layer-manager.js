@@ -44,6 +44,14 @@ window.customElements.define('layer-manager', class extends HTMLElement {
 		itemHandles.forEach( (handle) => {
 			handle.addEventListener('click', (e) => this.layerClick(e));
 		});
+
+		const labels = this.querySelectorAll('a > span');
+		labels.forEach( (label) => {
+			label.contentEditable=true;
+			label.addEventListener('input', (e) => {
+				//e.target.innerText=e.target.innerText.replace(/[\r]+/g, '');
+			});
+		});
 	}
 
 	static get observedAttributes() {
