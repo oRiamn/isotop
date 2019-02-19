@@ -45,6 +45,10 @@ layer-manager {
           width: inherit;
         }
 
+        li:last-child {
+          margin-bottom: 0;
+        }
+
         .list {
           margin-bottom: 1px;
           vertical-align: sub;
@@ -149,11 +153,6 @@ layer-manager {
             li {
               padding: 0;
               list-style: none;
-            }
-
-            li:last-child {
-              border-color: transparent;
-              padding-bottom: 0;
             }
 
             .active {
