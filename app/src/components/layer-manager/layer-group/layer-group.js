@@ -9,6 +9,17 @@ window.customElements.define('layer-group', class extends HTMLElement {
 		super();
 	}
 	
+	toggle(e) {
+		e.stopPropagation();
+		e.preventDefault();
+		const target = e.target.parentElement;
+		if (target.classList.contains('active')) {
+			target.classList.remove('active');
+		} else {
+			target.classList.add('active');
+		}
+	}
+
 	connectedCallback() {
 		
 		const shadow = document.createElement('div');
@@ -25,6 +36,7 @@ window.customElements.define('layer-group', class extends HTMLElement {
 		label.textContent = this.textContent.split(',', 1)[0];
 		
 		this.innerHTML=shadow.innerHTML;
+		this.querySelector(':scope > a').addEventListener('click', (e) => this.toggle(e));
 	}
 
 	static get observedAttributes() {
