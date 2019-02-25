@@ -7,6 +7,16 @@ import html from './layer-group.pug';
 window.customElements.define('layer-group', class extends HTMLElement {
 	constructor() {
 		super();
+
+		this.openEvent = new CustomEvent('open', {
+			bubbles: true,
+			cancelable: false,
+		});
+
+		this.closeEvent = new CustomEvent('close', {
+			bubbles: true,
+			cancelable: false,
+		});
 	}
 	
 	toggle(e) {
@@ -15,8 +25,10 @@ window.customElements.define('layer-group', class extends HTMLElement {
 		const target = e.target.parentElement;
 		if (target.classList.contains('active')) {
 			target.classList.remove('active');
+			this.dispatchEvent(this.closeEvent);
 		} else {
 			target.classList.add('active');
+			this.dispatchEvent(this.openEvent);
 		}
 	}
 
