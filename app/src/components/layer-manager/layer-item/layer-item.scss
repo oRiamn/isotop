@@ -1,0 +1,27 @@
+@import '@src/colors.scss';
+
+
+$icon_size: 16px;
+
+layer-item {
+  &,
+  > a,
+  > editable-label {
+    width: inherit;
+  }
+
+  > a {
+    display: flex;
+    text-decoration: none;
+    color: $white;
+    padding: $icon_size 20px $icon_size 10px;
+
+    height: 100%;
+    width: inherit;
+
+    &:hover {
+      background-color: $hover;
+      transition: 300ms all;
+    }
+  }
+}

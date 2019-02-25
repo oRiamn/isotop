@@ -27,129 +27,14 @@ layer-manager {
       flex-direction: column;
       overflow: auto;
 
-      ul.menu {
+      .menu {
         display: table;
         width: inherit;
         padding: 0;
         margin: 0;
         list-style: none;
         clear: both;
-
         font-size: 14px;
-
-        a,
-        li,
-        ul {
-          width: inherit;
-        }
-
-        li:last-child {
-          margin-bottom: 0;
-        }
-
-        .list {
-          margin-bottom: 1px;
-          vertical-align: sub;
-          background: $main_background;
-          clear: both;
-
-          a {
-            display: flex;
-            text-decoration: none;
-            color: $white;
-            padding: $icon_size 20px $icon_size 10px;
-
-            height: 100%;
-            width: inherit;
-
-            editable-label {
-              width: inherit;
-            }
-
-            &:hover {
-              background-color: $hover;
-              transition: 300ms all;
-            }
-          }
-
-          > a {
-            position: relative;
-            display: flex;
-
-            padding: $icon_size 3*$icon_size;
-
-            &:after,
-            &:before {
-              content: "";
-              width: $icon_size;
-              height: $icon_size;
-
-              top: $icon_size;
-              color: $white;
-              position: absolute;
-              display: block;
-
-              background: url("./img/cd-icons.svg") no-repeat 0 0;
-            }
-
-            &:after {
-              // arrow icon
-              right: $icon_size;
-              background-position: 0 0;
-            }
-
-            &:before {
-              // folder icon
-              left: $icon_size;
-              background-position: -$icon_size 0;
-
-            }
-          }
-
-          .items {
-            height: 0;
-            overflow: hidden;
-            background: $second_background;
-
-            a {
-              &:hover {
-                background-color: $hover;
-                color: $white;
-                transition: 300ms all;
-              }
-            }
-          }
-
-          &:last-child {
-            margin-bottom: none;
-          }
-        }
-
-        .active {
-          &.list > a:after {
-            transform: rotate(180deg);
-          }
-
-          &.list > a:before {
-            background-position: -2*$icon_size 0;
-          }
-
-          > .items {
-            display: block;
-            padding: 0;
-            height: auto;
-            color: $white;
-            transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
-            transition: all 200ms;
-            clear: both;
-            float: left;
-
-            li {
-              padding: 0;
-              list-style: none;
-            }
-          }
-        }
       }
     }
   }

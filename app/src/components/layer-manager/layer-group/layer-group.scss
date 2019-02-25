@@ -1,0 +1,83 @@
+@import '@src/colors.scss';
+
+$icon_size: 16px;
+
+layer-group {
+
+  margin-bottom: 1px;
+  vertical-align: sub;
+  clear: both;
+  width: inherit;
+
+  & > a {
+    display: flex;
+    text-decoration: none;
+    color: $white;
+    padding: $icon_size 20px $icon_size 10px;
+    height: 100%;
+    width: inherit;
+    position: relative;
+    padding: $icon_size 3*$icon_size;
+    background: $main_background;
+
+    &:hover {
+      background-color: $hover;
+      transition: 300ms all;
+    }
+
+    &:after,
+    &:before {
+      content: "";
+      width: $icon_size;
+      height: $icon_size;
+
+      top: $icon_size;
+      color: $white;
+      position: absolute;
+      display: block;
+
+      background: url("../img/cd-icons.svg") no-repeat 0 0;
+    }
+
+    &:after {
+      // arrow icon
+      right: $icon_size;
+      background-position: 0 0;
+    }
+
+    &:before {
+      // folder icon
+      left: $icon_size;
+      background-position: -$icon_size 0;
+
+    }
+  }
+
+  > .items {
+    height: 0;
+    overflow: hidden;
+    background: $second_background;
+    width: inherit;
+  }
+
+  &.active {
+    & > a:after {
+      transform: rotate(180deg);
+    }
+
+    & > a:before {
+      background-position: -2*$icon_size 0;
+    }
+
+    & > .items {
+      display: block;
+      padding: 0;
+      height: auto;
+      color: $white;
+      transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+      transition: all 200ms;
+      clear: both;
+      float: left;
+    }
+  }
+}
