@@ -9,6 +9,8 @@ layer-manager {
   align-items: stretch;
   width: 250px;
 
+  background: white;
+
   > * {
     display: flex;
   }
@@ -16,6 +18,7 @@ layer-manager {
   .container {
     overflow: hidden;
     width: inherit;
+    flex-grow: 1;
 
     .scrollcontainer {
       display: flex;
