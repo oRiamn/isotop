@@ -8,6 +8,8 @@ window.customElements.define('layer-group', class extends HTMLElement {
 	constructor() {
 		super();
 
+		this.activeSubGroup;
+
 		this.openEvent = new CustomEvent('open', {
 			bubbles: true,
 			cancelable: false,
@@ -18,18 +20,39 @@ window.customElements.define('layer-group', class extends HTMLElement {
 			cancelable: false,
 		});
 	}
+
+	open(){
+		this.classList.add('active');
+		this.dispatchEvent(this.openEvent);
+	}
+
+	close(){
+		this.classList.remove('active');
+		if(this.activeSubGroup) {
+			this.activeSubGroup.close();
+			this.activeSubGroup = null;
+		}
+
+		this.dispatchEvent(this.closeEvent);		
+	}
 	
 	toggle(e) {
 		e.stopPropagation();
 		e.preventDefault();
 		const target = e.target.parentElement;
 		if (target.classList.contains('active')) {
-			target.classList.remove('active');
-			this.dispatchEvent(this.closeEvent);
+			this.close();
 		} else {
-			target.classList.add('active');
-			this.dispatchEvent(this.openEvent);
+			this.open();
 		}
+	}
+
+	subgroupOpen(e){
+		if(this.activeSubGroup) {
+			this.activeSubGroup.close();
+		}
+		this.activeSubGroup=e.target;
+		this.activeSubGroup.addEventListener('close', (e) => this.activeSubGroup = null);
 	}
 
 	connectedCallback() {
@@ -49,6 +72,11 @@ window.customElements.define('layer-group', class extends HTMLElement {
 		
 		this.innerHTML=shadow.innerHTML;
 		this.querySelector(':scope > a').addEventListener('click', (e) => this.toggle(e));
+
+		const subgroups = this.querySelectorAll(':scope > .items > layer-group');
+		subgroups.forEach( (subgroup) => {
+			subgroup.addEventListener('open', (e) => this.subgroupOpen(e));
+		});
 	}
 
 	static get observedAttributes() {

@@ -17,8 +17,8 @@ window.customElements.define('layer-manager', class extends HTMLElement {
 
 		const listHandles = this.querySelectorAll('layer-group');
 		listHandles.forEach( (handle) => {
-			handle.addEventListener('open', (e) => console.log('open'));
-			handle.addEventListener('close', (e) => console.log('close'));
+			// handle.addEventListener('open', (e) => console.log('open'));
+			// handle.addEventListener('close', (e) => console.log('close'));
 		});
 	}
 
