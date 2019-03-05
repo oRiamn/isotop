@@ -116,4 +116,32 @@ describe('layer-group componnent', () => {
 		});
 	});
 
+	describe('#renaming: layer-group is able to be renamed', () => {
+
+
+		beforeEach(async () => {
+			await page.evaluate(() => { 
+				window.rootLabel = document.querySelector('#root > a');
+			});
+		});
+
+		it('when user double click on it', async () => {
+
+			let textContent;
+
+			textContent = await page.evaluate(() => rootLabel.textContent);
+			expect(textContent).to.equal(' \n  Root group');
+
+			await page.click('#root > a > editable-label', {
+				clickCount: 2
+			});
+
+			await page.keyboard.type('Renamed layer-group');
+			await page.keyboard.down('Enter');
+
+			textContent = await page.evaluate(() => rootLabel.textContent);
+			expect(textContent).to.equal(' \n  Renamed layer-group');
+		});
+	});
+
 });
