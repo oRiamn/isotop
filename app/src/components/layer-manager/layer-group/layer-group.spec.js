@@ -123,6 +123,7 @@ describe('layer-group componnent', () => {
 			await page.evaluate(() => { 
 				window.rootLabel = document.querySelector('#root > a');
 			});
+			await page.click('#root');
 		});
 
 		it('when user double click on it', async () => {
