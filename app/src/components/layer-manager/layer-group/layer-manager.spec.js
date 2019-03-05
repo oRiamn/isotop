@@ -54,69 +54,64 @@ describe('layer-group componnent', () => {
 
 	describe('#open/close: layer-group is able to open and close', () => {
 
-		it('closed layer-group open when user click on it', async () => {
+		beforeEach(async () => {
+			await page.evaluate(() => {
+				window.listActiveElements= () => {
+					return Array.from(document.querySelectorAll('.active')).map(e => e.id);
+				};
+			});
+		});
 
-			const beforeClick = await page.evaluate(() => element.className);
-			expect(beforeClick).to.be.empty;
+		it('closed layer-group open when user click on it', async () => {
+			let activeElementIds;
+
+			activeElementIds = await page.evaluate(() => listActiveElements());
+			expect(activeElementIds).to.be.empty;
 
 			await page.click('#root');
 
-			const afterClick = await page.evaluate(() => element.className);
-			expect(afterClick).to.equal('active');
+			activeElementIds = await page.evaluate(() => listActiveElements());
+			expect(activeElementIds).to.deep.equal(['root']);
+
 		});
 
 		it('opened layer-group close when user click on it', async () => {
 
-			const beforeFirstClick = await page.evaluate(() => element.className);
-			expect(beforeFirstClick).to.be.empty;
+			let activeElementIds;
+
+			activeElementIds = await page.evaluate(() => listActiveElements());
+			expect(activeElementIds).to.be.empty;
 
 			await page.click('#root');
 
-			const afterFirstClick = await page.evaluate(() => element.className);
-			expect(afterFirstClick).to.equal('active');
+			activeElementIds = await page.evaluate(() => listActiveElements());
+			expect(activeElementIds).to.deep.equal(['root']);
 
 			// use that method cause page.click() fire childs element
 			await page.evaluate(() => {	document.querySelector('#root').click(); });
-
-			const afterSecondClick = await page.evaluate(() => element.className);
-			expect(afterSecondClick).to.be.empty;
+			
+			activeElementIds = await page.evaluate(() => listActiveElements());
+			expect(activeElementIds).to.be.empty;
 		});
 
 		it('opened layer-group close when user click on his brother', async () => {
 
-			let classNames;
-			await page.evaluate(() => {
-				window.getClassenNames= () => {
-					return {
-						brother1: document.querySelector('#subgroup0').className,
-						brother2: document.querySelector('#subgroup2').className
-					};
-				};
-			});
+			let activeElementIds;
 
 			await page.click('#root');
 			
-			classNames = await page.evaluate(() => getClassenNames());
-			expect(classNames).to.deep.equal({
-				brother1: '',
-				brother2: ''
-			});
+			activeElementIds = await page.evaluate(() => listActiveElements());
+			expect(activeElementIds).to.deep.equal(['root']);
 
 			await page.click('#subgroup0');
 
-			classNames = await page.evaluate(() => getClassenNames());
-			expect(classNames).to.deep.equal({
-				brother1: 'active',
-				brother2: ''
-			});
+			activeElementIds = await page.evaluate(() => listActiveElements());
+			expect(activeElementIds).to.deep.equal(['root', 'subgroup0']);
 
 			await page.click('#subgroup2');
 
-			classNames = await page.evaluate(() => getClassenNames());
-			expect(classNames).to.deep.equal({
-				brother1: '',
-				brother2: 'active'
-			});
+			activeElementIds = await page.evaluate(() => listActiveElements());
+			expect(activeElementIds).to.deep.equal(['root', 'subgroup2']);
 
 		});
 	});
