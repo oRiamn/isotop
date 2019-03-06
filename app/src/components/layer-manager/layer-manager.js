@@ -13,20 +13,20 @@ window.customElements.define('layer-manager', class extends HTMLElement {
 		this.dragSrcElement;
 	}
 
-	dragStart(e) {
-		this.dragSrcElement = e.target;
-		this.dragSrcElement.style.opacity = '0.4';
-		e.dataTransfer.effectAllowed = 'move';
+	dragStart(e, element) {
+		this.dragSrcElement = element;
 		e.dataTransfer.setData('text/html', this.dragSrcElement.innerHTML);
 	}
 
-	dragEnter(e) {
-		e.target.classList.add('over');
+	dragEnter(e,element) {
+		if (this.dragSrcElement != element) {
+			element.classList.add('over');
+		}
 	}
 
-	dragLeave(e) {
+	dragLeave(e, element) {
 		e.stopPropagation();
-		e.target.classList.remove('over');
+		element.classList.remove('over');
 	}
 
 	dragOver(e) {
@@ -35,29 +35,34 @@ window.customElements.define('layer-manager', class extends HTMLElement {
 		return false;
 	}
 
-	dragDrop(e) {
-		if (this.dragSrcElement != e.target) {
-			this.dragSrcElement.innerHTML = e.target.innerHTML;
-			e.target.innerHTML = e.dataTransfer.getData('text/html');
+	dragDrop(e, element) {
+		if (this.dragSrcElement != element) {
+			this.dragSrcElement.innerHTML = element.innerHTML;
+			element.innerHTML = e.dataTransfer.getData('text/html');
+
+			const listItens = this.querySelectorAll('.over');
+			listItens.forEach((item) => {
+				item.classList.remove('over');
+			});
 		}
 		return false;
 	}
 
-	dragEnd(e) {
-		var listItens = this.querySelectorAll('layer-group');
-		[].forEach.call(listItens, function (item) {
+	dragEnd(e, element) {
+		const listItens = this.querySelectorAll('.over');
+		listItens.forEach((item) => {
 			item.classList.remove('over');
 		});
-		e.target.style.opacity = '1';
 	}
 
 	addEventsDragAndDrop(el) {
-		el.addEventListener('dragstart', (e) => this.dragStart(e), false);
-		el.addEventListener('dragenter', (e) => this.dragEnter(e), false);
-		el.addEventListener('dragover', (e) => this.dragOver(e), false);
-		el.addEventListener('dragleave', (e) => this.dragLeave(e), false);
-		el.addEventListener('drop', (e) => this.dragDrop(e), false);
-		el.addEventListener('dragend', (e) => this.dragEnd(e), false);
+		el.draggable=true;
+		el.addEventListener('dragstart', (e) => this.dragStart(e, el), false);
+		el.addEventListener('dragenter', (e) => this.dragEnter(e, el), false);
+		el.addEventListener('dragover', (e) => this.dragOver(e, el), false);
+		el.addEventListener('dragleave', (e) => this.dragLeave(e, el), false);
+		el.addEventListener('drop', (e) => this.dragDrop(e, el), false);
+		el.addEventListener('dragend', (e) => this.dragEnd(e, el), false);
 	}
 
 

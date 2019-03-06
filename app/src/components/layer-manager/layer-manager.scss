@@ -35,6 +35,15 @@ layer-manager {
         list-style: none;
         clear: both;
         font-size: 14px;
+
+        layer-item.over {
+          border-bottom: 1px solid red;
+          margin-bottom: 50px;
+
+          & + layer-item {
+            border-top: 1px solid red;
+          }
+        }
       }
     }
   }
