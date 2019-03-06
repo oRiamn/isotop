@@ -15,7 +15,7 @@ window.customElements.define('layer-manager', class extends HTMLElement {
 
 	dragStart(e, element) {
 		this.dragSrcElement = element;
-		e.dataTransfer.setData('text/html', this.dragSrcElement.innerHTML);
+		this.dragSrcElement.classList.add('ondrag');
 	}
 
 	dragEnter(e,element) {
@@ -32,27 +32,23 @@ window.customElements.define('layer-manager', class extends HTMLElement {
 	dragOver(e) {
 		e.preventDefault();
 		e.dataTransfer.dropEffect = 'move';
-		return false;
 	}
 
 	dragDrop(e, element) {
+		e.preventDefault();
 		if (this.dragSrcElement != element) {
-			this.dragSrcElement.innerHTML = element.innerHTML;
-			element.innerHTML = e.dataTransfer.getData('text/html');
-
-			const listItens = this.querySelectorAll('.over');
-			listItens.forEach((item) => {
-				item.classList.remove('over');
-			});
+			this.dragSrcElement.parentNode.removeChild(this.dragSrcElement);
+			element.parentNode.insertBefore(this.dragSrcElement, element.nextSibling);
 		}
-		return false;
+		this.resetDrag();
 	}
 
-	dragEnd(e, element) {
+	resetDrag() {
 		const listItens = this.querySelectorAll('.over');
 		listItens.forEach((item) => {
 			item.classList.remove('over');
 		});
+		this.dragSrcElement.classList.remove('ondrag');
 	}
 
 	addEventsDragAndDrop(el) {
@@ -62,7 +58,7 @@ window.customElements.define('layer-manager', class extends HTMLElement {
 		el.addEventListener('dragover', (e) => this.dragOver(e, el), false);
 		el.addEventListener('dragleave', (e) => this.dragLeave(e, el), false);
 		el.addEventListener('drop', (e) => this.dragDrop(e, el), false);
-		el.addEventListener('dragend', (e) => this.dragEnd(e, el), false);
+		el.addEventListener('dragend', (e) => this.resetDrag(e, el), false);
 	}
 
 

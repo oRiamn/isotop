@@ -36,12 +36,20 @@ layer-manager {
         clear: both;
         font-size: 14px;
 
-        layer-item.over {
-          border-bottom: 1px solid red;
-          margin-bottom: 50px;
+        layer-item {
+          
+          &.ondrag {
+            background: red;
+          }
 
-          & + layer-item {
-            border-top: 1px solid red;
+          &.over {
+            border-bottom: 1px solid red;
+            margin-bottom: 10px;
+
+            & + layer-item {
+              border-top: 1px solid red;
+            }
+
           }
         }
       }
